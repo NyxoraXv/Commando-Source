@@ -6,14 +6,41 @@ using UnityEngine.UI;
 
 public class LoginAnimation : MonoBehaviour
 {
-    private Image Container;
-    
+    public Image Container, Decorator, textBox;
+    public Ease ease;
+    public Transform text;
+
     void Start()
     {
-        Container = GetComponent<Image>();
-        float endAmount = 1f;
+        InitiateAnimateText();
 
-        DOTween.To(() => Container.fillAmount, x => Container.fillAmount = x, endAmount, 1f)
-        .SetEase(Ease.OutCubic);
+        // Animate the Decorator Image
+        Decorator.DOFillAmount(1f, 2f).From(0f).SetEase(ease);
+
+        // Animate the Container Image
+        Container.DOFillAmount(1f, 2f).From(0f).SetEase(ease).OnComplete(()=> {
+
+            AnimateText();
+
+        });
+
+        // Animate the textBox Image
+        textBox.DOFillAmount(1f, 2f).From(0f).SetEase(ease);
+
+
+    }
+
+    void AnimateText()
+    {
+        text.DOLocalMoveX(-338f, 1f).From(-338f + 30f).OnPlay(() => {
+            // Change the color of the TextMeshProUGUI text
+            text.GetComponent<TMPro.TextMeshProUGUI>().DOColor(new Color(1f, 1f, 1f, 1f), 1f).From(new Color(1f, 1f, 1f, 0f));
+        });
+    }
+
+    void InitiateAnimateText()
+    {
+
+        text.GetComponent<TMPro.TextMeshProUGUI>().DOColor(new Color(1f, 1f, 1f, 0f), 0f);
     }
 }
