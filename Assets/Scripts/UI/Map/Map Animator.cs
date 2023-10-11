@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
@@ -12,18 +10,15 @@ public class MapAnimator : MonoBehaviour
 
     private void OnEnable()
     {
-        StartCoroutine(PlayAnimations());
+        PlayAnimations();
     }
 
-    private IEnumerator PlayAnimations()
+    private void PlayAnimations()
     {
         // Play the camera animation
         CameraAnimation();
 
-        // Wait for 1 second
-        yield return new WaitForSeconds(0.5f);
-
-        // Now execute the ContainerDecoratorAnimation and PatternAnimation
+        // Execute the ContainerDecoratorAnimation and PatternAnimation
         ContainerDecoratorAnimation();
         PatternAnimation();
     }

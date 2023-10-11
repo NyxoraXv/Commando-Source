@@ -52,6 +52,8 @@ public class SaveManager : MonoBehaviour
 
     public string username { get; set; }
 
+    public bool isLogin;
+
     private void Awake()
     {
         if (Instance == null)
@@ -146,6 +148,7 @@ public class SaveManager : MonoBehaviour
         {
             SetUpDataLoad();
             Debug.Log("Save Data Loaded");
+            isLogin = true;
             return true;
         }
         else
@@ -153,6 +156,7 @@ public class SaveManager : MonoBehaviour
             // Initialize playerData if not loaded
             InitializeNewPlayer(username);
             Save();
+            isLogin = true;
             return false;
         }
     }

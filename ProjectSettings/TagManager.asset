@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - CharacterContainer
+  - Login
+  - MainMenu
   layers:
   - Default
   - TransparentFX

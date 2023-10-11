@@ -15,33 +15,37 @@ public class MissionCanvasAnimator : MonoBehaviour
         public float fadeDuration = 1f;
         public Vector3 startPosition;
         public Vector3 targetPosition;
+        public bool isEnabled = true; // Added boolean variable
     }
 
     public void RefreshAnimation()
     {
         foreach (CanvasGroupAnimationSettings settings in canvasGroupSettings)
         {
-            CanvasGroup canvasGroup = settings.canvasGroup;
-            if (canvasGroup != null)
+            if (settings.isEnabled) // Check if the animation is enabled
             {
-                // Set the initial alpha to 0 to start with a fade-in effect
-                canvasGroup.alpha = 0f;
+                CanvasGroup canvasGroup = settings.canvasGroup;
+                if (canvasGroup != null)
+                {
+                    // Set the initial alpha to 0 to start with a fade-in effect
+                    canvasGroup.alpha = 0f;
 
-                // Create a DoTween sequence
-                Sequence sequence = DOTween.Sequence();
+                    // Create a DoTween sequence
+                    Sequence sequence = DOTween.Sequence();
 
-                // Add a fade animation to 1f with the specified duration
-                sequence.Append(canvasGroup.DOFade(1f, settings.fadeDuration).From(0f));
+                    // Add a fade animation to 1f with the specified duration
+                    sequence.Append(canvasGroup.DOFade(1f, settings.fadeDuration).From(0f));
 
-                // Add a move animation to the target position
-                sequence.Join(canvasGroup.transform.DOLocalMove(settings.targetPosition, settings.fadeDuration).From(settings.startPosition));
+                    // Add a move animation to the target position
+                    sequence.Join(canvasGroup.transform.DOLocalMove(settings.targetPosition, settings.fadeDuration).From(settings.startPosition));
 
-                // Play the sequence
-                sequence.Play();
-            }
-            else
-            {
-                Debug.LogError("CanvasGroup component not found in the list.");
+                    // Play the sequence
+                    sequence.Play();
+                }
+                else
+                {
+                    Debug.LogError("CanvasGroup component not found in the list.");
+                }
             }
         }
     }
