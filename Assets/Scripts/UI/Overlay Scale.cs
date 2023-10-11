@@ -5,14 +5,18 @@ using UnityEngine.UI;
 
 public class OverlayScale : MonoBehaviour
 {
-    private void Awake()
+    private void Start()
     {
-        Display display;
+        RectTransform rectTransform = GetComponent<RectTransform>();
 
-        GetComponent<Image>().transform.localScale = new Vector3(
-            display.systemWidth,
-            display.systemHeight,
-            0
-            );
+        float screenWidth = Screen.width;
+        float screenHeight = Screen.height;
+
+        // You can modify the scaling factors as needed
+        float scaleFactorX = 0.5f;
+        float scaleFactorY = 0.5f;
+
+        Vector3 newScale = new Vector3(screenWidth * scaleFactorX, screenHeight * scaleFactorY, 1f);
+        rectTransform.localScale = newScale;
     }
 }

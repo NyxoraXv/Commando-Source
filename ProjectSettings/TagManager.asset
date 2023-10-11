@@ -7,6 +7,8 @@ TagManager:
   - CharacterContainer
   - Login
   - MainMenu
+  - Diamond
+  - Gold
   layers:
   - Default
   - TransparentFX

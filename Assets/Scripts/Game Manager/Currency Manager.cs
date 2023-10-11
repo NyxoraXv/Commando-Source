@@ -1,16 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class CurrencyManager : MonoBehaviour
 {
-    public static CurrencyManager Instance; 
+    public static CurrencyManager Instance;
     public int CurrentGold, CurrentDiamond;
-    public TMPro.TMP_Text GoldDisplay, DiamondDisplay;
 
     private void Awake()
     {
-
         if (Instance == null)
         {
             Instance = this;
@@ -20,8 +19,17 @@ public class CurrencyManager : MonoBehaviour
 
     public void Refresh()
     {
-        GoldDisplay.SetText(CurrentGold.ToString());
-        DiamondDisplay.SetText(CurrentDiamond.ToString());
+        // Find the game objects with the "gold" and "diamond" tags
+        GameObject goldObject = GameObject.FindGameObjectWithTag("Gold");
+        GameObject diamondObject = GameObject.FindGameObjectWithTag("Diamond");
+
+        // Get the TextMeshProUGUI components from the found objects
+        TextMeshProUGUI GoldDisplay = goldObject.GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI DiamondDisplay = diamondObject.GetComponent<TextMeshProUGUI>();
+
+        // Update the text values
+        GoldDisplay.text = CurrentGold.ToString();
+        DiamondDisplay.text = CurrentDiamond.ToString();
     }
 
     private void OnWillRenderObject()
@@ -31,7 +39,7 @@ public class CurrencyManager : MonoBehaviour
 
     public bool spendGold(int Amount)
     {
-        if(CurrentGold >= Amount)
+        if (CurrentGold >= Amount)
         {
             CurrentGold -= Amount;
             Refresh();
