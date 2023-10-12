@@ -7,6 +7,11 @@ public class LevelText : MonoBehaviour
 {
     private TMPro.TextMeshProUGUI levelText;
 
+    private void Awake()
+    {
+        onClick();
+    }
+
     public void onClick()
     {
         levelText = GetComponent<TMPro.TextMeshProUGUI>();
