@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening; // Import the DOTween namespace
 
-public class Animator : MonoBehaviour
+public class UIAnimator : MonoBehaviour
 {
     public Transform CardParent;
     public float tweenDuration = 1.0f; // The duration of each tween.

@@ -37,10 +37,10 @@ public class CharacterInformation : MonoBehaviour
     {
         Character.MaxLevel = Character.Levels.Count;
 
-        if (SaveManager.Instance != null)
+        if (saveManager.Instance != null)
         {
             // Iterate through the owned characters to find the one with the matching name
-            foreach (var kvp in SaveManager.Instance.playerData.characterInfo.OwnedCharacters)
+            foreach (var kvp in saveManager.Instance.playerData.characterInfo.OwnedCharacters)
             {
                 Character ownedCharacter = kvp.Key; // Access the character enum directly
                 int characterLevel = kvp.Value; // Access the level

@@ -9,4 +9,13 @@ public class Initiate : MonoBehaviour
     {
         Instantiate(MainCanvas);
     }
+
+    private IEnumerator Refresh()
+    {
+        yield return new WaitForSeconds(1.0f);
+
+        CurrencyManager.Instance.Refresh();
+
+        CharacterManager.Instance.SwitchCharacter(saveManager.Instance.playerData.characterInfo.SelectedCharacter);
+    }
 }

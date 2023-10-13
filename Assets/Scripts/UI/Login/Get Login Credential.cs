@@ -14,8 +14,8 @@ public class GetLoginCredential : MonoBehaviour
 
         try
         {
-            SaveManager.Instance.username = nameText.text;
-            SaveManager.Instance.Verify();
+            saveManager.Instance.username = nameText.text;
+            saveManager.Instance.Verify();
         }
         catch
         {

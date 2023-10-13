@@ -9,6 +9,6 @@ public class Setnameprofile : MonoBehaviour
     private void OnEnable()
     {
         text = GetComponent<TMPro.TextMeshProUGUI>();
-        text.text = SaveManager.Instance.username;
+        text.text = saveManager.Instance.username;
     }
 }
