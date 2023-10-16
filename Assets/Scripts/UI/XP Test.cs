@@ -8,6 +8,6 @@ public class ButtonHandler : MonoBehaviour
         CurrencyManager.Instance.spendGold(-200);
         LevelManager.Instance.addXP(200);
         //Debug.Log(CharacterManager.Instance.selectedCharacter);
-        saveManager.Instance.Save();
+        SaveManager.Instance.Save();
     }
 }

@@ -3,9 +3,9 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SaveManager : MonoBehaviour
+public class SaveManagerPlayer : MonoBehaviour
 {
-    static SaveManager current;
+    static SaveManagerPlayer current;
 
     private string settingsFilename = "settings.json";
     private string recordsFilename = "records.json";

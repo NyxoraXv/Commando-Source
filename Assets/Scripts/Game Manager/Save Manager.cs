@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-public class saveManager : MonoBehaviour
+public class SaveManager : MonoBehaviour
 {
 
     public class PlayerData
@@ -46,7 +46,7 @@ public class saveManager : MonoBehaviour
     }
 
 
-    public static saveManager Instance;
+    public static SaveManager Instance;
 
     public PlayerData playerData;
 

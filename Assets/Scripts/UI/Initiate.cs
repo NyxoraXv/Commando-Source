@@ -16,6 +16,6 @@ public class Initiate : MonoBehaviour
 
         CurrencyManager.Instance.Refresh();
 
-        CharacterManager.Instance.SwitchCharacter(saveManager.Instance.playerData.characterInfo.SelectedCharacter);
+        CharacterManager.Instance.SwitchCharacter(SaveManager.Instance.playerData.characterInfo.SelectedCharacter);
     }
 }

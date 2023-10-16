@@ -16,7 +16,7 @@ public class UpgradeButton : MonoBehaviour
         var characterManager = CharacterManager.Instance;
         Debug.Log("characterManager initialized");
 
-        var SaveManager = saveManager.Instance;
+        var SaveManager = global::SaveManager.Instance;
         Debug.Log("saveManager initialized");
 
         CharacterInformation characterInformation = characterManager.GetCharacterPrefab(SaveManager.playerData.characterInfo.SelectedCharacter).GetComponent<CharacterInformation>();
