@@ -75,17 +75,17 @@ public class GameManager : MonoBehaviour
 
     private void SaveSettings()
     {
-        Settings settings = SaveManager.GetSettings();
+        Settings settings = SaveManagerPlayer.GetSettings();
         if (settings == null)
             settings = new Settings();
         settings.bgmVolume = GetBgmAudio();
         settings.sfxVolume = GetSfxAudio();
-        SaveManager.SetSettings(settings);
+        SaveManagerPlayer.SetSettings(settings);
     }
 
     private void LoadSettings()
     {
-        Settings settings = SaveManager.GetSettings();
+        Settings settings = SaveManagerPlayer.GetSettings();
         if (settings != null)
         {
             SetBgmAudio(settings.bgmVolume);
@@ -96,18 +96,18 @@ public class GameManager : MonoBehaviour
 
     private void SaveRecords()
     {
-        Records records = SaveManager.GetRecords();
+        Records records = SaveManagerPlayer.GetRecords();
         if (records == null)
             records = new Records();
         records.mission1Points = GetMission1Points();
         records.mission2Points = GetMission2Points();
         records.mission3Points = GetMission3Points();
-        SaveManager.SetRecords(records);
+        SaveManagerPlayer.SetRecords(records);
     }
 
     private void LoadRecords()
     {
-        Records records = SaveManager.GetRecords();
+        Records records = SaveManagerPlayer.GetRecords();
         if (records != null)
         {
             SetMission1Points(records.mission1Points);
@@ -292,17 +292,17 @@ public class GameManager : MonoBehaviour
         if (current.currentMission == Missions.Mission1 && current.score > GetMission1Points())
         {
             SetMission1Points(current.score);
-            SaveManager.SetRecords(new Records(current.score, GetMission2Points(), GetMission3Points()));
+            SaveManagerPlayer.SetRecords(new Records(current.score, GetMission2Points(), GetMission3Points()));
         }
         else if (current.currentMission == Missions.Mission2 && current.score > GetMission2Points())
         {
             SetMission2Points(current.score);
-            SaveManager.SetRecords(new Records(GetMission1Points(), current.score, GetMission3Points()));
+            SaveManagerPlayer.SetRecords(new Records(GetMission1Points(), current.score, GetMission3Points()));
         }
         else if (current.currentMission == Missions.Mission3Boss && current.score > GetMission3Points())
         {
             SetMission3Points(current.score);
-            SaveManager.SetRecords(new Records(GetMission1Points(), GetMission2Points(), current.score));
+            SaveManagerPlayer.SetRecords(new Records(GetMission1Points(), GetMission2Points(), current.score));
         }
 
         if (current.currentMission >= Missions.Mission3Boss)
