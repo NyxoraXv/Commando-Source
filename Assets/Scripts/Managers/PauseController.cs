@@ -48,10 +48,8 @@ public class PauseController : MonoBehaviour
     public void SetBgmCounterPressed()
     {
         //Click color
-        bgmText.color = new Color32(255, 255, 255, 255);
-        sfxText.color = new Color32(255, 141, 0, 255);
-        bgmTextCounter.color = new Color32(255, 255, 255, 255);
-        sfxTextCounter.color = new Color32(255, 141, 0, 255);
+        bgmText.color = new Color32(255, 141, 0, 255);
+        sfxText.color = new Color32(255, 255, 255, 255);
 
         float cnt = GameManager.GetBgmAudio();
         cnt += .1f;
@@ -74,10 +72,8 @@ public class PauseController : MonoBehaviour
     public void SetSfxCounterPressed()
     {
         //Click color
-        bgmText.color = new Color32(255, 141, 0, 255);
-        sfxText.color = new Color32(255, 255, 255, 255);
-        bgmTextCounter.color = new Color32(255, 141, 0, 255);
-        sfxTextCounter.color = new Color32(255, 255, 255, 255);
+        bgmText.color = new Color32(255, 255, 255, 255);
+        sfxText.color = new Color32(255, 141, 0, 255);
 
         float cnt = GameManager.GetSfxAudio();
         cnt += .1f;

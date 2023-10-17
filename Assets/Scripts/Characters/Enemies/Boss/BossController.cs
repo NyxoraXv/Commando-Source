@@ -20,6 +20,15 @@ public class BossController : MonoBehaviour
     public GameObject boat;
     private bool isSpawned = false;
 
+    [Header("Knockback and Damage")]
+    public float knockbackForce = 5f;
+    public float knockbackDuration = 0.5f;
+
+    [Header("Player Range")]
+    public float playerRange = 2.0f; 
+
+    private bool isTooClose = false;
+
     [Header("Speeds")]
     public float speed = 0.7f;
     private float chargingSpeed = 0f;
@@ -85,6 +94,23 @@ public class BossController : MonoBehaviour
         {
             if (health.IsAlive())
             {
+                float playerCloseRange = Vector3.Distance(transform.position, followPlayer.transform.position);
+
+                if (playerCloseRange < playerRange)
+                {
+                    // Player is too close, apply knockback and damage.
+                    isTooClose = true;
+
+                    // Apply damage to the player
+                    followPlayer.GetComponent<Health>().Hit(attackDamage);
+
+                    // Apply knockback to the player
+                    Vector2 knockbackDirection = (followPlayer.transform.position - transform.position).normalized;
+                    followPlayer.GetComponent<Rigidbody2D>().AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+
+                    // Add a delay to reset the isTooClose flag
+                    StartCoroutine(ResetIsTooClose());
+                }
                 /*Check health*/
                 if (health.GetHealth() <= maxHealth / 2)
                 {
@@ -93,6 +119,7 @@ public class BossController : MonoBehaviour
                 
                 /*Run and attacks*/
                 float playerDistance = transform.position.x - followPlayer.transform.position.x;
+
                 if (rb && isMovable)
                 {
                     rb.MovePosition(rb.position + new Vector2(1 * speed, 0) * Time.deltaTime);
@@ -288,5 +315,11 @@ public class BossController : MonoBehaviour
         speed = initialSpeed;
         yield return new WaitForSeconds(5f); // wait until next possible sprint
         canSprint = true;
+    }
+
+    private IEnumerator ResetIsTooClose()
+    {
+        yield return new WaitForSeconds(knockbackDuration);
+        isTooClose = false;
     }
 }
