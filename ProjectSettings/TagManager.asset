@@ -19,6 +19,11 @@ TagManager:
   - EnemyBomb
   - RunningTarget
   - Trigger
+  - Login
+  - MainMenu
+  - Gold
+  - Diamond
+  - Main Menu Parent
   layers:
   - Default
   - TransparentFX

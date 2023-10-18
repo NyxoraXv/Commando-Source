@@ -366,6 +366,12 @@ PrefabInstance:
       propertyPath: DiamondDisplay
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7824216714179214092, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      propertyPath: insufficientFundObject
+      value: 
+      objectReference: {fileID: 983732885194184417, guid: d6461e210dee84f40b6497dc97c0d798,
+        type: 3}
     - target: {fileID: 7930304638109850825, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
       propertyPath: MainCanvas

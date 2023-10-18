@@ -7,6 +7,7 @@ public class CurrencyManager : MonoBehaviour
 {
     public static CurrencyManager Instance;
     public int CurrentGold, CurrentDiamond;
+    public GameObject insufficientFundObject;
 
     private void Awake()
     {
@@ -75,5 +76,21 @@ public class CurrencyManager : MonoBehaviour
     {
         CurrentDiamond += Amount;
         Refresh();
+    }
+
+    public void insufficientFund(int Amount, Transform transform, PopUpInstantiate.CurrencyType type)
+    {
+        GameObject popup = Instantiate(insufficientFundObject, transform);
+        PopUpInstantiate popupInstantiateScript = popup.GetComponent<PopUpInstantiate>();
+
+        if (popupInstantiateScript != null)
+        {
+            // Call a method on the PopUpInstantiate script to set parameters
+            popupInstantiateScript.Instantiate(Amount);
+        }
+        else
+        {
+            Debug.LogError("PopUpInstantiate script not found on the instantiated object.");
+        }
     }
 }
