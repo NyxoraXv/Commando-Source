@@ -85,7 +85,6 @@ public class BossController : MonoBehaviour
         {
             if (health.IsAlive())
             {
-                /*Check health*/
                 if (health.GetHealth() <= maxHealth / 2)
                 {
                     StartCoroutine(HalfHealth());
@@ -93,6 +92,7 @@ public class BossController : MonoBehaviour
                 
                 /*Run and attacks*/
                 float playerDistance = transform.position.x - followPlayer.transform.position.x;
+
                 if (rb && isMovable)
                 {
                     rb.MovePosition(rb.position + new Vector2(1 * speed, 0) * Time.deltaTime);

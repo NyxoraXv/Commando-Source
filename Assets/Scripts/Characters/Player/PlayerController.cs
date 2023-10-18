@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 
 public class PlayerController : MonoBehaviour
@@ -66,7 +67,7 @@ public class PlayerController : MonoBehaviour
 
     public GameObject foreground;
     Cinemachine.CinemachineBrain cinemachineBrain;
-
+    
     public enum CollectibleType
     {
         HeavyMachineGun,
