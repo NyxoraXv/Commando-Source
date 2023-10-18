@@ -34,6 +34,10 @@ public class UpgradeButton : MonoBehaviour
         }
         else
         {
+            CurrencyManager.Instance.insufficientFund(CurrencyManager.Instance.CurrentGold - goldToSpend,
+                                                    GameObject.FindWithTag("Main Menu Parent").transform,
+                                                    PopUpInstantiate.CurrencyType.Gold);
+
             Debug.LogWarning("Character Upgrade Fail");
         }
 
