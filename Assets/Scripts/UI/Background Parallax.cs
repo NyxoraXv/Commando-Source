@@ -13,6 +13,6 @@ public class BackgroundParallax : MonoBehaviour
 
         background.DOScale(scaleEnd, scaleDuration).SetEase(ParallaxEase);
         background.DOLocalMove(moveEnd, scaleDuration).SetEase(ParallaxEase);
-        background.DOLocalRotate(rotateEnd, rotateDuration).SetEase(ParallaxEase);
+        //background.DOLocalRotate(rotateEnd, rotateDuration).SetEase(ParallaxEase);
     }
 }
