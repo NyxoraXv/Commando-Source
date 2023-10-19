@@ -69,6 +69,7 @@ public class NavigationButtonManager : MonoBehaviour
     public Vector3 marketRotateEnd = Vector3.zero;
     public float marketRotateDuration = 1.0f;
     public Ease marketParallaxEase = Ease.InOutCubic;
+
     void Start()
     {
         // Create a new sequence
