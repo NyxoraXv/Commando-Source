@@ -40,6 +40,11 @@ public class SaveManager : MonoBehaviour
             }
         }
 
+        public class OwnedWeaponInformation
+        {
+            public Weapon ;
+        }
+
         public PlayerInfo playerInformation { get; set; } = new PlayerInfo();
         public CurrencyInfo currencyInfo { get; set; } = new CurrencyInfo();
         public CharacterInfo characterInfo { get; set; } = new CharacterInfo();

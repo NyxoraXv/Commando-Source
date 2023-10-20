@@ -9,10 +9,19 @@ public class CardClick : MonoBehaviour
         Glock,
         Revolver
     }
+    
 
+    public Weapon SelectedWeapon = Weapon.Glock;
 
-
-    public void OnClick() {
+    public void Awake()
+    {
         
+    }
+
+
+    public void OnClick(Weapon selectWeapon) {
+
+        SelectedWeapon = selectWeapon;
+
     }
 }
