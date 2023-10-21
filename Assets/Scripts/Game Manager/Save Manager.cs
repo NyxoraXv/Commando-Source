@@ -42,12 +42,14 @@ public class SaveManager : MonoBehaviour
 
         public class OwnedWeaponInformation
         {
-            public Weapon ;
+            public Weapon selectedWeapon;
+            public List<Weapon> ownedWeapons = new List<Weapon>();
         }
 
         public PlayerInfo playerInformation { get; set; } = new PlayerInfo();
         public CurrencyInfo currencyInfo { get; set; } = new CurrencyInfo();
         public CharacterInfo characterInfo { get; set; } = new CharacterInfo();
+        public OwnedWeaponInformation weaponInfo { get; set; } = new OwnedWeaponInformation();
     }
 
 
@@ -119,6 +121,15 @@ public class SaveManager : MonoBehaviour
         }
 
         Debug.Log("Set up data save" + username);
+
+        playerData.weaponInfo.selectedWeapon = WeaponManager.Instance.selectedWeapon;
+        playerData.weaponInfo.ownedWeapons.Clear(); // Clear the existing data
+
+        // Iterate through the owned weapons in WeaponManager and add them to playerData
+        foreach (var weapon in WeaponManager.Instance.ownedWeapons)
+        {
+            playerData.weaponInfo.ownedWeapons.Add(weapon);
+        }
     }
 
 
@@ -145,6 +156,18 @@ public class SaveManager : MonoBehaviour
 
 
         Debug.Log("Set up data load" + username);
+
+        // Inside the SetUpDataLoad method
+        // Weapon Manager (assuming you have a WeaponManager)
+        WeaponManager.Instance.selectedWeapon = playerData.weaponInfo.selectedWeapon;
+        WeaponManager.Instance.ownedWeapons.Clear(); // Clear the existing data
+
+        // Iterate through the owned weapons in playerData and add them to WeaponManager
+        foreach (var weapon in playerData.weaponInfo.ownedWeapons)
+        {
+            WeaponManager.Instance.AddOwnedWeapon(weapon);
+        }
+
     }
 
     public bool Verify()
