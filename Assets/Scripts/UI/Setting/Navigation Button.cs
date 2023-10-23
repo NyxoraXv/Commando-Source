@@ -20,14 +20,6 @@ public class NavigationButton : MonoBehaviour
 
     private NavigationBar navbarSelection;
 
-    void Start()
-    {
-        // Initially, hide all panels.
-        graphicsPanel.SetActive(false);
-        controlPanel.SetActive(false);
-        soundPanel.SetActive(false);
-    }
-
     public void OnGraphicsClicked(RectTransform button)
     {
         navbarSelection = NavigationBar.Graphics;

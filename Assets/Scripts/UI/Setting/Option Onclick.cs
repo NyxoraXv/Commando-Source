@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class Option : MonoBehaviour
 {
@@ -14,6 +15,10 @@ public class Option : MonoBehaviour
     }
 
     [SerializeField] private RectTransform highlighter;
+
+    public UnityEvent onOption1Clicked;
+    public UnityEvent onOption2Clicked;
+    public UnityEvent onOption3Clicked;
 
     private OptionSelection optionSelected;
 
@@ -33,12 +38,15 @@ public class Option : MonoBehaviour
         {
             case "Option1":
                 optionSelected = OptionSelection.Option1;
+                onOption1Clicked.Invoke(); // Invoke the UnityEvent for Option1
                 break;
             case "Option2":
                 optionSelected = OptionSelection.Option2;
+                onOption2Clicked.Invoke(); // Invoke the UnityEvent for Option2
                 break;
             case "Option3":
                 optionSelected = OptionSelection.Option3;
+                onOption3Clicked.Invoke(); // Invoke the UnityEvent for Option3
                 break;
         }
 

@@ -11,11 +11,13 @@ public class GetLoginCredential : MonoBehaviour
     public void setCredential()
     {
         nameText = GetComponent<TMPro.TextMeshProUGUI>();
+        SaveManager.Instance.isLogin = true;
 
         try
         {
             SaveManager.Instance.username = nameText.text;
             SaveManager.Instance.Verify();
+            
         }
         catch
         {
