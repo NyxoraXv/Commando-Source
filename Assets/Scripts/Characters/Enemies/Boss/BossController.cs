@@ -20,6 +20,10 @@ public class BossController : MonoBehaviour
     public GameObject boat;
     private bool isSpawned = false;
 
+    [Header("Knockback")]
+    public float knockbackForce = 2.0f; // Adjust the value as needed
+
+
     [Header("Speeds")]
     public float speed = 0.7f;
     private float chargingSpeed = 0f;
@@ -206,23 +210,37 @@ public class BossController : MonoBehaviour
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
+{
+    if (collision.collider != null)
     {
-        if(collision.collider != null)
+        if (GameManager.IsPlayer(collision))
         {
-            if (GameManager.IsPlayer(collision))
-            {
-                followPlayer.GetComponent<Health>().Hit(attackDamage);
-                followPlayer.GetComponent<Rigidbody2D>().AddForce(new Vector2(3f, 0f), ForceMode2D.Impulse);
-            }
-            else if (collision.collider.CompareTag("Enemy"))
-            {
-                collision.collider.gameObject.GetComponent<Health>().onHit(attackDamage);
+            Health playerHealth = followPlayer.GetComponent<Health>();
+            playerHealth.Hit(attackDamage);
 
-                collision.collider.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(2f, 0f), ForceMode2D.Impulse);
+            // Calculate the direction from the boss to the player for the knockback effect
+            Vector2 knockbackDirection = (followPlayer.transform.position - transform.position).normalized;
 
-            }
+            // Apply the knockback force to the player's Rigidbody2D
+            Rigidbody2D playerRigidbody = followPlayer.GetComponent<Rigidbody2D>();
+            playerRigidbody.velocity = Vector2.zero; // Reset player's velocity
+            playerRigidbody.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+        }
+        else if (collision.collider.CompareTag("Enemy"))
+        {
+            collision.collider.gameObject.GetComponent<Health>().onHit(attackDamage);
+
+            // Calculate the knockback direction based on the collision
+            Vector2 knockbackDirection = (collision.collider.transform.position - transform.position).normalized;
+
+            // Apply the knockback force to the colliding enemy's Rigidbody2D
+            Rigidbody2D enemyRigidbody = collision.collider.gameObject.GetComponent<Rigidbody2D>();
+            enemyRigidbody.velocity = Vector2.zero; // Reset enemy's velocity
+            enemyRigidbody.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
         }
     }
+}
+
 
     private void OnTriggerExit2D(Collider2D collider)
     {
