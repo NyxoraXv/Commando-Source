@@ -556,7 +556,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adac2d8783ccf8445913fdec013d9006, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneNameToLoad: Mission1
+  sceneNameToLoad: Mission2
 --- !u!114 &9028235008877315681
 MonoBehaviour:
   m_ObjectHideFlags: 0
