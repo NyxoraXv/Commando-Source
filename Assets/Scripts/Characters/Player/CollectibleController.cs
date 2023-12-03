@@ -9,10 +9,10 @@ public class CollectibleController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (GameManager.IsPlayer(collision))
+        if (GameplayManager.IsPlayer(collision))
         {
-            GameManager.GetPlayer().GetComponent<PlayerController>().getCollectible(type);
-            GameManager.AddScore(collectiblePoints);
+            GameplayManager.GetPlayer().GetComponent<PlayerController>().getCollectible(type);
+            GameplayManager.AddScore(collectiblePoints);
             if (type==PlayerController.CollectibleType.Ammo) // collectible sound
             {
                 AudioManager.PlayAmmoGrab();

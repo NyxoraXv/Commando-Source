@@ -14,13 +14,13 @@ public class Health : MonoBehaviour
     void Start()
     {
         isPlayer = GetComponent<PlayerController>() != null; // PlayerController is just for player
-        var difficulty = GameManager.GetDifficultyMode(); // get difficulty
+        var difficulty = GameplayManager.GetDifficultyMode(); // get difficulty
 
         if (!isPlayer) // only if enemy
         {
-            if (difficulty == GameManager.Difficulty.Easy) // hp - 30%
+            if (difficulty == GameplayManager.Difficulty.Easy) // hp - 30%
                 maxHealth *= 0.7f;
-            else if(difficulty == GameManager.Difficulty.Hard) // hp + 30%
+            else if(difficulty == GameplayManager.Difficulty.Hard) // hp + 30%
                 maxHealth *= 1.3f;
         }
         health = maxHealth;
@@ -51,15 +51,15 @@ public class Health : MonoBehaviour
 
     public void Hit(float damage)
     {
-        if (!IsAlive() || GameManager.IsGameOver() || immortal) // skip already dead or gameover
+        if (!IsAlive() || GameplayManager.IsGameOver() || immortal) // skip already dead or gameover
             return;
 
         if (isPlayer) // only if player
         {
-            var difficulty = GameManager.GetDifficultyMode(); // get difficulty
-            if (difficulty == GameManager.Difficulty.Easy) // dmg - 30%
+            var difficulty = GameplayManager.GetDifficultyMode(); // get difficulty
+            if (difficulty == GameplayManager.Difficulty.Easy) // dmg - 30%
                 damage *= 0.7f;
-            else if (difficulty == GameManager.Difficulty.Hard) // dmg + 30%
+            else if (difficulty == GameplayManager.Difficulty.Hard) // dmg + 30%
                 damage *= 1.3f;
         }
         health -= damage; // take the hit

@@ -13,7 +13,7 @@ public class WaterController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider)
     {
-        if (GameManager.IsPlayer(collider))
+        if (GameplayManager.IsPlayer(collider))
         {
             waterController.SetBool("isInWater", true);
         }
@@ -21,7 +21,7 @@ public class WaterController : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D collider)
     {
-        if (GameManager.IsPlayer(collider))
+        if (GameplayManager.IsPlayer(collider))
         {
             waterController.SetBool("isInWater", false);
         }

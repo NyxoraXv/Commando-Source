@@ -43,7 +43,7 @@ public class UIManager : MonoBehaviour
             return;
 
         //Refresh the score
-        current.scoreText.SetText(GameManager.GetScore().ToString());
+        current.scoreText.SetText(GameplayManager.GetScore().ToString());
     }
 
    public static void UpdateBombsUI()
@@ -53,7 +53,7 @@ public class UIManager : MonoBehaviour
             return;
 
         //Refresh the score
-        current.bombs.SetText(GameManager.GetBombs().ToString());
+        current.bombs.SetText(GameplayManager.GetBombs().ToString());
     }
 
     public static void UpdateAmmoUI()
@@ -63,13 +63,13 @@ public class UIManager : MonoBehaviour
             return;
 
         //Refresh the score
-        if (GameManager.GetHeavyMachineAmmo() == 0)
+        if (GameplayManager.GetHeavyMachineAmmo() == 0)
         {
             current.ammoText.SetText("oo");
         }
         else
         {
-            current.ammoText.SetText(GameManager.GetHeavyMachineAmmo().ToString());
+            current.ammoText.SetText(GameplayManager.GetHeavyMachineAmmo().ToString());
         }
     }
 
@@ -102,7 +102,7 @@ public class UIManager : MonoBehaviour
         //Show the win text and points
         current.winText.gameObject.SetActive(true);
 
-        current.winPointsText.SetText(GameManager.GetScore().ToString());
+        current.winPointsText.SetText(GameplayManager.GetScore().ToString());
         current.winPointsText.gameObject.SetActive(true);
     }
 }

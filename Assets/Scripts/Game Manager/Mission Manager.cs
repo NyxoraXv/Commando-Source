@@ -36,13 +36,14 @@ public class MissionManager : MonoBehaviour
     {
         [Header("Mission Information")]
         public string MissionName;
+        public string MissionID;
         public Difficulty Difficulty;
 
         [Header("Mission Objectives")]
         public List<string> Objectives;
 
         [Header("Mission Rewards")]
-        public List<RewardData> Rewards; // List of rewards with type and value.
+        public List<RewardData> Rewards;
 
         [Header("Mission Status")]
         public bool Completed;
@@ -52,10 +53,23 @@ public class MissionManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
+        Instance = this;
     }
+
+    public missionData GetMissionByID(string missionID)
+    {
+        foreach (missionData mission in MissionInformation)
+        {
+            if (mission.MissionID == missionID)
+            {
+                return mission;
+            }
+        }
+
+        // If no mission with the given ID is found, return null
+        return null;
+    }
+
+
+
 }

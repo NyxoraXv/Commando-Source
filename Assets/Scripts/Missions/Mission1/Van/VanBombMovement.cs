@@ -31,13 +31,13 @@ public class VanBombMovement : MonoBehaviour
     {
         if (rb != null)
         {
-            if (GameManager.IsPlayer(collider) || collider.tag == "Marco Boat" || collider.tag == "Granate" || collider.tag == "Bullet")
+            if (GameplayManager.IsPlayer(collider) || collider.tag == "Marco Boat" || collider.tag == "Granate" || collider.tag == "Bullet")
             {
                 vanBombAnimator.SetBool("hasHittenSth", true);
                 {
-                    if (GameManager.IsPlayer(collider))
+                    if (GameplayManager.IsPlayer(collider))
                     {
-                        GameManager.GetPlayer().GetComponent<Health>().Hit(damageBomb);
+                        GameplayManager.GetPlayer().GetComponent<Health>().Hit(damageBomb);
                     }
                 }
                 this.enabled = false;

@@ -26,7 +26,7 @@ public class RebelVan : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        followPlayer = GameManager.GetPlayer();
+        followPlayer = GameplayManager.GetPlayer();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         blinkingSprite = GetComponent<BlinkingSprite>();
@@ -87,7 +87,7 @@ public class RebelVan : MonoBehaviour
             animator.SetBool("isDamaged", true);
             hasHalfHealth = true;
         }
-        GameManager.AddScore(damage);
+        GameplayManager.AddScore(damage);
         blinkingSprite.Play();
     }
 

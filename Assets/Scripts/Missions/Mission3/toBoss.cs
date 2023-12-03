@@ -7,9 +7,9 @@ public class toBoss : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (GameManager.IsPlayer(collision))
+        if (GameplayManager.IsPlayer(collision))
         {
-            GameManager.LoadScene((int)GameManager.Missions.Mission3Boss, true);
+            GameplayManager.LoadScene((int)GameplayManager.Missions.Mission3Boss, true);
         }
     }
 }

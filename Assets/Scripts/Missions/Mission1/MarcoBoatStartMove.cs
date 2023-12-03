@@ -72,7 +72,7 @@ public class MarcoBoatStartMove : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         waterSpawners.transform.parent = thirdPart.transform;
-        GameManager.GetPlayer().transform.parent = thirdPart.transform;
+        GameplayManager.GetPlayer().transform.parent = thirdPart.transform;
 
         boat.GetComponent<Animator>().SetBool("isDying", true);
         AudioManager.PlayMetalSlugDestroy3();
@@ -124,10 +124,10 @@ public class MarcoBoatStartMove : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (GameManager.IsPlayer(collider) && !isStarted)
+        if (GameplayManager.IsPlayer(collider) && !isStarted)
         {
             isStarted = true;
-            GameManager.GetPlayer().transform.parent = boat.transform;
+            GameplayManager.GetPlayer().transform.parent = boat.transform;
         }
         else if (collider.CompareTag("Enemy"))
         {

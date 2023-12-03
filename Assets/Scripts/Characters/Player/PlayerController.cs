@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         //Block the player from moving if it's death
-        if (GameManager.IsGameOver() || !health.IsAlive())
+        if (GameplayManager.IsGameOver() || !health.IsAlive())
             return;
 
         CheckHeavyAmmo();
@@ -111,7 +111,7 @@ public class PlayerController : MonoBehaviour
     private void OnDead(float damage) // health delegate onDead
     {
         Died();
-        GameManager.PlayerDied();
+        GameplayManager.PlayerDied();
         AudioManager.PlayDeathAudio();
     }
 
@@ -199,12 +199,12 @@ public class PlayerController : MonoBehaviour
 
     void ThrowGranate()
     {
-        if (GameManager.GetBombs() > 0)
+        if (GameplayManager.GetBombs() > 0)
         {
             shotTime = shotTime + Time.deltaTime;
             if (MobileManager.GetButtonGrenade())
             {
-                GameManager.RemoveBomb();
+                GameplayManager.RemoveBomb();
                 if (!wasFiring2)
                 {
                     /*Animazione in base a se è in piedi o meno*/
@@ -551,7 +551,7 @@ public class PlayerController : MonoBehaviour
             BulletManager.GetNormalBulletPool().Spawn(projSpawner.transform.position, projSpawner.transform.rotation);
             yield return new WaitForSeconds(0.05f);
             BulletManager.GetNormalBulletPool().Spawn(projSpawner.transform.position, projSpawner.transform.rotation);
-            GameManager.RemoveHeavyMachineAmmo();
+            GameplayManager.RemoveHeavyMachineAmmo();
         }
         else
         {
@@ -579,7 +579,7 @@ public class PlayerController : MonoBehaviour
         }
 
         float distance = meleeDistance;
-        LayerMask layerMask = GameManager.GetEnemyLayer();
+        LayerMask layerMask = GameplayManager.GetEnemyLayer();
         Vector2 direction = (facingRight) ? transform.right : -transform.right;
         Vector2 endPos = startPos + (distance * direction);
         Debug.DrawLine(startPos, endPos, Color.red, 5f);
@@ -620,24 +620,24 @@ public class PlayerController : MonoBehaviour
                 {
                     topAnimator.runtimeAnimatorController = machineGunAnimator;
                     bottomAnimator.runtimeAnimatorController = bottomMachineGunAnimator;
-                    GameManager.SetHeavyMachineAmmo(120);
+                    GameplayManager.SetHeavyMachineAmmo(120);
                     UIManager.UpdateAmmoUI();
                     haveMachineGun = true;
                 }
                 else
                 {
-                    GameManager.RechargAmmoMG();
+                    GameplayManager.RechargAmmoMG();
                 }
                 break;
             case CollectibleType.MedKit:
                 health.increaseHealth();
                 break;
             case CollectibleType.Ammo:
-                GameManager.AddAmmo();
+                GameplayManager.AddAmmo();
 
                 if (!haveMachineGun)
                 {
-                    GameManager.SetHeavyMachineAmmo(0);
+                    GameplayManager.SetHeavyMachineAmmo(0);
                     UIManager.UpdateAmmoUI();
                 }
                 break;
@@ -649,7 +649,7 @@ public class PlayerController : MonoBehaviour
 
     public void CheckHeavyAmmo()
     {
-        if (GameManager.GetHeavyMachineAmmo() <= 0 && haveMachineGun)
+        if (GameplayManager.GetHeavyMachineAmmo() <= 0 && haveMachineGun)
         {
             topAnimator.runtimeAnimatorController = pistolAnimator;
             bottomAnimator.runtimeAnimatorController = bottomPistolAnimator;

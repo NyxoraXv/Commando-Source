@@ -56,7 +56,7 @@ public class Boss3Controller : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         blinkingSprite = GetComponent<BlinkingSprite>();
-        player = GameManager.GetPlayer();
+        player = GameplayManager.GetPlayer();
         registerHealth();
         registerPlayerHealth();
 
@@ -69,7 +69,7 @@ public class Boss3Controller : MonoBehaviour
 
     void Update()
     {
-        if (GameManager.IsGameOver())
+        if (GameplayManager.IsGameOver())
             return;
 
         if (health.IsAlive())
@@ -173,7 +173,7 @@ public class Boss3Controller : MonoBehaviour
 
         StopCoroutine(Fire1());
         StopCoroutine(Fire2Wait());
-        GameManager.PlayerWin();
+        GameplayManager.PlayerWin();
         AudioManager.PlayMetalSlugDestroy2();
         GetComponent<Animator>().SetBool("isDying", true);
         StopBossCoroutines();
@@ -186,7 +186,7 @@ public class Boss3Controller : MonoBehaviour
 
     private void OnHit(float damage)
     {
-        GameManager.AddScore(damage);
+        GameplayManager.AddScore(damage);
         blinkingSprite.Play();
     }
 
@@ -202,7 +202,7 @@ public class Boss3Controller : MonoBehaviour
         headSpawner.GetComponent<Animator>().SetBool("prepareAttack1", false);
         // Fire 10 proj
         int nFires = 0;
-        while (nFires < 10 && !GameManager.IsGameOver())
+        while (nFires < 10 && !GameplayManager.IsGameOver())
         {
             GameObject bullet = Instantiate(bulletPrefab, prjSpawner.transform.position, prjSpawner.transform.rotation * Quaternion.Euler(0, 0, Random.Range(-halfAngleofCone, halfAngleofCone)));
             nFires++;
@@ -223,7 +223,7 @@ public class Boss3Controller : MonoBehaviour
     private void OnTriggerStay2D(Collider2D collider)
     {
         hitTime += Time.deltaTime;
-        if (GameManager.IsPlayer(collider))
+        if (GameplayManager.IsPlayer(collider))
         {
             if (hitTime > hitDelta)
             {

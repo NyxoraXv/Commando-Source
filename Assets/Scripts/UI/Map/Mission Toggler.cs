@@ -1,12 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using TMPro;
 
 public class MissionInformationInitiator : MonoBehaviour
 {
     private MissionManager missionManager;
 
-    [SerializeField] private TMPro.TextMeshProUGUI[] ObjectivesPrefab; // Prefab for the mission UI element
+    [SerializeField] private TMPro.TextMeshProUGUI[] ObjectivesPrefab;
     [SerializeField] private TMPro.TextMeshProUGUI MissionTittle;
     private float verticalSpacing = 55.42f;
     private Vector3 spawnPosition = new Vector3(0f, 12.42f, 0f);
@@ -17,11 +18,11 @@ public class MissionInformationInitiator : MonoBehaviour
         missionManager = MissionManager.Instance;
     }
 
-    public void OnClick(string missionNameToFind)
+    public void OnClick(string missionIDToFind)
     {
         if (missionManager != null)
         {
-            MissionManager.missionData missionData = missionManager.MissionInformation.Find(m => m.MissionName == missionNameToFind);
+            MissionManager.missionData missionData = missionManager.GetMissionByID(missionIDToFind);
 
             if (missionData != null)
             {
@@ -83,7 +84,7 @@ public class MissionInformationInitiator : MonoBehaviour
             }
             else
             {
-                Debug.LogError($"Mission with name '{missionNameToFind}' not found.");
+                Debug.LogError($"Mission with ID '{missionIDToFind}' not found.");
             }
         }
         else

@@ -32,7 +32,7 @@ public class VanController : MonoBehaviour
 
     void Start()
     {
-        followPlayer = GameManager.GetPlayer();
+        followPlayer = GameplayManager.GetPlayer();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         blinkingSprite = GetComponent<BlinkingSprite>();
@@ -41,13 +41,13 @@ public class VanController : MonoBehaviour
 
     void Update()
     {
-        if (GameManager.IsGameOver())
+        if (GameplayManager.IsGameOver())
             return;
     }
 
     private void FixedUpdate()
     {
-        if (GameManager.IsGameOver())
+        if (GameplayManager.IsGameOver())
             return;
 
         if (health.IsAlive())
@@ -95,7 +95,7 @@ public class VanController : MonoBehaviour
     private void OnHit(float damage)
     {
       
-        GameManager.AddScore(damage);
+        GameplayManager.AddScore(damage);
         blinkingSprite.Play();
     }
 

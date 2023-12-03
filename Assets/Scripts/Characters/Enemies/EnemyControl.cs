@@ -44,7 +44,7 @@ public class EnemyControl : MonoBehaviour
 
     private void Start()
     {
-        followPlayer = GameManager.GetPlayer();
+        followPlayer = GameplayManager.GetPlayer();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         blinkingSprite = GetComponent<BlinkingSprite>();
@@ -79,13 +79,13 @@ public class EnemyControl : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.IsGameOver())
+        if (GameplayManager.IsGameOver())
             return;
     }
 
     void FixedUpdate()
     {
-        if (GameManager.IsGameOver())
+        if (GameplayManager.IsGameOver())
             return;
 
         if (health.IsAlive())
@@ -217,7 +217,7 @@ public class EnemyControl : MonoBehaviour
     {
         animator.SetTrigger("isHitten");
 
-        GameManager.AddScore(damage);
+        GameplayManager.AddScore(damage);
         blinkingSprite.Play();
     }
 
@@ -252,7 +252,7 @@ public class EnemyControl : MonoBehaviour
             collidingDown = true;
         }
 
-        if (GameManager.IsPlayer(collision))
+        if (GameplayManager.IsPlayer(collision))
         {
             switch(Random.Range(0, 1))
             {

@@ -6,7 +6,7 @@ public class AfterTheMosquitos : MonoBehaviour
 {
     void OnTriggerEnter2D(Collider2D collider)
     {
-        if (GameManager.IsPlayer(collider))
+        if (GameplayManager.IsPlayer(collider))
         {
             CameraManager.AfterMosquitos();
             Destroy(gameObject);

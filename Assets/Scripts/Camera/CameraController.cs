@@ -10,7 +10,7 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
-        player = GameManager.GetPlayer();
+        player = GameplayManager.GetPlayer();
         camera2 = GetComponent<Camera>();
     }
 
