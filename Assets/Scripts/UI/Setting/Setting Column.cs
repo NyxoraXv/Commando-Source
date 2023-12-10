@@ -21,10 +21,13 @@ public class SettingColumn : MonoBehaviour
     public void Start()
     {
         Title.text = title;
+
+        // Disable all prefabs at the beginning
         SliderPrefab.SetActive(false);
         OptionPrefab.SetActive(false);
         CustomOptionPrefab.SetActive(false);
 
+        // Determine which prefab to enable based on the type
         GameObject prefabToEnable = null;
         switch (Type)
         {
@@ -43,6 +46,7 @@ public class SettingColumn : MonoBehaviour
 
         if (prefabToEnable != null)
         {
+            // Enable the selected prefab
             prefabToEnable.SetActive(true);
         }
     }

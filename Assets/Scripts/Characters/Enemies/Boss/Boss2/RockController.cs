@@ -62,7 +62,7 @@ public class RockController : MonoBehaviour
         {
             StartCoroutine(rockFalling());
         }
-        else if (GameplayManager.IsPlayer(collision))
+        else if (GameManager.IsPlayer(collision))
         {
             collision.gameObject.GetComponent<Health>().Hit(damage);
             StartCoroutine(rockHitten());

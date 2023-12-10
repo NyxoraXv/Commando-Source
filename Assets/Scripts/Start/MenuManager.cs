@@ -105,9 +105,21 @@ public class MenuManager : MonoBehaviour
 
     public void PressSettings()
     {
+        RefreshAudioText();
         settings.gameObject.SetActive(true);
         choose.gameObject.SetActive(false);
         currentMenu = settings;
+
+        //Set the clip for effect audio
+        AudioManager.PlayMenuSelect();
+    }
+
+    public void PressStats()
+    {
+        RefreshPointsText();
+        stats.gameObject.SetActive(true);
+        choose.gameObject.SetActive(false);
+        currentMenu = stats;
 
         //Set the clip for effect audio
         AudioManager.PlayMenuSelect();
@@ -168,6 +180,67 @@ public class MenuManager : MonoBehaviour
 
     public void startMission()
     {
-        GameplayManager.LoadScene(GetMissionIndex() + 1);
+        GameManager.LoadScene(GetMissionIndex() + 1);
+    }
+    /* End mission mode selection */
+
+    /* Start settings */
+    public void SetBgmCounterPressed()
+    {
+        //Click color
+        bgmText.color = new Color32(255, 255, 255, 255);
+        sfxText.color = new Color32(255, 141, 0, 255);
+        bgmTextCounter.color = new Color32(255, 255, 255, 255);
+        sfxTextCounter.color = new Color32(255, 141, 0, 255);
+
+        float cnt = GameManager.GetBgmAudio();
+        cnt += .1f;
+        if (cnt >= 1.1f)
+            cnt = 0f;
+        GameManager.SetBgmAudio(cnt, true);
+
+        AudioManager.RefreshAudioVolume();
+        RefreshAudioText();
+    }
+
+    public void SetSfxCounterPressed()
+    {
+        //Click color
+        bgmText.color = new Color32(255, 141, 0, 255);
+        sfxText.color = new Color32(255, 255, 255, 255);
+        bgmTextCounter.color = new Color32(255, 141, 0, 255);
+        sfxTextCounter.color = new Color32(255, 255, 255, 255);
+
+        float cnt = GameManager.GetSfxAudio();
+        cnt += .1f;
+        if (cnt >= 1.1f)
+            cnt = 0f;
+        GameManager.SetSfxAudio(cnt, true);
+
+        AudioManager.RefreshAudioVolume();
+        RefreshAudioText();
+    }
+
+    void RefreshAudioText()
+    {
+        float bgmCnt = GameManager.GetBgmAudio();
+        if (bgmCnt < 0.1f)
+            bgmTextCounter.SetText("OFF");
+        else
+            bgmTextCounter.SetText(Math.Round(bgmCnt * 10).ToString());
+
+        float sfxCnt = GameManager.GetSfxAudio();
+        if (sfxCnt < 0.1f)
+            sfxTextCounter.SetText("OFF");
+        else
+            sfxTextCounter.SetText(Math.Round(sfxCnt * 10).ToString());
+    }
+    /* End settings */
+
+    void RefreshPointsText()
+    {
+        mission1Text.SetText(GameManager.GetMission1Points().ToString());
+        mission2Text.SetText(GameManager.GetMission2Points().ToString());
+        mission3Text.SetText(GameManager.GetMission3Points().ToString());
     }
 }

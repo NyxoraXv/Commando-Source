@@ -8,7 +8,7 @@ public class startParallax : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (GameplayManager.IsPlayer(collider))
+        if (GameManager.IsPlayer(collider))
         {
             parallax.setActive(true);
         }

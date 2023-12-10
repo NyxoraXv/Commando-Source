@@ -15,7 +15,7 @@ public class TriggerCameraSwitch : MonoBehaviour
     // Update is called once per frame
     void OnTriggerEnter2D(Collider2D collider)
     {
-        if (GameplayManager.IsPlayer(collider))
+        if (GameManager.IsPlayer(collider))
         {
             triggerCamera.Invoke();
             Destroy(gameObject);

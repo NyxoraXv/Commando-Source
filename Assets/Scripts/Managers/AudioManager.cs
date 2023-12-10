@@ -95,6 +95,13 @@ public class AudioManager : MonoBehaviour
 
     public static void RefreshAudioVolume()
     {
+        if (current == null)
+            return;
+        current.musicSource.volume = GameManager.GetBgmAudio();
+        current.effectSource.volume = GameManager.GetSfxAudio();
+        current.enemySource.volume = GameManager.GetSfxAudio();
+        current.playerSource.volume = GameManager.GetSfxAudio();
+        current.voiceSource.volume = GameManager.GetSfxAudio();
     }
 
     void StartLevelAudio()

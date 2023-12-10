@@ -6,7 +6,7 @@ public class AfterTheSecondCartel : MonoBehaviour
 {
     void OnTriggerEnter2D(Collider2D collider)
     {
-        if (GameplayManager.IsPlayer(collider))
+        if (GameManager.IsPlayer(collider))
         {
             CameraManager.AfterMarcoBoatCartel();
             Destroy(gameObject);

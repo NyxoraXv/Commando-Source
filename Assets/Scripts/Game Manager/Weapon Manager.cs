@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class WeaponManager : MonoBehaviour
 {
-    /*
     public static WeaponManager Instance;
 
     public Weapon selectedWeapon;
@@ -21,8 +20,6 @@ public class WeaponManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        selectedWeapon = SaveManager.Instance.playerData.weaponInfo.selectedWeapon;
     }
 
     public void AddOwnedWeapon(Weapon weapon)
@@ -48,5 +45,4 @@ public class WeaponManager : MonoBehaviour
             selectedWeapon = weapon;
         }
     }
-    */
 }

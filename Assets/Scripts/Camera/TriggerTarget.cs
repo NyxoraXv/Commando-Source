@@ -10,12 +10,12 @@ public class TriggerTarget : MonoBehaviour
     void SetActive(bool flag)
     {
         isActive = flag;
-        target = GameplayManager.GetRunningTarget().transform;
+        target = GameManager.GetRunningTarget().transform;
     }
 
     void Start()
     {
-        target = GameplayManager.GetRunningTarget().transform;
+        target = GameManager.GetRunningTarget().transform;
         if (!target)
             isActive = false;
     }

@@ -151,7 +151,7 @@ public class HeliController : MonoBehaviour
     {
         animator.SetTrigger("isHitten");
 
-        GameplayManager.AddScore(damage);
+        GameManager.AddScore(damage);
         blinkingSprite.Play();
     }
 

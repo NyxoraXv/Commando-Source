@@ -11,7 +11,7 @@ public class HoleController : MonoBehaviour
         if (isTriggered)
             return;
 
-        if (GameplayManager.IsPlayer(collider))
+        if (GameManager.IsPlayer(collider))
         {
             isTriggered = true;
             GetComponent<EventSpawn>().Trigger();

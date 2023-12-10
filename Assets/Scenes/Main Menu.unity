@@ -415,11 +415,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
-      propertyPath: MissionInformation.Array.data[0].MissionID
-      value: ODB
-      objectReference: {fileID: 0}
-    - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
-        type: 3}
       propertyPath: Mission.Array.data[0].Objectives.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -480,17 +475,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
-      propertyPath: MissionInformation.Array.data[0].Rewards.Array.data[1].Type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
-        type: 3}
       propertyPath: MissionInformation.Array.data[0].Rewards.Array.data[0].Value
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
-        type: 3}
-      propertyPath: MissionInformation.Array.data[0].Rewards.Array.data[1].Value
       value: 25
       objectReference: {fileID: 0}
     m_RemovedComponents:

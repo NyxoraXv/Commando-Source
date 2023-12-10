@@ -106,7 +106,7 @@ public class ThrowableMovement : MonoBehaviour
         if (hasHit)
             return;
 
-        if (GameplayManager.CanTriggerThrowable(collider) && !(launcher == LauncherType.Player && GameplayManager.IsPlayer(collider)) && !(launcher == LauncherType.Enemy && (collider.CompareTag("Enemy")|| collider.CompareTag("EnemyBomb"))))
+        if (GameManager.CanTriggerThrowable(collider) && !(launcher == LauncherType.Player && GameManager.IsPlayer(collider)) && !(launcher == LauncherType.Enemy && (collider.CompareTag("Enemy")|| collider.CompareTag("EnemyBomb"))))
         {
             hasHit = true;
 
@@ -146,8 +146,8 @@ public class ThrowableMovement : MonoBehaviour
     private void ResetMovement(Collider2D collider)
     {
         var target = collider.gameObject;
-        if (GameplayManager.IsPlayer(collider))
-            target = GameplayManager.GetPlayer(collider);
+        if (GameManager.IsPlayer(collider))
+            target = GameManager.GetPlayer(collider);
 
         switch (throwable)
         {

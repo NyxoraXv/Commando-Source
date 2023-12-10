@@ -63,7 +63,7 @@ public class BossController : MonoBehaviour
 
         animator = GetComponent<Animator>();
        
-        followPlayer = GameplayManager.GetPlayer();
+        followPlayer = GameManager.GetPlayer();
         registerHealth();
         maxHealth = health.GetMaxHealth();
         rb = GetComponent<Rigidbody2D>();
@@ -74,7 +74,7 @@ public class BossController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (GameplayManager.IsGameOver())
+        if (GameManager.IsGameOver())
             return;
 
         if (!isSpawned && followPlayer.transform.position.x >= bossSpawner.position.x)
@@ -154,7 +154,7 @@ public class BossController : MonoBehaviour
 
     private void OnHit(float damage)
     {
-        GameplayManager.AddScore(damage);
+        GameManager.AddScore(damage);
         blinkingSprite.Play();
     }
 
@@ -213,7 +213,7 @@ public class BossController : MonoBehaviour
 {
     if (collision.collider != null)
     {
-        if (GameplayManager.IsPlayer(collision))
+        if (GameManager.IsPlayer(collision))
         {
             Health playerHealth = followPlayer.GetComponent<Health>();
             playerHealth.Hit(attackDamage);
@@ -285,7 +285,7 @@ public class BossController : MonoBehaviour
 
         StopCoroutine("Sprint");
         StopCoroutine("WaitFire");
-        GameplayManager.PlayerWin();
+        GameManager.PlayerWin();
         StopBossCoroutines();
     }
 

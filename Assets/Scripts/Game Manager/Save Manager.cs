@@ -49,9 +49,7 @@ public class SaveManager : MonoBehaviour
         public PlayerInfo playerInformation { get; set; } = new PlayerInfo();
         public CurrencyInfo currencyInfo { get; set; } = new CurrencyInfo();
         public CharacterInfo characterInfo { get; set; } = new CharacterInfo();
-        /*
         public OwnedWeaponInformation weaponInfo { get; set; } = new OwnedWeaponInformation();
-        */
     }
 
 
@@ -93,8 +91,6 @@ public class SaveManager : MonoBehaviour
         playerData.characterInfo.OwnedCharacters.Clear();
         playerData.characterInfo.OwnedCharacters.Add(Character.Sucipto, 1);
 
-
-
         SetUpDataLoad();
 
         Save();
@@ -126,7 +122,6 @@ public class SaveManager : MonoBehaviour
 
         Debug.Log("Set up data save" + username);
 
-        /*
         playerData.weaponInfo.selectedWeapon = WeaponManager.Instance.selectedWeapon;
         playerData.weaponInfo.ownedWeapons.Clear(); // Clear the existing data
 
@@ -135,7 +130,6 @@ public class SaveManager : MonoBehaviour
         {
             playerData.weaponInfo.ownedWeapons.Add(weapon);
         }
-        */
     }
 
 
@@ -165,7 +159,6 @@ public class SaveManager : MonoBehaviour
 
         // Inside the SetUpDataLoad method
         // Weapon Manager (assuming you have a WeaponManager)
-        /*
         WeaponManager.Instance.selectedWeapon = playerData.weaponInfo.selectedWeapon;
         WeaponManager.Instance.ownedWeapons.Clear(); // Clear the existing data
 
@@ -174,7 +167,6 @@ public class SaveManager : MonoBehaviour
         {
             WeaponManager.Instance.AddOwnedWeapon(weapon);
         }
-        */
 
     }
 

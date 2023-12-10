@@ -35,12 +35,12 @@ public class Boss2Controller : MonoBehaviour
         topAnimator = top.GetComponent<Animator>();
         registerHealth();
         maxHealth = health.GetMaxHealth();
-        playerTransform = GameplayManager.GetPlayer().transform;
+        playerTransform = GameManager.GetPlayer().transform;
     }
 
     void FixedUpdate()
     {
-        if (GameplayManager.IsGameOver())
+        if (GameManager.IsGameOver())
             return;
 
         if (isBossActive)
@@ -104,7 +104,7 @@ public class Boss2Controller : MonoBehaviour
 
     private void OnHit(float damage)
     {
-        GameplayManager.AddScore(damage);
+        GameManager.AddScore(damage);
         top.GetComponent<BlinkingSprite>().Play();
 
         // fasten if dying
@@ -119,7 +119,7 @@ public class Boss2Controller : MonoBehaviour
     private void OnDead(float damage)
     {
         StartCoroutine(Explode());
-        GameplayManager.PlayerWin();
+        GameManager.PlayerWin();
         StopBossCoroutines();
     }
 
