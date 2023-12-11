@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     //one in existence. This is often referred to as a "singleton" design pattern. Other
     //scripts access this one through its public static methods
     static GameManager current;
-    static CurrencyManager currency;
+    //static CurrencyManager currency;
 
     public enum Difficulty {Easy = 1, Medium = 2, Hard = 3 }
     public enum Missions { Home = 0, Mission1, Mission2, Mission3, Mission3Boss }
@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
         }
 
 
-        currency = GameObject.FindWithTag("GameManager").GetComponent<CurrencyManager>();
+       // currency = GameObject.FindWithTag("GameManager").GetComponent<CurrencyManager>();
 
         //Set this as the current game manager
         current = this;
