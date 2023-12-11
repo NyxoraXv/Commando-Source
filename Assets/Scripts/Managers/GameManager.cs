@@ -284,7 +284,7 @@ public class GameManager : MonoBehaviour
         if (current == null)
             return;
 
-        UIManager.DisplayWinText();
+        UIManager.DisplayWinUI();
         AudioManager.PlayLevelCompleteAudio();
         AudioManager.PlayGameOverAudio();
 
@@ -542,6 +542,11 @@ public class GameManager : MonoBehaviour
     public static void LoadAfterWinMission()
     {
         // currentMission is updated in the PlayerWin method
+        CurrencyManager.Instance.spendGold(-200);
+        LevelManager.Instance.addXP(200);
+        
+        SaveManager.Instance.Save();
+        
         LoadScene((int)Missions.Home);
     }
 

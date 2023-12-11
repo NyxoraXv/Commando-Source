@@ -16,7 +16,7 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI bombs;
     public TextMeshProUGUI ammoText;
-    public TextMeshProUGUI winText;
+    public Image winUI;
     public TextMeshProUGUI winPointsText;
 
     void Awake()
@@ -28,7 +28,7 @@ public class UIManager : MonoBehaviour
         // disable game over text
         current.gameOverText.gameObject.SetActive(false);
 
-        current.winText.gameObject.SetActive(false);
+        current.winUI.gameObject.SetActive(false);
         current.winPointsText.gameObject.SetActive(false);
 
         // set score text to 0
@@ -93,14 +93,14 @@ public class UIManager : MonoBehaviour
         current.healthBar.fillAmount = health / maxHealth;
     }
 
-    public static void DisplayWinText()
+    public static void DisplayWinUI()
     {
         //If there is no current UIManager, exit
         if (current == null)
             return;
 
         //Show the win text and points
-        current.winText.gameObject.SetActive(true);
+        current.winUI.gameObject.SetActive(true);
 
         current.winPointsText.SetText(GameManager.GetScore().ToString());
         current.winPointsText.gameObject.SetActive(true);

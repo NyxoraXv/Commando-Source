@@ -13,7 +13,8 @@ public class CollectibleController : MonoBehaviour
         {
             GameManager.GetPlayer().GetComponent<PlayerController>().getCollectible(type);
             GameManager.AddScore(collectiblePoints);
-            if (type==PlayerController.CollectibleType.Ammo) // collectible sound
+
+            if (type == PlayerController.CollectibleType.Ammo) // collectible sound
             {
                 AudioManager.PlayAmmoGrab();
                 AudioManager.PlayOkayVoice();
