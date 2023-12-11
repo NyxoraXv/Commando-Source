@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 5334701692177444470}
   m_Layer: 0
   m_Name: Game Manager
-  m_TagString: Untagged
+  m_TagString: GameManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -51,6 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CurrentGold: 0
   CurrentDiamond: 0
+  insufficientFundObject: {fileID: 0}
 --- !u!114 &-3273356639008598148
 MonoBehaviour:
   m_ObjectHideFlags: 0

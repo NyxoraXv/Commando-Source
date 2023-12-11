@@ -24,6 +24,7 @@ TagManager:
   - Gold
   - Diamond
   - Main Menu Parent
+  - GameManager
   layers:
   - Default
   - TransparentFX

@@ -1,10 +1,12 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MissionInformationInitiator : MonoBehaviour
 {
     private MissionManager missionManager;
+    private string CurrentLevel = "";
 
     [SerializeField] private TMPro.TextMeshProUGUI[] ObjectivesPrefab; // Prefab for the mission UI element
     [SerializeField] private TMPro.TextMeshProUGUI MissionTittle;
@@ -32,6 +34,7 @@ public class MissionInformationInitiator : MonoBehaviour
                 if (missionObjectives.Count == ObjectivesPrefab.Length)
                 {
                     MissionTittle.text = missionData.MissionName;
+                    CurrentLevel = missionData.MissionName;
                     for (int i = 0; i < missionObjectives.Count; i++)
                     {
                         ObjectivesPrefab[i].text = missionObjectives[i];
@@ -90,5 +93,13 @@ public class MissionInformationInitiator : MonoBehaviour
         {
             Debug.LogError("MissionManager instance is not found.");
         }
+
+
+
+
+    }
+    public void LoadTargetScene()
+    {
+        SceneManager.LoadScene(CurrentLevel);
     }
 }

@@ -17,9 +17,9 @@ public class CurrencyManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
-
     public void Refresh()
     {
+        
         // Find the game objects with the "gold" and "diamond" tags
         GameObject goldObject = GameObject.FindGameObjectWithTag("Gold");
         GameObject diamondObject = GameObject.FindGameObjectWithTag("Diamond");
@@ -31,6 +31,7 @@ public class CurrencyManager : MonoBehaviour
         // Update the text values
         GoldDisplay.text = CurrentGold.ToString();
         DiamondDisplay.text = CurrentDiamond.ToString();
+        
     }
 
     private void OnWillRenderObject()
