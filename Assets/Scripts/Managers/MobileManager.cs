@@ -45,6 +45,8 @@ public class MobileManager : MonoBehaviour
     public void ClickButtonShoot()
     {
         btnPressShoot = true;
+
+        
     }
 
     public void ClickButtonJump()
