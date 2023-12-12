@@ -28,7 +28,7 @@ public class BossController : MonoBehaviour
     public float speed = 0.7f;
     private float chargingSpeed = 0f;
     private float restSpeed = 0.10f;
-    private float sprintSpeed = 2f;
+    private float sprintSpeed = 2.05f;
     private float initialSpeed = 0.7f;
     
 
