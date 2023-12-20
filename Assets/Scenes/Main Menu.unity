@@ -456,7 +456,7 @@ PrefabInstance:
     - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
       propertyPath: MissionInformation.Array.data[2].MissionName
-      value: ???
+      value: '!!!'
       objectReference: {fileID: 0}
     - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}

@@ -13,6 +13,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Maggot hole Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 2742602292476254901, guid: 86fb5173a0d3f7245b79f65113a168c0,
+        type: 3}
+      propertyPath: maxHealth
+      value: 400
+      objectReference: {fileID: 0}
     - target: {fileID: 2742602292476254902, guid: 86fb5173a0d3f7245b79f65113a168c0,
         type: 3}
       propertyPath: m_RootOrder
