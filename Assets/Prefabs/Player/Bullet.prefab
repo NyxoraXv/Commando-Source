@@ -103,6 +103,8 @@ MonoBehaviour:
   lifeTime: 5
   damageShot: 100
   launcher: 0
+  explosionPrefab: {fileID: 9127653965126434405, guid: 3c6022ac1a1cc7b438777188ae54da0e,
+    type: 3}
 --- !u!50 &8006553557397425576
 Rigidbody2D:
   serializedVersion: 4
