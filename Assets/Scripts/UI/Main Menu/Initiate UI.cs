@@ -25,12 +25,5 @@ public class InitiateUI : MonoBehaviour
         {
             Debug.LogError("Main Camera or Canvas component not found. Make sure the 'Main Camera' tag is assigned to the appropriate GameObject.");
         }
-
-        if(SaveManager.Instance.isLogin == true)
-        {
-            Login.SetActive(false);
-            MainMenu.SetActive(true);
-            
-        }
     }
 }

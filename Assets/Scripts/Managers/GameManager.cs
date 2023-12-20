@@ -545,8 +545,6 @@ public class GameManager : MonoBehaviour
         CurrencyManager.Instance.spendGold(-200);
         LevelManager.Instance.addXP(200);
         
-        SaveManager.Instance.Save();
-        
         LoadScene((int)Missions.Home);
     }
 

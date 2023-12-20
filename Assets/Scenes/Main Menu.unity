@@ -396,7 +396,7 @@ PrefabInstance:
     - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
       propertyPath: MissionInformation.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
@@ -426,7 +426,7 @@ PrefabInstance:
     - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
       propertyPath: MissionInformation.Array.data[0].Difficulty
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
@@ -435,8 +435,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
+      propertyPath: MissionInformation.Array.data[1].Difficulty
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      propertyPath: MissionInformation.Array.data[2].Difficulty
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
       propertyPath: MissionInformation.Array.data[0].MissionName
       value: Operation Dawn Break
+      objectReference: {fileID: 0}
+    - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      propertyPath: MissionInformation.Array.data[1].MissionName
+      value: Fireflies
+      objectReference: {fileID: 0}
+    - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      propertyPath: MissionInformation.Array.data[2].MissionName
+      value: ???
       objectReference: {fileID: 0}
     - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
@@ -455,7 +475,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
+      propertyPath: MissionInformation.Array.data[1].Rewards.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      propertyPath: MissionInformation.Array.data[2].Rewards.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
       propertyPath: MissionInformation.Array.data[0].Objectives.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      propertyPath: MissionInformation.Array.data[1].Objectives.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      propertyPath: MissionInformation.Array.data[2].Objectives.Array.size
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
@@ -466,7 +506,27 @@ PrefabInstance:
     - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
       propertyPath: MissionInformation.Array.data[0].Objectives.Array.data[1]
-      value: Get the orb
+      value: Get The Orb
+      objectReference: {fileID: 0}
+    - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      propertyPath: MissionInformation.Array.data[1].Objectives.Array.data[0]
+      value: Kill all enemies
+      objectReference: {fileID: 0}
+    - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      propertyPath: MissionInformation.Array.data[1].Objectives.Array.data[1]
+      value: Defeat the boss
+      objectReference: {fileID: 0}
+    - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      propertyPath: MissionInformation.Array.data[2].Objectives.Array.data[0]
+      value: ???
+      objectReference: {fileID: 0}
+    - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      propertyPath: MissionInformation.Array.data[2].Objectives.Array.data[1]
+      value: ???
       objectReference: {fileID: 0}
     - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
@@ -475,7 +535,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
+      propertyPath: MissionInformation.Array.data[1].Rewards.Array.data[0].Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      propertyPath: MissionInformation.Array.data[2].Rewards.Array.data[0].Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
       propertyPath: MissionInformation.Array.data[0].Rewards.Array.data[0].Value
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      propertyPath: MissionInformation.Array.data[1].Rewards.Array.data[0].Value
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      propertyPath: MissionInformation.Array.data[2].Rewards.Array.data[0].Value
       value: 25
       objectReference: {fileID: 0}
     m_RemovedComponents:

@@ -29,7 +29,6 @@ public class TriggerTarget : MonoBehaviour
                 Instantiate(prefabRoom, transform.position, transform.rotation);
                 isActive = false;
             }
-            Debug.Log(Mathf.Abs(transform.position.x - target.position.x));
         }
     }
 }
