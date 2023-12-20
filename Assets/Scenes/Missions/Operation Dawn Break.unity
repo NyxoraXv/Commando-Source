@@ -824,6 +824,11 @@ PrefabInstance:
       propertyPath: maxHealth
       value: 400
       objectReference: {fileID: 0}
+    - target: {fileID: 6387296261839050603, guid: dbdec53586b0c3740b7025c04630e45d,
+        type: 3}
+      propertyPath: activationDistance
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1354,6 +1359,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6387296261839050603, guid: dbdec53586b0c3740b7025c04630e45d,
+        type: 3}
+      propertyPath: activationDistance
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -1523,6 +1533,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6387296261839050603, guid: dbdec53586b0c3740b7025c04630e45d,
+        type: 3}
+      propertyPath: activationDistance
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1919,7 +1934,7 @@ PrefabInstance:
     - target: {fileID: 1866510319001186920, guid: e6ecc3aab9e52aa4791973b906dda33f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.4108944
+      value: 0.57000566
       objectReference: {fileID: 0}
     - target: {fileID: 1866510319001186920, guid: e6ecc3aab9e52aa4791973b906dda33f,
         type: 3}
@@ -2076,6 +2091,11 @@ PrefabInstance:
         type: 3}
       propertyPath: maxHealth
       value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 6387296261839050603, guid: dbdec53586b0c3740b7025c04630e45d,
+        type: 3}
+      propertyPath: activationDistance
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4386,6 +4406,11 @@ PrefabInstance:
       propertyPath: maxHealth
       value: 400
       objectReference: {fileID: 0}
+    - target: {fileID: 6387296261839050603, guid: dbdec53586b0c3740b7025c04630e45d,
+        type: 3}
+      propertyPath: activationDistance
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6029,6 +6054,11 @@ PrefabInstance:
       propertyPath: maxHealth
       value: 400
       objectReference: {fileID: 0}
+    - target: {fileID: 6387296261839050603, guid: dbdec53586b0c3740b7025c04630e45d,
+        type: 3}
+      propertyPath: activationDistance
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6438,6 +6468,11 @@ PrefabInstance:
         type: 3}
       propertyPath: maxHealth
       value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 6387296261839050603, guid: dbdec53586b0c3740b7025c04630e45d,
+        type: 3}
+      propertyPath: activationDistance
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7074,6 +7109,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1622775180087630578, guid: b65003e34ff0093489a5091111ee8cf7,
+        type: 3}
+      propertyPath: activationDistance
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7851,6 +7891,11 @@ PrefabInstance:
         type: 3}
       propertyPath: maxHealth
       value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 6387296261839050603, guid: dbdec53586b0c3740b7025c04630e45d,
+        type: 3}
+      propertyPath: activationDistance
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8998,6 +9043,11 @@ PrefabInstance:
       propertyPath: maxHealth
       value: 400
       objectReference: {fileID: 0}
+    - target: {fileID: 6387296261839050603, guid: dbdec53586b0c3740b7025c04630e45d,
+        type: 3}
+      propertyPath: activationDistance
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9580,6 +9630,11 @@ PrefabInstance:
         type: 3}
       propertyPath: maxHealth
       value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 6387296261839050603, guid: dbdec53586b0c3740b7025c04630e45d,
+        type: 3}
+      propertyPath: activationDistance
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14002,7 +14057,7 @@ PrefabInstance:
     - target: {fileID: 2431320819883578219, guid: b7f8e7b35f7be624e80727a89ad67fae,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -14.131634
+      value: -13.972523
       objectReference: {fileID: 0}
     - target: {fileID: 2431320819883578219, guid: b7f8e7b35f7be624e80727a89ad67fae,
         type: 3}

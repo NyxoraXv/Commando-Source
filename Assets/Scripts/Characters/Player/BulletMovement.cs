@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BulletMovement : MonoBehaviour
 {
-
     private Rigidbody2D rb;
     private float expireTime;
     private bool isSpawned;
@@ -18,6 +17,9 @@ public class BulletMovement : MonoBehaviour
         Enemy
     };
     public LauncherType launcher = LauncherType.Player;
+
+    // Prefab to instantiate when needed
+    public GameObject explosionPrefab;
 
     void OnEnable()
     {
@@ -49,6 +51,9 @@ public class BulletMovement : MonoBehaviour
             return;
         isSpawned = false;
 
+        // Instantiate explosion prefab
+        Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+
         if (launcher == LauncherType.Player)
         {
             BulletManager.GetNormalBulletPool()?.Despawn(this.gameObject);
@@ -59,7 +64,7 @@ public class BulletMovement : MonoBehaviour
         }
     }
 
-    //Destroy the bulled when out of camera
+    // Destroy the bullet when out of camera
     private void OnBecameInvisible()
     {
         Despawn();

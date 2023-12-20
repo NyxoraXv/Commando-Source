@@ -11,6 +11,8 @@ public class ThrowableMovement : MonoBehaviour
     private float throwableDamageHeavybomb = 50f;
     private float throwableDamageVomit = 25f;
     public float throwableForce = 2.5f;
+    public GameObject explosionPrefab;
+
 
     public enum LauncherType
     {
@@ -84,15 +86,25 @@ public class ThrowableMovement : MonoBehaviour
 
         isSpawned = false;
 
-        if (throwable == ThrowableType.Grenade) //Is a Grenade
+        if (canExplode)
         {
+            // Instantiate explosion prefab
+            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+
+            if (throwable == ThrowableType.Grenade) // Is a Grenade
+            {
+                BulletManager.GetGrenadePool()?.Despawn(this.gameObject);
+            }
+            else //if (throwable == ThrowableType.BossHeavyBomb || throwable == ThrowableType.BossBomb) // Is an enemy throwable
+            {
+                Destroy(gameObject);
+            }
+        }
+        else
+        {
+            // If throwable can't explode, simply despawn without explosion
             BulletManager.GetGrenadePool()?.Despawn(this.gameObject);
         }
-        else //if (throwable == ThrowableType.BossHeavyBomb || throwable == ThrowableType.BossBomb) //Is an enemy throwable
-        {
-            Destroy(gameObject);
-        }
-
     }
 
     //Destroy the bulled when out of camera
@@ -137,7 +149,7 @@ public class ThrowableMovement : MonoBehaviour
 
         ResetMovement(collision);
 
-        yield return new WaitForSeconds(1.7f);
+        yield return new WaitForSeconds(0f);
         throwableAnimator.SetBool("hasHittenSth", false);
         Despawn();
     }
