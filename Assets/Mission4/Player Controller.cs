@@ -8,21 +8,30 @@ public class Player : MonoBehaviour
     public float jumpForce = 10f;
     public float shootCooldown = 0.5f;
     public Transform weaponAimPoint;
+    public Transform weaponAimPointFlipped;
     public GameObject bulletPrefab;
     public float shootAnimationDuration = 0.2f;
-    public float rateOfFire = 5f;  // Shots per second
+    public float rateOfFire = 5f;
 
     private Animator animator;
     private SpriteRenderer spriteRenderer;
-    private float speed;
     private bool isGrounded;
     private bool isSprinting = false;
     private bool canShoot = true;
+    private bool isFacingRight = true;
+    private bool isFalling = false;
+
+    public LayerMask groundLayer;
+    public Transform groundCheck;
+    public float groundCheckRadius = 0.2f;
+
+    private float speed;
 
     void Start()
     {
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        isFacingRight = true;
     }
 
     void Update()
@@ -31,7 +40,22 @@ public class Player : MonoBehaviour
         Move();
         HandleJumping();
         HandleShooting();
+        UpdateGroundedStatus();
+        UpdateAnimatorParameters(); // <-- Removed the parameter
     }
+
+    void UpdateGroundedStatus()
+    {
+        // Cast a ray downwards to check if the player is close to the ground
+        RaycastHit2D hit = Physics2D.Raycast(groundCheck.position, Vector2.down, 0.1f, groundLayer);
+
+        // Check if the ray hit something (ground)
+        isGrounded = hit.collider != null;
+
+        // Set isFalling based on the vertical velocity
+        isFalling = !isGrounded && GetComponent<Rigidbody2D>().velocity.y < 0;
+    }
+
 
     void HandleInput()
     {
@@ -39,15 +63,8 @@ public class Player : MonoBehaviour
         bool isRunning = Input.GetKey(KeyCode.LeftShift);
 
         UpdateSprintingState();
-
         SetSpeed(horizontalInput, isRunning);
-
-        bool isWalking = !isSprinting && horizontalInput != 0;
-
-        animator.SetFloat("Speed", Mathf.Abs(horizontalInput * speed));
-        animator.SetBool("IsRunning", isSprinting || isRunning);
-        animator.SetBool("IsWalking", isWalking);
-
+        UpdateAnimatorParameters(); // <-- Removed the parameter
         FlipSprite(horizontalInput);
 
         if (isGrounded && Input.GetKeyDown(KeyCode.Space))
@@ -58,30 +75,22 @@ public class Player : MonoBehaviour
 
     void UpdateSprintingState()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            isSprinting = true;
-        }
-        else if (Input.GetKeyUp(KeyCode.LeftShift))
-        {
-            isSprinting = false;
-        }
+        isSprinting = Input.GetKey(KeyCode.LeftShift);
     }
 
     void SetSpeed(float horizontalInput, bool isRunning)
     {
-        if (isSprinting)
-        {
-            speed = moveSpeed * runMultiplier;
-        }
-        else if (horizontalInput != 0)
-        {
-            speed = moveSpeed * walkMultiplier;
-        }
-        else
-        {
-            speed = moveSpeed;
-        }
+        speed = isSprinting ? moveSpeed * runMultiplier : (horizontalInput != 0 ? moveSpeed * walkMultiplier : moveSpeed);
+    }
+
+    void UpdateAnimatorParameters()
+    {
+        bool isWalking = !isSprinting && Input.GetAxis("Horizontal") != 0;
+        animator.SetFloat("Speed", Mathf.Abs(Input.GetAxis("Horizontal") * speed));
+        animator.SetBool("IsRunning", isSprinting || Input.GetKey(KeyCode.LeftShift));
+        animator.SetBool("IsWalking", isWalking);
+        animator.SetBool("OnAir", !isGrounded);
+        animator.SetBool("Fall", isFalling);
     }
 
     void Move()
@@ -92,7 +101,19 @@ public class Player : MonoBehaviour
 
     void FlipSprite(float horizontalInput)
     {
-        spriteRenderer.flipX = horizontalInput < 0;
+        if (horizontalInput > 0)
+        {
+            isFacingRight = true;
+        }
+        else if (horizontalInput < 0)
+        {
+            isFacingRight = false;
+        }
+
+        spriteRenderer.flipX = !isFacingRight;
+
+        weaponAimPoint.gameObject.SetActive(isFacingRight);
+        weaponAimPointFlipped.gameObject.SetActive(!isFacingRight);
     }
 
     void HandleJumping()
@@ -119,19 +140,17 @@ public class Player : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
-            // Reset the shooting animation when the left mouse button is released
             animator.SetBool("IsShooting", false);
         }
     }
 
-
-
     void Shoot()
     {
+        Transform activeAimPoint = spriteRenderer.flipX ? weaponAimPointFlipped : weaponAimPoint;
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 shootDirection = (mousePosition - transform.position).normalized;
+        Vector2 shootDirection = (mousePosition - activeAimPoint.position).normalized;
 
-        GameObject bullet = Instantiate(bulletPrefab, weaponAimPoint.position, Quaternion.identity);
+        GameObject bullet = Instantiate(bulletPrefab, activeAimPoint.position, Quaternion.identity);
         Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
         bulletRb.velocity = shootDirection * 10f;
 
