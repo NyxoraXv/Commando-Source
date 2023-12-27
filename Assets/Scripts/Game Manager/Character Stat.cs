@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Animations;
 
 public class CharacterInformation : MonoBehaviour
 {
@@ -34,7 +35,7 @@ public class CharacterInformation : MonoBehaviour
         public int Price;
 
         [Header("Character Player")]
-        public GameObject PlayerCharacterPrefab;
+        public RuntimeAnimatorController PlayerController;
     }
 
     public new CharacterData Character;
