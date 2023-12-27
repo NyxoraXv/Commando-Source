@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum Character
 {
@@ -15,7 +15,7 @@ public class CharacterManager : MonoBehaviour
     public static CharacterManager Instance;
 
     [SerializeField]
-    public Character selectedCharacter = Character.Sucipto;
+    public Character selectedCharacter;
 
     [SerializeField] private Dictionary<Character, GameObject> characterObjects = new Dictionary<Character, GameObject>();
 
@@ -25,13 +25,35 @@ public class CharacterManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        SetupSingleton();
     }
 
-    [SerializeField] private GameObject sucipto, habibi, nurul, levia;
-
-    private void Start()
+    private void SetupSingleton()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // This method will be called whenever a new scene is loaded
         InitializeCharacterDictionary();
         SwitchCharacter(selectedCharacter);
     }
@@ -42,6 +64,13 @@ public class CharacterManager : MonoBehaviour
         characterObjects[Character.Habibi] = habibi;
         characterObjects[Character.Levia] = levia;
         characterObjects[Character.Nurul] = nurul;
+    }
+
+    [SerializeField] private GameObject sucipto, habibi, nurul, levia;
+
+    private void Start()
+    {
+        // You can perform any scene-independent initialization here if needed
     }
 
     public GameObject GetCharacterPrefab(Character character)
@@ -57,10 +86,13 @@ public class CharacterManager : MonoBehaviour
             selectedCharacter = newCharacter;
             character.SetActive(true);
 
-            CharacterInformation charData = GetCharacterPrefab(newCharacter).GetComponent<CharacterInformation>();
+            CharacterInformation charData = GetCharacterPrefab(newCharacter)?.GetComponent<CharacterInformation>();
 
             // Access the character data as needed, for example:
-            var imageComponent = charData.Character.MaskedAvatar;
+            if (charData != null)
+            {
+                var imageComponent = charData.Character.MaskedAvatar;
+            }
         }
         else
         {
@@ -94,17 +126,28 @@ public class CharacterManager : MonoBehaviour
         return false; // Default case if character not found in ownedCharacters
     }
 
-
     // Method to add an owned character with a specified level
-    public void AddOwnedCharacter(Character character, int level)
+    public void AddOwnedCharacter(Character character)
+    {
+        if (!ownedCharacters.ContainsKey(character))
+        {
+            ownedCharacters.Add(character, 1);
+            SaveManager.Instance.Save();
+            Debug.Log("Character Added");
+        }
+    }
+
+    public void AddOwnedCharacterWithLevel(Character character, int level)
     {
         if (!ownedCharacters.ContainsKey(character))
         {
             ownedCharacters.Add(character, level);
+            Debug.Log("Character Added");
         }
         else
         {
             ownedCharacters[character] = level;
+            Debug.Log("idk");
         }
     }
 

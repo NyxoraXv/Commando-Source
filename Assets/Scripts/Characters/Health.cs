@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
+using DG.Tweening;
 
 public class Health : MonoBehaviour
 {
@@ -9,21 +9,40 @@ public class Health : MonoBehaviour
     public bool immortal;
     private bool isPlayer;
 
-    public delegate void OnDamageEvent(float damage);    public OnDamageEvent onHit;    public OnDamageEvent onDead;
+    public delegate void OnDamageEvent(float damage);
+    public OnDamageEvent onHit;
+    public OnDamageEvent onDead;
 
-    void Start()
+    [SerializeField] private Image bloodDripImage;
+    [SerializeField] private float bloodDripDuration = 1f;
+    private bool isShowingBloodDrip = false;
+
+    private void Start()
     {
-        isPlayer = GetComponent<PlayerController>() != null; // PlayerController is just for player
-        var difficulty = GameManager.GetDifficultyMode(); // get difficulty
+        isPlayer = GetComponent<PlayerController>() != null;
+        var difficulty = GameManager.GetDifficultyMode();
 
-        if (!isPlayer) // only if enemy
+        if (!isPlayer)
         {
-            if (difficulty == GameManager.Difficulty.Easy) // hp - 30%
+            if (difficulty == GameManager.Difficulty.Easy)
                 maxHealth *= 0.7f;
-            else if(difficulty == GameManager.Difficulty.Hard) // hp + 30%
+            else if (difficulty == GameManager.Difficulty.Hard)
                 maxHealth *= 1.3f;
         }
+
         health = maxHealth;
+
+        // Initialize blood drip image
+        if (bloodDripImage != null)
+        {
+            InitializeBloodDrip();
+        }
+    }
+
+    private void InitializeBloodDrip()
+    {
+        var canvasGroup = bloodDripImage.GetComponent<CanvasGroup>();
+        canvasGroup.alpha = 0f; // Set initial alpha to 0 (invisible)
     }
 
     public bool IsAlive()
@@ -41,32 +60,63 @@ public class Health : MonoBehaviour
         return health;
     }
 
-    public void increaseHealth()
+    public void IncreaseHealth()
     {
         health += maxHealth * 0.2f;
-        if (health > maxHealth)
-            health = maxHealth;
+        health = Mathf.Min(health, maxHealth);
         UIManager.UpdateHealthUI(health, maxHealth);
     }
 
     public void Hit(float damage)
     {
-        if (!IsAlive() || GameManager.IsGameOver() || immortal) // skip already dead or gameover
+        if (!IsAlive() || GameManager.IsGameOver() || immortal)
             return;
 
-        if (isPlayer) // only if player
+        if (isPlayer)
         {
-            var difficulty = GameManager.GetDifficultyMode(); // get difficulty
-            if (difficulty == GameManager.Difficulty.Easy) // dmg - 30%
+            var difficulty = GameManager.GetDifficultyMode();
+            if (difficulty == GameManager.Difficulty.Easy)
                 damage *= 0.7f;
-            else if (difficulty == GameManager.Difficulty.Hard) // dmg + 30%
+            else if (difficulty == GameManager.Difficulty.Hard)
                 damage *= 1.3f;
         }
-        health -= damage; // take the hit
 
+        health -= damage;
         onHit?.Invoke(damage);
 
-        if (!IsAlive()) // check if died
+        if (!IsAlive())
+        {
             onDead?.Invoke(damage);
+            ShowBloodDrip();
+        }
+        else
+        {
+            ShowBloodDrip(); // Optionally show blood drip when hit
+        }
+    }
+
+    private void ShowBloodDrip()
+    {
+        if (bloodDripImage != null && !isShowingBloodDrip)
+        {
+            isShowingBloodDrip = true;
+
+            var canvasGroup = bloodDripImage.GetComponent<CanvasGroup>();
+            canvasGroup.DOFade(0.6f, bloodDripDuration)
+                .OnComplete(() =>
+                {
+                    isShowingBloodDrip = false;
+                    HideBloodDrip();
+                });
+        }
+    }
+
+    private void HideBloodDrip()
+    {
+        if (bloodDripImage != null)
+        {
+            var canvasGroup = bloodDripImage.GetComponent<CanvasGroup>();
+            canvasGroup.DOFade(0f, bloodDripDuration);
+        }
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class CurrencyManager : MonoBehaviour
 {
@@ -19,19 +20,44 @@ public class CurrencyManager : MonoBehaviour
     }
     public void Refresh()
     {
-        
-        // Find the game objects with the "gold" and "diamond" tags
-        GameObject goldObject = GameObject.FindGameObjectWithTag("Gold");
-        GameObject diamondObject = GameObject.FindGameObjectWithTag("Diamond");
 
-        // Get the TextMeshProUGUI components from the found objects
-        TextMeshProUGUI GoldDisplay = goldObject.GetComponent<TextMeshProUGUI>();
-        TextMeshProUGUI DiamondDisplay = diamondObject.GetComponent<TextMeshProUGUI>();
+        try
+        {
+            // Find the game objects with the "gold" and "diamond" tags
+            GameObject goldObject = GameObject.FindGameObjectWithTag("Gold");
+            GameObject diamondObject = GameObject.FindGameObjectWithTag("Diamond");
 
-        // Update the text values
-        GoldDisplay.text = CurrentGold.ToString();
-        DiamondDisplay.text = CurrentDiamond.ToString();
-        
+            // Check if the objects are null before accessing components
+            if (goldObject != null && diamondObject != null)
+            {
+                // Get the TextMeshProUGUI components from the found objects
+                TextMeshProUGUI GoldDisplay = goldObject.GetComponent<TextMeshProUGUI>();
+                TextMeshProUGUI DiamondDisplay = diamondObject.GetComponent<TextMeshProUGUI>();
+
+                // Check if the components are null before updating text values
+                if (GoldDisplay != null && DiamondDisplay != null)
+                {
+                    // Update the text values
+                    GoldDisplay.text = CurrentGold.ToString();
+                    DiamondDisplay.text = CurrentDiamond.ToString();
+                }
+                else
+                {
+                    Debug.LogError("TextMeshProUGUI component is missing on either Gold or Diamond objects.");
+                }
+            }
+            else
+            {
+                Debug.LogError("Gold or Diamond object not found.");
+            }
+        }
+        catch (Exception e)
+        {
+            // Handle any other exceptions that might occur
+            Debug.LogError($"An error occurred: {e.Message}");
+        }
+
+
     }
 
     private void OnWillRenderObject()

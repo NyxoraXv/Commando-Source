@@ -67,8 +67,10 @@ MonoBehaviour:
       HP: 12
       Agility: 3
       UpgradeCost: 750
-    CurrentLevel: 0
     MaxLevel: 5
     FullAvatar: {fileID: 21300000, guid: 263768eb6f2d3d741b02a0deae5860ec, type: 3}
     MaskedAvatar: {fileID: 21300000, guid: 75dd210cfe1a37048ac630fa6624533b, type: 3}
     CroppedAvatar: {fileID: 0}
+    Price: 250
+    PlayerCharacterPrefab: {fileID: 1765443406479915045, guid: b892cbaa101e6c7499b7733206d7e21e,
+      type: 3}

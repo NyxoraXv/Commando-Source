@@ -25,6 +25,7 @@ TagManager:
   - Diamond
   - Main Menu Parent
   - GameManager
+  - MainCanvas
   layers:
   - Default
   - TransparentFX

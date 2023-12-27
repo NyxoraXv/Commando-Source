@@ -10,7 +10,7 @@ public class BulletMovement : MonoBehaviour
 
     public float bulletForce = 3;
     public float lifeTime = 5;
-    public float damageShot = 100;
+    public float damageShot;
     public enum LauncherType
     {
         Player,
@@ -23,11 +23,14 @@ public class BulletMovement : MonoBehaviour
 
     void OnEnable()
     {
+        damageShot = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.Levels[CharacterManager.Instance.GetOwnedCharacterLevel(CharacterManager.Instance.selectedCharacter)].Damage;
         Init();
     }
 
     private void Init()
     {
+        
+        Debug.Log(damageShot);
         expireTime = lifeTime;
         Vector3 bulletDirection = transform.right;
         rb = GetComponent<Rigidbody2D>();

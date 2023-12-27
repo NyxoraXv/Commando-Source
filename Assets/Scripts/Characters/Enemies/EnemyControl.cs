@@ -221,23 +221,48 @@ public class EnemyControl : MonoBehaviour
         blinkingSprite.Play();
     }
 
+    public ParticleSystem deathParticlesPrefab; // Reference to the particle system prefab
+
+    public GameObject deathEffectPrefab; // Reference to the prefab containing a particle system
+
     private IEnumerator Die()
     {
         PlayDeathAudio();
-        animator.SetBool("isDying", true);
+
+        // Disable the collider and kinematic behavior
         if (rb)
             rb.isKinematic = true;
+
         if (GetComponent<BoxCollider2D>())
         {
             GetComponent<BoxCollider2D>().enabled = false;
-        } else if (GetComponent<CapsuleCollider2D>())
+        }
+        else if (GetComponent<CapsuleCollider2D>())
         {
             GetComponent<CapsuleCollider2D>().enabled = false;
         }
 
-        yield return new WaitForSeconds(1.8f);
+        // Instantiate the prefab containing the particle system
+        if (deathEffectPrefab)
+        {
+            GameObject deathEffect = Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
+            ParticleSystem particleSystem = deathEffect.GetComponentInChildren<ParticleSystem>();
+
+            if (particleSystem)
+            {
+                // Wait for the particle system to finish playing
+                yield return new WaitForSeconds(particleSystem.main.duration);
+            }
+
+            // Destroy the instantiated prefab
+            Destroy(deathEffect);
+        }
+
+        // Destroy the game object
         Destroy(gameObject);
     }
+
+
 
     private void PlayDeathAudio()
     {

@@ -2601,6 +2601,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mobile Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 348205582986890895, guid: 4853b4cf614694c46a2c414598638aa2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 348205583061204912, guid: 4853b4cf614694c46a2c414598638aa2,
         type: 3}
       propertyPath: m_SizeDelta.x
@@ -2766,6 +2771,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4853b4cf614694c46a2c414598638aa2, type: 3}
+--- !u!1 &393512150 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 348205582986890895, guid: 4853b4cf614694c46a2c414598638aa2,
+    type: 3}
+  m_PrefabInstance: {fileID: 393512149}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &428240290
 GameObject:
   m_ObjectHideFlags: 0
@@ -8839,7 +8850,7 @@ PrefabInstance:
     - target: {fileID: 1866510319001186920, guid: e6ecc3aab9e52aa4791973b906dda33f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.9924564
+      value: -7.9930487
       objectReference: {fileID: 0}
     - target: {fileID: 1866510319001186920, guid: e6ecc3aab9e52aa4791973b906dda33f,
         type: 3}
@@ -9514,6 +9525,16 @@ PrefabInstance:
       propertyPath: ammoText
       value: 
       objectReference: {fileID: 2056230881}
+    - target: {fileID: 8837762901952213425, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
+      propertyPath: MobileCanvas
+      value: 
+      objectReference: {fileID: 393512150}
+    - target: {fileID: 8837762901952213425, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
+      propertyPath: characterAvatar
+      value: 
+      objectReference: {fileID: 1755491226}
     - target: {fileID: 8846758946157307545, guid: d957822e884ea974d9441386b3a76460,
         type: 3}
       propertyPath: m_AnchorMax.x

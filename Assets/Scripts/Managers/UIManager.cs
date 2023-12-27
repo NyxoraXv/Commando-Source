@@ -4,6 +4,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 public class UIManager : MonoBehaviour
 {
@@ -18,12 +19,17 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI ammoText;
     public Image winUI;
     public TextMeshProUGUI winPointsText;
+    public GameObject MobileCanvas;
+
+    public Image characterAvatar;
 
     void Awake()
     {
         if (current)
             Destroy(current);
         current = this;
+
+        characterAvatar.sprite = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.FullAvatar;
 
         // disable game over text
         current.gameOverText.gameObject.SetActive(false);
@@ -32,6 +38,7 @@ public class UIManager : MonoBehaviour
         current.winPointsText.gameObject.SetActive(false);
 
         // set score text to 0
+        MobileCanvas.SetActive(true);
         UpdateScoreUI();
         UpdateBombsUI();
     }
@@ -85,13 +92,17 @@ public class UIManager : MonoBehaviour
 
     public static void UpdateHealthUI(float health, float maxHealth)
     {
-        //If there is no current UIManager, exit
+        // If there is no current UIManager, exit
         if (current == null)
             return;
 
-        //update the player death count element
-        current.healthBar.fillAmount = health / maxHealth;
+        // Calculate the fill amount percentage
+        float fillAmount = health / maxHealth;
+
+        // Animate the health bar fill amount using DOTween
+        current.healthBar.DOFillAmount(fillAmount, 0.5f); // Adjust the duration as needed
     }
+
 
     public static void DisplayWinUI()
     {

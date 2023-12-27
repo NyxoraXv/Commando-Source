@@ -12,16 +12,8 @@ public class GetLoginCredential : MonoBehaviour
     {
         nameText = GetComponent<TMPro.TextMeshProUGUI>();
         SaveManager.Instance.isLogin = true;
-
-        try
-        {
             SaveManager.Instance.username = nameText.text;
             SaveManager.Instance.Verify();
-            
-        }
-        catch
-        {
-            Debug.LogError("Credential Error");
-        }
+
     }
 }

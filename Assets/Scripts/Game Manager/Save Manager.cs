@@ -151,7 +151,7 @@ public class SaveManager : MonoBehaviour
             int characterLevel = kvp.Value; // Access the level
 
             // Add the owned character to the CharacterManager
-            CharacterManager.Instance.AddOwnedCharacter(character, characterLevel);
+            CharacterManager.Instance.AddOwnedCharacterWithLevel(character, characterLevel);
         }
 
 

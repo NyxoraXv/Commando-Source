@@ -21,7 +21,6 @@ public class SaveManagerPlayer : MonoBehaviour
             return;
         }
         current = this;
-        DontDestroyOnLoad(gameObject);
     }
 
     //Settings

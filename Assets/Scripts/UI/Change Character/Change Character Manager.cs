@@ -108,21 +108,20 @@ public class ChangeCharacterManager : MonoBehaviour
         }
 
         // Set the parent of the Highlighter to the same parent as the selected card
-        Highlighter.transform.SetParent(selectedCard.gameObject.transform);
+        Transform parentTransform = selectedCard.gameObject.transform;
+        Highlighter.transform.SetParent(parentTransform);
 
-        Highlighter.transform.localPosition = new Vector3(
-            0,
-            Container.transform.localPosition.y - 469,
-            0
-        );
+        // Adjust the local position of the highlighter GameObject
+        Highlighter.transform.localPosition = new Vector3(0f, -110f, 0f); // Adjust the values as needed
 
         Tween HighlightWidthAnimation = Highlighter.GetComponent<RectTransform>()
-        .DOSizeDelta(new Vector2(138f, Highlighter.GetComponent<RectTransform>().sizeDelta.y), 0.5f)
-        .From(new Vector2(0f, 3f))
-        .SetEase(Ease.InOutCubic);
+            .DOSizeDelta(new Vector2(138f, Highlighter.GetComponent<RectTransform>().sizeDelta.y), 0.5f)
+            .From(new Vector2(0f, 3f))
+            .SetEase(Ease.InOutCubic);
 
         HighlightWidthAnimation.Play();
     }
+
 
 
     private void UpdateText(CharacterInformation characterInformation)

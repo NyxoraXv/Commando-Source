@@ -4057,9 +4057,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77f28d3a539c36d428859e2804fa11ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MainParent: {fileID: 5925012499288143782, guid: 62fe9b278f6a7f84a8e3973a05cde12e,
-    type: 3}
   HologramMap: {fileID: 2447851226936683043}
+  MainCanvas: {fileID: 2780123587093529228, guid: 62fe9b278f6a7f84a8e3973a05cde12e,
+    type: 3}
 --- !u!1 &7449612596224858558
 GameObject:
   m_ObjectHideFlags: 0

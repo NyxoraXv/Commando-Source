@@ -347,6 +347,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5334701692177444470, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
+      propertyPath: Login
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5334701692177444470, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      propertyPath: MainMenu
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5334701692177444470, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
       propertyPath: MainCanvas
       value: 
       objectReference: {fileID: 2780123587093529228, guid: 62fe9b278f6a7f84a8e3973a05cde12e,
@@ -559,7 +569,7 @@ PrefabInstance:
       value: 25
       objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 7930304638109850825, guid: 47af4844d7c9fdb498941bf9d6c926f2, type: 3}
+    - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -575,6 +585,7 @@ GameObject:
   - component: {fileID: 268086821}
   - component: {fileID: 268086820}
   - component: {fileID: 268086819}
+  - component: {fileID: 268086822}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -632,6 +643,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &268086822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 268086818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb33a769b30e7ab45b0695fcdddbdbae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MainMenu: {fileID: 2780123587093529228, guid: 62fe9b278f6a7f84a8e3973a05cde12e,
+    type: 3}
 --- !u!1 &1416643173
 GameObject:
   m_ObjectHideFlags: 0

@@ -29,6 +29,12 @@ public class CharacterInformation : MonoBehaviour
         public Sprite FullAvatar;
         public Sprite MaskedAvatar;
         public Sprite CroppedAvatar;
+
+        [Header("Price")]
+        public int Price;
+
+        [Header("Character Player")]
+        public GameObject PlayerCharacterPrefab;
     }
 
     public new CharacterData Character;

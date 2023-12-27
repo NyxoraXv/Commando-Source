@@ -38,34 +38,44 @@ public class GameManager : MonoBehaviour
     public LayerMask walkableLayer;
     public LayerMask playerLayer;
 
+    public PlayerController character;
+
     void Awake()
     {
-        //If a Game Manager exists and this isn't it...
-        if (current != null && current != this)
-        {
-            //...destroy this and exit. There can only be one Game Manager
-            Destroy(gameObject);
-            return;
-        }
-
-
-       // currency = GameObject.FindWithTag("GameManager").GetComponent<CurrencyManager>();
-
-        //Set this as the current game manager
         current = this;
-
-        //Persist this object between scene reloads
-        DontDestroyOnLoad(gameObject);
     }
 
     void Start()
     {
+        setPlayerController();
         LoadSettings();
         LoadRecords();
         SaveRecords();
-
         GameReset();
     }
+
+    public void setPlayerController()
+    {
+        PlayerController prefabPlayerController =  CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.PlayerCharacterPrefab.GetComponent<PlayerController>();
+        //character.maxSpeed = prefabPlayerController.maxSpeed;
+        //character.maxJump = prefabPlayerController.maxJump;
+        character.topAnimator = prefabPlayerController.topAnimator;
+        character.bottom = prefabPlayerController.bottom;
+        //character.fireDelta = prefabPlayerController.fireDelta;
+        //character.crouchDelta = prefabPlayerController.crouchDelta;
+        //character.jumpDelta = prefabPlayerController.jumpDelta;
+        //character.projSpawner = prefabPlayerController.projSpawner;
+        //character.granadeSpawner = prefabPlayerController.granadeSpawner;
+        //character.granate = prefabPlayerController.granate;
+        character.pistolAnimator = prefabPlayerController.pistolAnimator;
+        character.bottomPistolAnimator = prefabPlayerController.bottomPistolAnimator;
+        character.machineGunAnimator = prefabPlayerController.machineGunAnimator;
+        character.bottomMachineGunAnimator = prefabPlayerController.machineGunAnimator;
+        //character.meleeDistance = prefabPlayerController.meleeDistance;
+        //character.damageMelee = prefabPlayerController.damageMelee;
+    }
+
+
 
     void Update()
     {
