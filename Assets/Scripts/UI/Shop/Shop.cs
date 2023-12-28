@@ -44,14 +44,20 @@ public class Shop : MonoBehaviour
                 Debug.Log($"owned.");
             }
 
-            // Set button text or image as needed
-            // You might want to customize this part based on your needs
+            // Set button image as avatar preview
+            var characterData = characterManager.GetCharacterPrefab(character).GetComponent<CharacterInformation>().Character;
+            buttonInstance.GetComponent<Image>().sprite = characterData.FullAvatar;
 
             // Center the button with the parent width
             RectTransform buttonRectTransform = buttonInstance.GetComponent<RectTransform>();
             buttonRectTransform.sizeDelta = new Vector2(buttonParent.GetComponent<RectTransform>().rect.width, buttonRectTransform.sizeDelta.y);
+
+            // Highlight the button by changing its opacity
+            Color normalColor = buttonInstance.image.color;
+            buttonInstance.image.color = new Color(normalColor.r, normalColor.g, normalColor.b, IsCharacterOwned(character) ? 0.5f : 1f);
         }
     }
+
 
     private bool IsCharacterOwned(Character character)
     {

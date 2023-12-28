@@ -43,8 +43,6 @@ public class Player : MonoBehaviour
     public GameObject granadeSpawner;
     public GameObject granate;
     Cinemachine.CinemachineBrain cinemachineBrain;
-
-    public RuntimeAnimatorController test;
     public enum CollectibleType
     {
         HeavyMachineGun,
@@ -55,7 +53,7 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        animator.runtimeAnimatorController = test;
+        animator.runtimeAnimatorController = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.PlayerController;
     }
 
     void Start()

@@ -10,7 +10,7 @@ public class BulletHandler : MonoBehaviour
 
     public float bulletSpeed = 10f;  // New variable for bullet speed
     public float lifeTime = 5f;
-    public float damageShot = 1f;
+    public float damageShot;
     public enum LauncherType
     {
         Player,
@@ -23,6 +23,8 @@ public class BulletHandler : MonoBehaviour
 
     void OnEnable()
     {
+        damageShot = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.Levels[CharacterManager.Instance.GetOwnedCharacterLevel(CharacterManager.Instance.selectedCharacter)].Damage;
+        Debug.Log(damageShot);
         Init();
     }
 

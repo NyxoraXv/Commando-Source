@@ -7,7 +7,7 @@ public class UIScaling : MonoBehaviour
     public Slider scaleFactorSlider;
 
     private float minScaleFactor = 0.01f;  // Adjusted minScaleFactor
-    private float maxScaleFactor = 2.0f;
+    private float maxScaleFactor = 1.2f;   // Adjusted maxScaleFactor
 
     void Start()
     {

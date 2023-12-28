@@ -220,7 +220,7 @@ MonoBehaviour:
   moveSpeed: 5
   runMultiplier: 2
   walkMultiplier: 0.5
-  jumpForce: 10
+  jumpForce: 2
   shootCooldown: 0.5
   weaponAimPoint: {fileID: 4184567224616570132}
   weaponAimPointFlipped: {fileID: 133847001683151334}
@@ -236,6 +236,7 @@ MonoBehaviour:
   foreground: {fileID: 0}
   granadeSpawner: {fileID: 0}
   granate: {fileID: 0}
+  test: {fileID: 0}
 --- !u!50 &4909552546741619939
 Rigidbody2D:
   serializedVersion: 4
