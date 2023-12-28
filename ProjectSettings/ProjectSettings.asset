@@ -727,6 +727,7 @@ PlayerSettings:
   scriptingDefineSymbols:
     Android: LETAI_TRUESHADOW
     Standalone: LETAI_TRUESHADOW
+    WebGL: LETAI_TRUESHADOW
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}

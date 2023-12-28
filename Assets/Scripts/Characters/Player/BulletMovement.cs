@@ -53,6 +53,7 @@ public class BulletMovement : MonoBehaviour
         if (!isSpawned)
             return;
         isSpawned = false;
+        AudioManager.PlayNormalShotAudio();
 
         // Instantiate explosion prefab
         Instantiate(explosionPrefab, transform.position, Quaternion.identity);

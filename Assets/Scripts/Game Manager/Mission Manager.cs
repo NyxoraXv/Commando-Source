@@ -19,7 +19,6 @@ public enum RewardType
     Item
 }
 
-[ExecuteInEditMode]
 public class MissionManager : MonoBehaviour
 {
     public static MissionManager Instance;

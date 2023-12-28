@@ -35,6 +35,7 @@ public class BulletHandler : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         rb.velocity = bulletDirection * bulletSpeed;  // Set the velocity based on bullet speed
         isSpawned = true;
+        AudioManager.PlayNormalShotAudio();
     }
 
     void Update()

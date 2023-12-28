@@ -101,38 +101,29 @@ public class Player : MonoBehaviour
     {
         animator.SetBool("isDying", true);
     }
-
-    void ThrowGranate()
+    void ThrowGrenade()
     {
         if (GameManager.GetBombs() > 0)
         {
-            if (MobileManager.GetButtonGrenade())
+            GameManager.RemoveBomb();
+            if (!wasFiring2)
             {
-                GameManager.RemoveBomb();
-                if (!wasFiring2)
-                {
-                    animator.SetBool("isThrowingGranate", true);
-                    wasFiring2 = true;
-                }
-                else
-                {
-                    animator.SetBool("isThrowingGranate", false);
-                    
-                }
+                animator.SetBool("isThrowingGranate", true);
+                wasFiring2 = true;
             }
             else
             {
                 animator.SetBool("isThrowingGranate", false);
-                wasFiring2 = false;
             }
         }
         else
         {
             /*Animazione in base a se è in piedi o meno*/
             animator.SetBool("isThrowingGranate", false);
-            return;
+            wasFiring2 = false;
         }
     }
+
 
     bool IsOutsideScreen(float moveH)
     {
@@ -256,6 +247,12 @@ public class Player : MonoBehaviour
             if (isGrounded && Input.GetKeyDown(KeyCode.Space))
             {
                 Jump();
+            }
+
+            // Check for 'G' key press to throw a grenade
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                ThrowGrenade();
             }
         }
         else

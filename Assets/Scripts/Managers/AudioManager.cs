@@ -167,13 +167,6 @@ public class AudioManager : MonoBehaviour
         current.playerSource.Play();
     }
 
-    public static bool IsPlayingOtherAudio(AudioClip clip, AudioSource source)
-    {
-        if (source.clip != clip && source.isPlaying)
-            return true;
-        return false;
-    }
-
     public static void PlayNormalShotAudio()
     {
         //If there is no current AudioManager, exit
@@ -182,10 +175,6 @@ public class AudioManager : MonoBehaviour
 
         AudioClip clip = current.normalShotClip;
         AudioSource source = current.playerSource;
-
-        //Don't overshadow the other sounds
-        if (IsPlayingOtherAudio(clip, source))
-            return;
 
         //Set the clip for music audio, and then tell it to play
         source.clip = clip;
@@ -202,8 +191,7 @@ public class AudioManager : MonoBehaviour
         AudioSource source = current.playerSource;
 
         //Don't overshadow the other sounds
-        if (IsPlayingOtherAudio(clip, source))
-            return;
+ 
 
         //Set the clip for music audio, and then tell it to play
         source.clip = clip;
