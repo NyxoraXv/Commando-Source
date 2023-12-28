@@ -101,6 +101,8 @@ public class Player : MonoBehaviour
     {
         animator.SetBool("isDying", true);
     }
+
+
     void ThrowGrenade()
     {
         if (GameManager.GetBombs() > 0)
@@ -123,6 +125,8 @@ public class Player : MonoBehaviour
             wasFiring2 = false;
         }
     }
+
+
 
 
     bool IsOutsideScreen(float moveH)
@@ -236,7 +240,7 @@ public class Player : MonoBehaviour
     {
         if (!isFiring)
         {
-            float horizontalInput = Input.GetAxis("Horizontal");
+            float horizontalInput = MobileManager.GetAxisHorizontal();
             bool isRunning = Input.GetKey(KeyCode.LeftShift) && (horizontalInput != 0); // Allow sprinting only when moving
 
             UpdateSprintingState();
@@ -244,13 +248,13 @@ public class Player : MonoBehaviour
             UpdateAnimatorParameters();
             FlipSprite();
 
-            if (isGrounded && Input.GetKeyDown(KeyCode.Space))
+            if (isGrounded && (MobileManager.GetButtonJump() || Input.GetKeyDown(KeyCode.Space)))
             {
                 Jump();
             }
 
             // Check for 'G' key press to throw a grenade
-            if (Input.GetKeyDown(KeyCode.G))
+            if (MobileManager.GetButtonGrenade())
             {
                 ThrowGrenade();
             }
@@ -267,8 +271,14 @@ public class Player : MonoBehaviour
 
     void UpdateSprintingState()
     {
-        isSprinting = Input.GetKey(KeyCode.LeftShift) && Mathf.Abs(Input.GetAxis("Horizontal")) > 0;
+        // Check for LeftShift key or Sprint axis
+        bool sprintKeyDown = Input.GetKey(KeyCode.LeftShift);
+        bool sprintAxisActive = Mathf.Abs(Input.GetAxis("Sprint")) > 0.1f; // Adjust the threshold as needed
+
+        // Determine if sprinting should be active
+        isSprinting = (sprintKeyDown || sprintAxisActive) && Mathf.Abs(Input.GetAxis("Horizontal")) > 0;
     }
+
 
 
     void SetSpeed(float horizontalInput, bool isRunning)
@@ -307,31 +317,42 @@ public class Player : MonoBehaviour
 
     void FlipSprite()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        if (horizontalInput > 0)
+        if (!isFiring) // Only flip when not shooting
         {
-            isFacingRight = true;
+            float horizontalInput = Input.GetAxis("Horizontal");
+            if (horizontalInput > 0)
+            {
+                isFacingRight = true;
+            }
+            else if (horizontalInput < 0)
+            {
+                isFacingRight = false;
+            }
+
+            spriteRenderer.flipX = !isFacingRight;
         }
-        else if (horizontalInput < 0)
+        else
         {
-            isFacingRight = false;
+            // Flip the character based on the mouse position
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            if ((mousePosition.x > transform.position.x && !isFacingRight) ||
+                (mousePosition.x < transform.position.x && isFacingRight))
+            {
+                isFacingRight = !isFacingRight;
+                spriteRenderer.flipX = !isFacingRight;
+
+                weaponAimPoint.gameObject.SetActive(isFacingRight);
+                weaponAimPointFlipped.gameObject.SetActive(!isFacingRight);
+            }
         }
-
-        if (isFiring)
-        {
-            // Flip the sprite based on the aiming point during shooting
-            isFacingRight = spriteRenderer.flipX ? false : true;
-        }
-
-        spriteRenderer.flipX = !isFacingRight;
-
-        weaponAimPoint.gameObject.SetActive(isFacingRight);
-        weaponAimPointFlipped.gameObject.SetActive(!isFacingRight);
     }
+
+
 
     void HandleJumping()
     {
-        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
+        if (isGrounded && (MobileManager.GetButtonJump() || Input.GetKeyDown(KeyCode.Space)))
         {
             Jump();
         }
@@ -345,6 +366,8 @@ public class Player : MonoBehaviour
 
     void HandleShooting()
     {
+#if UNITY_STANDALONE || UNITY_EDITOR
+        // Computer input
         if (Input.GetMouseButton(0) && canShoot && !isFiring)
         {
             isFiring = true;
@@ -358,6 +381,18 @@ public class Player : MonoBehaviour
             isFiring = false;
             animator.SetBool("IsShooting", false);
         }
+#else
+    // Mobile input
+    if (MobileManager.GetButtonFire1() && canShoot && !isFiring)
+    {
+        isFiring = true;
+        animator.SetBool("IsShooting", true);
+        Shoot();
+        StartCoroutine(ShootingCooldown());
+    }
+
+    // Assuming no GetMouseButtonUp equivalent for mobile, modify as needed
+#endif
     }
 
     IEnumerator ShootingCooldown()
@@ -376,20 +411,22 @@ public class Player : MonoBehaviour
     void Shoot()
     {
         Transform activeAimPoint = spriteRenderer.flipX ? weaponAimPointFlipped : weaponAimPoint;
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 shootDirection = (mousePosition - activeAimPoint.position).normalized;
 
         GameObject bullet = Instantiate(bulletPrefab, activeAimPoint.position, Quaternion.identity);
         Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
+
+        // Always shoot in the direction the player is facing
+        Vector2 shootDirection = isFacingRight ? Vector2.right : Vector2.left;
         bulletRb.velocity = shootDirection * 10f;
 
-        float angle = Mathf.Atan2(shootDirection.y, shootDirection.x) * Mathf.Rad2Deg;
-        bullet.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        // No need to calculate the angle in this case
+        // ...
 
         // No cooldown for shooting
         float adjustedAnimationDuration = Mathf.Min(shootAnimationDuration, 1f / rateOfFire);
         Invoke("ResetShootingAnimation", adjustedAnimationDuration);
     }
+
 
     void ResetCooldown()
     {
