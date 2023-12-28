@@ -12,7 +12,7 @@ public class UIManager : MonoBehaviour
     //one in existence. This is often referred to as a "singleton" design pattern. Other
     //scripts access this one through its public static methods
     static UIManager current;
-    public TextMeshProUGUI gameOverText;    //Text element showing the Game Over message
+    public Image gameOver;   //Text element showing the Game Over message
     public Image healthBar;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI bombs;
@@ -32,7 +32,7 @@ public class UIManager : MonoBehaviour
         characterAvatar.sprite = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.FullAvatar;
 
         // disable game over text
-        current.gameOverText.gameObject.SetActive(false);
+        current.gameOver.gameObject.SetActive(false);
 
         current.winUI.gameObject.SetActive(false);
         current.winPointsText.gameObject.SetActive(false);
@@ -82,13 +82,19 @@ public class UIManager : MonoBehaviour
 
     public static void DisplayGameOverText()
     {
-        //If there is no current UIManager, exit
-        if (current == null)
-            return;
+    //If there is no current UIManager, exit
+    if (current == null)
+        return;
 
-        //Show the game over text
-        current.gameOverText.gameObject.SetActive(true);
+    // Activate the game over text
+    current.gameOver.gameObject.SetActive(true);
+
+    Vector3 targetScale = current.gameOver.transform.localScale * 1f; // Double the current scale
+
+    current.gameOver.transform.DOScale(targetScale, 0.5f).SetEase(Ease.OutBack);
     }
+
+
 
     public static void UpdateHealthUI(float health, float maxHealth)
     {
