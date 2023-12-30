@@ -4,26 +4,22 @@ using UnityEngine;
 
 public class CollectibleController : MonoBehaviour
 {
-    public Player.CollectibleType type = Player.CollectibleType.HeavyMachineGun;
+    public MainPlayer.CollectibleType type = MainPlayer.CollectibleType.HeavyMachineGun;
     private int collectiblePoints = 1000;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (GameManager.IsPlayer(collision))
         {
-            GameManager.GetPlayer().GetComponent<Player>().getCollectible(type);
+            GameManager.GetPlayer().GetComponent<MainPlayer>().getCollectible(type);
             GameManager.AddScore(collectiblePoints);
 
-            if (type == Player.CollectibleType.Ammo) // collectible sound
+            if (type == MainPlayer.CollectibleType.Ammo) // collectible sound
             {
                 AudioManager.PlayAmmoGrab();
                 AudioManager.PlayOkayVoice();
             }
-            else if (type == Player.CollectibleType.HeavyMachineGun)
-            {
-                AudioManager.PlayHeavyMachineGunVoice();
-            }
-            else if (type == Player.CollectibleType.MedKit)
+            else if (type == MainPlayer.CollectibleType.MedKit)
             {
                 AudioManager.PlayMedKitGrab();
             }

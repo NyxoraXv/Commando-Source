@@ -103,8 +103,6 @@ public class PlayerController : MonoBehaviour
         MoveHorizontally();
         MoveVertically();
         Jump();
-        Crouch();
-
         FlipShoot();
     }
 
@@ -368,83 +366,6 @@ public class PlayerController : MonoBehaviour
                 nextJump = jumpTime + jumpDelta;
                 nextJump = nextJump - jumpTime;
                 jumpTime = 0.0f;
-            }
-        }
-    }
-
-    void Crouch()
-    {
-        crouchTime = crouchTime + Time.deltaTime;
-        if (MobileManager.GetButtonCrouch() && MobileManager.GetButtonJump() && isGrounded)
-        {
-            isGrounded = false;
-            if (crouchTime > nextCrouch)
-            {
-                topAnimator.SetBool("isCrouched", true);
-                topAnimator.SetBool("isJumping", true);
-                bottomAnimator.SetBool("isJumping", true);
-
-                if (!wasCrounching)
-                {
-                    maxSpeed -= 0.4f;
-                    projSpawner.transform.position = new Vector3(projSpawner.transform.position.x, projSpawner.transform.position.y - 0.14f, 0);
-                }
-
-                nextCrouch = crouchTime + crouchDelta;
-                nextCrouch = nextCrouch - crouchTime;
-                crouchTime = 0.0f;
-                wasCrounching = true;
-            }
-        }
-        else if (MobileManager.GetButtonCrouch() && !MobileManager.GetButtonJump() && (!(bottomAnimator.GetBool("isWalking") && !wasCrounching) || !bottomAnimator.GetBool("isWalking")) && isGrounded)
-        {
-            if (crouchTime > nextCrouch)
-            {
-                topAnimator.SetBool("isCrouched", true);
-                bottomAnimator.SetBool("isCrouched", true);
-
-                gameObject.GetComponent<BoxCollider2D>().enabled = false;
-                bottom.GetComponent<BoxCollider2D>().enabled = true;
-
-                if (isGrounded)
-                {
-                    StartCoroutine(WaitCrouch());
-                }
-
-                if (!wasCrounching)
-                {
-                    maxSpeed -= 0.4f;
-                    projSpawner.transform.position = new Vector3(projSpawner.transform.position.x, projSpawner.transform.position.y - 0.14f, 0);
-                }
-                nextCrouch = crouchTime + crouchDelta;
-                nextCrouch = nextCrouch - crouchTime;
-                crouchTime = 0.0f;
-                wasCrounching = true;
-            }
-
-        } 
-        else
-        {
-            if (!asObjUp && isGrounded)
-            {
-                topAnimator.SetBool("isCrouched", false);
-                bottomAnimator.SetBool("isCrouched", false);
-
-                gameObject.GetComponent<BoxCollider2D>().enabled = true;
-                bottom.GetComponent<BoxCollider2D>().enabled = false;
-
-                if (isGrounded)
-                {
-                    up.GetComponent<SpriteRenderer>().enabled = true;
-                }
-
-                if (wasCrounching)
-                {
-                    maxSpeed += 0.4f;
-                    projSpawner.transform.position = new Vector3(projSpawner.transform.position.x, projSpawner.transform.position.y + 0.14f, 0);
-                }
-
-                wasCrounching = false;
             }
         }
     }

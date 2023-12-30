@@ -4,7 +4,7 @@ using DG.Tweening;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] private float maxHealth = 100;
+    [SerializeField] private float maxHealth;
     public float health;
     public bool immortal;
     private bool isPlayer;

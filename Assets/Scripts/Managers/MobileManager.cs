@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,66 +9,92 @@ public class MobileManager : MonoBehaviour
     public Button shootButton;
     public FloatingJoystick joystick;
 
-    static MobileManager current;
+    private static MobileManager current;
 
-    bool btnPressGrenade;
-    bool btnPressShoot;
-    bool btnPressJump;
+    private bool isPressingGrenade;
+    private bool isPressingShoot;
+    private bool isPressingJump;
 
 #if UNITY_STANDALONE
     private bool forceOnStandalone = false;
 #endif
 
-    void Awake()
+    private void Awake()
     {
         current = this;
     }
 
-    void Start()
+    private void Start()
     {
 #if UNITY_STANDALONE
-        if (!forceOnStandalone)
-        {
-            Debug.Log("Standalone mode: Disabling buttons and joystick.");
-            grenadeButton.gameObject.SetActive(false);
-            jumpButton.gameObject.SetActive(false);
-            shootButton.gameObject.SetActive(false);
-            joystick.gameObject.SetActive(false);
-        }
+        // Remove this condition or set forceOnStandalone to true
+        forceOnStandalone = true; 
+        Debug.Log("Standalone mode: Disabling buttons and joystick.");
+        DisableMobileControls();
 #endif
     }
 
-    void LateUpdate()
+    private void DisableMobileControls()
     {
-        btnPressShoot = false;
-        btnPressJump = false;
-        btnPressGrenade = false;
+        grenadeButton.gameObject.SetActive(false);
+        jumpButton.gameObject.SetActive(false);
+        shootButton.gameObject.SetActive(false);
+        joystick.gameObject.SetActive(false);
     }
 
-    public void ClickButtonShoot()
+    private void UpdateButtonState(ref bool buttonState, bool value, string debugMessage)
     {
-        btnPressShoot = true;
-        Debug.Log("Shoot button clicked.");
+        buttonState = value;
+        Debug.Log(debugMessage);
     }
 
-    public void ClickButtonJump()
+    public void PressGrenadeButton()
     {
-        btnPressJump = true;
-        Debug.Log("Jump button clicked.");
+        UpdateButtonState(ref isPressingGrenade, true, "Grenade button pressed.");
     }
 
-    public void ClickButtonGrenade()
+    public void ReleaseGrenadeButton()
     {
-        btnPressGrenade = true;
-        Debug.Log("Grenade button clicked.");
+        UpdateButtonState(ref isPressingGrenade, false, "Grenade button released.");
     }
 
-    bool _GetButtonGrenade()
+    public void PressShootButton()
     {
-        return btnPressGrenade;
+        UpdateButtonState(ref isPressingShoot, true, "Shoot button pressed.");
     }
 
-    static public bool GetButtonGrenade()
+    public void ReleaseShootButton()
+    {
+        UpdateButtonState(ref isPressingShoot, false, "Shoot button released.");
+    }
+
+    public void PressJumpButton()
+    {
+        UpdateButtonState(ref isPressingJump, true, "Jump button pressed.");
+    }
+
+    public void ReleaseJumpButton()
+    {
+        UpdateButtonState(ref isPressingJump, false, "Jump button released.");
+    }
+
+    private bool GetButtonState(bool buttonState, string inputName)
+    {
+#if UNITY_STANDALONE
+        if (forceOnStandalone)
+        {
+            Debug.Log($"{inputName} - Standalone mode: {buttonState}");
+            return buttonState;
+        }
+        Debug.Log($"{inputName} - Standalone mode: {Input.GetButton(inputName)}");
+        return Input.GetButton(inputName);
+#else
+        Debug.Log($"{inputName} - {buttonState}");
+        return buttonState;
+#endif
+    }
+
+    public static bool GetButtonGrenade()
     {
         if (!current)
         {
@@ -77,28 +102,10 @@ public class MobileManager : MonoBehaviour
             return false;
         }
 
-#if UNITY_STANDALONE
-        if (current.forceOnStandalone)
-        {
-            bool result = current._GetButtonGrenade();
-            Debug.Log($"GetButtonGrenade - Standalone mode: {result}");
-            return result;
-        }
-        Debug.Log($"GetButtonGrenade - Standalone mode: {Input.GetKeyDown(KeyCode.G)}");
-        return Input.GetKeyDown(KeyCode.G);
-#else
-        bool result = current._GetButtonGrenade();
-        Debug.Log($"GetButtonGrenade - {result}");
-        return result;
-#endif
+        return current.GetButtonState(current.isPressingGrenade, "Grenade");
     }
 
-    bool _GetButtonFire1()
-    {
-        return btnPressShoot;
-    }
-
-    static public bool GetButtonFire1()
+    public static bool GetButtonFire1()
     {
         if (!current)
         {
@@ -106,28 +113,10 @@ public class MobileManager : MonoBehaviour
             return false;
         }
 
-#if UNITY_STANDALONE
-        if (current.forceOnStandalone)
-        {
-            bool result = current._GetButtonFire1();
-            Debug.Log($"GetButtonFire1 - Standalone mode: {result}");
-            return result;
-        }
-        Debug.Log($"GetButtonFire1 - Standalone mode: {Input.GetButton("Fire1")}");
-        return Input.GetButton("Fire1");
-#else
-        bool result = current._GetButtonFire1();
-        Debug.Log($"GetButtonFire1 - {result}");
-        return result;
-#endif
+        return current.GetButtonState(current.isPressingShoot, "Fire1");
     }
 
-    bool _GetButtonJump()
-    {
-        return btnPressJump;
-    }
-
-    static public bool GetButtonJump()
+    public static bool GetButtonJump()
     {
         if (!current)
         {
@@ -135,59 +124,22 @@ public class MobileManager : MonoBehaviour
             return false;
         }
 
-#if UNITY_STANDALONE
-        if (current.forceOnStandalone)
-        {
-            bool result = current._GetButtonJump();
-            Debug.Log($"GetButtonJump - Standalone mode: {result}");
-            return result;
-        }
-        Debug.Log($"GetButtonJump - Standalone mode: {Input.GetButton("Jump")}");
-        return Input.GetButton("Jump");
-#else
-        bool result = current._GetButtonJump();
-        Debug.Log($"GetButtonJump - {result}");
-        return result;
-#endif
+        return current.GetButtonState(current.isPressingJump, "Jump");
     }
 
-    bool _GetButtonCrouch()
+    public static bool GetButtonSprint()
     {
-        return joystick.Vertical < -0.5f;
+        return true;
     }
 
-    static public bool GetButtonCrouch()
+    private float GetAxisValue(float joystickValue, string axisName)
     {
-        if (!current)
-        {
-            Debug.LogError("MobileManager not initialized!");
-            return false;
-        }
-
-#if UNITY_STANDALONE
-        if (current.forceOnStandalone)
-        {
-            bool result = current._GetButtonCrouch();
-            Debug.Log($"GetButtonCrouch - Standalone mode: {result}");
-            return result;
-        }
-        Debug.Log($"GetButtonCrouch - Standalone mode: {Input.GetButton("Crouch")}");
-        return Input.GetButton("Crouch");
-#else
-        bool result = current._GetButtonCrouch();
-        Debug.Log($"GetButtonCrouch - {result}");
-        return result;
-#endif
+        float axisValue = Mathf.Abs(joystickValue) < 0.5f ? 0 : (joystickValue > Mathf.Epsilon ? 1 : (joystickValue < -Mathf.Epsilon ? -1 : 0));
+        Debug.Log($"{axisName} - {axisValue}");
+        return axisValue;
     }
 
-    float _GetAxisHorizontal()
-    {
-        float horizontalValue = Mathf.Abs(joystick.Horizontal) < 0.5f ? 0 : (joystick.Horizontal > Mathf.Epsilon ? 1 : (joystick.Horizontal < -Mathf.Epsilon ? -1 : 0));
-        Debug.Log($"GetAxisHorizontal - {horizontalValue}");
-        return horizontalValue;
-    }
-
-    static public float GetAxisHorizontal()
+    public static float GetAxisHorizontal()
     {
         if (!current)
         {
@@ -195,30 +147,10 @@ public class MobileManager : MonoBehaviour
             return 0;
         }
 
-#if UNITY_STANDALONE
-        if (current.forceOnStandalone)
-        {
-            float result = current._GetAxisHorizontal();
-            Debug.Log($"GetAxisHorizontal - Standalone mode: {result}");
-            return result;
-        }
-        Debug.Log($"GetAxisHorizontal - Standalone mode: {Input.GetAxis("Horizontal")}");
-        return Input.GetAxis("Horizontal");
-#else
-        float result = current._GetAxisHorizontal();
-        Debug.Log($"GetAxisHorizontal - {result}");
-        return result;
-#endif
+        return current.GetAxisValue(current.joystick.Horizontal, "Horizontal");
     }
 
-    float _GetAxisVertical()
-    {
-        float verticalValue = Mathf.Abs(joystick.Vertical) < 0.5f ? 0 : (joystick.Vertical > Mathf.Epsilon ? 1 : (joystick.Vertical < -Mathf.Epsilon ? -1 : 0));
-        Debug.Log($"GetAxisVertical - {verticalValue}");
-        return verticalValue;
-    }
-
-    static public float GetAxisVertical()
+    public static float GetAxisVertical()
     {
         if (!current)
         {
@@ -226,19 +158,6 @@ public class MobileManager : MonoBehaviour
             return 0;
         }
 
-#if UNITY_STANDALONE
-        if (current.forceOnStandalone)
-        {
-            float result = current._GetAxisVertical();
-            Debug.Log($"GetAxisVertical - Standalone mode: {result}");
-            return result;
-        }
-        Debug.Log($"GetAxisVertical - Standalone mode: {Input.GetAxis("Vertical")}");
-        return Input.GetAxis("Vertical");
-#else
-        float result = current._GetAxisVertical();
-        Debug.Log($"GetAxisVertical - {result}");
-        return result;
-#endif
+        return current.GetAxisValue(current.joystick.Vertical, "Vertical");
     }
 }
