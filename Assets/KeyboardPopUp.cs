@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class KeyboardPopUp : MonoBehaviour
 {
     [Header(" Elements ")]
     [SerializeField] private RectTransform rectTransform;
     [SerializeField] private Key keyPrefab;
+    [SerializeField] private Key backspacekeyPrefab;
 
     [Header(" Settings ")]
     [Range(0f, 2f)]
@@ -22,8 +24,12 @@ public class KeyboardPopUp : MonoBehaviour
     [Header(" Key Settings ")]
     [Range(0f, 1f)]
     [SerializeField] private float keyToLineRatio;
-    [Range(0f, 1f)]
+    [Range(0f, 2f)]
     [SerializeField] private float keyXSpacing;
+
+    [Header(" Events ")]
+    public Action<char> onKeyPressed;
+    public Action onBackspacePressed;
 
 
     // Start is called before the first frame update
@@ -68,8 +74,19 @@ public class KeyboardPopUp : MonoBehaviour
             {
                 char key = lines[i].keys[j];
 
+                if(key == '.')
+                {
+                Key keyInstance = Instantiate(backspacekeyPrefab, rectTransform);
+
+                keyInstance.GetButton().onClick.AddListener(() => BackspacePressedCallback());
+                }
+                else
+                {
                 Key keyInstance = Instantiate(keyPrefab, rectTransform);
-                keyInstance.SetKey(key);
+                keyInstance.SetKey(key);   
+
+                keyInstance.GetButton().onClick.AddListener(() => KeyPressedCallback(key));
+                }
             }
         }
     }
@@ -78,7 +95,7 @@ public class KeyboardPopUp : MonoBehaviour
     {
         int lineCount = lines.Length;
 
-        float lineHeight = rectTransform.rect.height / lineCount;
+        float lineHeight = rectTransform.rect.height  / lineCount;
 
         float keyWidth = lineHeight * keyToLineRatio;
         float xSpacing = keyXSpacing * lineHeight;
@@ -87,26 +104,55 @@ public class KeyboardPopUp : MonoBehaviour
 
         for (int i = 0; i < lineCount; i++)
         {
+            bool containsBackspace = lines[i].keys.Contains(".");
+
             float halfKeyCount = (float)lines[i].keys.Length / 2;
+
+            if (containsBackspace)
+            halfKeyCount += .5f;
             
-            float startX = rectTransform.position.x - (keyWidth) * halfKeyCount + keyWidth / 2;
+            float startX = rectTransform.position.x - (keyWidth + xSpacing) * halfKeyCount + (keyWidth + xSpacing) / 2;
 
             float lineY = rectTransform.position.y + rectTransform.rect.height / 2 - lineHeight /2 - i * lineHeight;
 
             for ( int j = 0; j < lines[i].keys.Length; j++)
             {
-                float keyX = startX + j * keyWidth;
+                bool isBackspaceKey = lines[i].keys[j] == '.';
+
+                float keyX = startX + j * (keyWidth + xSpacing);
+
+                if(isBackspaceKey)
+                keyX += keyWidth;
 
                 Vector2 keyPosition = new Vector2(keyX, lineY);
 
                 RectTransform keyRectTransform = rectTransform.GetChild(currentKeyIndex).GetComponent<RectTransform>();
                 keyRectTransform.position = keyPosition;
 
-                keyRectTransform.sizeDelta = new Vector2(keyWidth, keyWidth);
+                float thisKeyWidth = keyWidth;
+
+                if (isBackspaceKey)
+                thisKeyWidth *= 2f;
+
+                keyRectTransform.sizeDelta = new Vector2(thisKeyWidth, keyWidth);
 
                 currentKeyIndex++;
             }
         }
+    }
+
+    private void BackspacePressedCallback()
+    {
+        Debug.Log("Backspace pressed");
+
+        onBackspacePressed?.Invoke();
+    }
+
+    private void KeyPressedCallback(char key)
+    {
+        Debug.Log("Key pressed : " + key);
+
+        onKeyPressed?.Invoke(key);
     }
 }
 

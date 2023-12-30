@@ -9,6 +9,9 @@ public class Key : MonoBehaviour
     [SerializeField] private Text keyText;
     private char key;
 
+    [Header(" Settings ")]
+    [SerializeField] private bool isBackspace;
+
     public void SetKey(char key)
     {
         this.key = key;
@@ -18,5 +21,10 @@ public class Key : MonoBehaviour
     public Button GetButton()
     {
         return GetComponent<Button>();
+    }
+
+    public bool IsBackspace()
+    {
+        return isBackspace;
     }
 }
