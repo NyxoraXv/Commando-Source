@@ -47,24 +47,24 @@ MonoBehaviour:
   Character:
     CharacterName: 0
     Levels:
-    - Damage: 10
-      HP: 100
+    - Damage: 50
+      HP: 500
       Agility: 5
       UpgradeCost: 250
-    - Damage: 12
-      HP: 125
+    - Damage: 60
+      HP: 600
       Agility: 6
       UpgradeCost: 500
-    - Damage: 15
-      HP: 150
+    - Damage: 70
+      HP: 700
       Agility: 8
       UpgradeCost: 1000
-    - Damage: 18
-      HP: 200
+    - Damage: 80
+      HP: 800
       Agility: 10
       UpgradeCost: 2000
-    - Damage: 20
-      HP: 225
+    - Damage: 100
+      HP: 1000
       Agility: 12
       UpgradeCost: 3500
     MaxLevel: 5

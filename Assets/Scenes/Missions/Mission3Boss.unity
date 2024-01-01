@@ -314,6 +314,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mobile Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 348205582986890895, guid: 4853b4cf614694c46a2c414598638aa2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

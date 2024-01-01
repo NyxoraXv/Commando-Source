@@ -38,8 +38,6 @@ public class GameManager : MonoBehaviour
     public LayerMask walkableLayer;
     public LayerMask playerLayer;
 
-    public PlayerController character;
-
     void Awake()
     {
         current = this;

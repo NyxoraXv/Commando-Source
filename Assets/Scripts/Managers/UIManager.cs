@@ -38,7 +38,6 @@ public class UIManager : MonoBehaviour
         current.winPointsText.gameObject.SetActive(false);
 
         // set score text to 0
-        MobileCanvas.SetActive(true);
         UpdateScoreUI();
         UpdateBombsUI();
     }
