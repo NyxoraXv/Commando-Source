@@ -3173,13 +3173,13 @@ MonoBehaviour:
     type: 3}
   widthPercent: 2
   heightPrecent: 0.005
-  bottomOffset: -0.0078
+  bottomOffset: -0.0085
   lines:
   - keys: QWERTYUIOP
   - keys: ASDFGHJKL
   - keys: ZXCVBNM.
   keyToLineRatio: 0.218
-  keyXSpacing: 1.352
+  keyXSpacing: 1.685
 --- !u!1 &2161521703932024978
 GameObject:
   m_ObjectHideFlags: 0
