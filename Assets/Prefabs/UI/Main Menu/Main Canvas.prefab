@@ -3534,7 +3534,7 @@ MonoBehaviour:
   priceText: {fileID: 4939700125009441577}
   buttonPrefab: {fileID: 7554275419199770662, guid: d3952ca9bd47910498c4daeff003c12e,
     type: 3}
-  characters: 0000000003000000
+  characters: 00000000
   buttonParent: {fileID: 7296808481793312510}
 --- !u!1 &2301967585250058310
 GameObject:

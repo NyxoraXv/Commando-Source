@@ -27,6 +27,8 @@ public class Player : MonoBehaviour
     private bool isFalling = false;
     private bool isFiring = false;
     private float timeSinceLastShot = 0f;
+    private bool isWalking = false;
+    private float walkTimer = 0f;
 
     public LayerMask groundLayer;
     public Transform groundCheck;
@@ -75,14 +77,70 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        HandleInput();
+        HandleInput(); // Call HandleInput instead of HandleMobileInput
         Move();
         HandleJumping();
         HandleShooting();
         UpdateGroundedStatus();
         UpdateAnimatorParameters();
+        UpdateSprintTimer();
     }
 
+
+    void HandleMobileInput()
+    {
+        if (!isFiring)
+        {
+            float horizontalInput = MobileManager.GetAxisHorizontal();
+            bool isRunning = MobileManager.GetButtonSprint() && (horizontalInput != 0); // Sprinting only when moving
+
+            // Update the walk timer
+            if (horizontalInput != 0)
+            {
+                isWalking = true;
+                walkTimer += Time.deltaTime;
+            }
+            else
+            {
+                isWalking = false;
+                walkTimer = 0f;
+            }
+
+            // Sprint if walking for more than 1 second
+            if (isWalking && walkTimer > 1f)
+            {
+                isRunning = true;
+            }
+
+            UpdateSprintingState();
+            SetSpeed(horizontalInput, isRunning);
+            UpdateAnimatorParameters();
+            FlipSprite();
+
+            if (isGrounded && MobileManager.GetButtonJump())
+            {
+                Jump();
+            }
+
+            if (false)
+            {
+                ThrowGrenade();
+            }
+        }
+        else
+        {
+            // Player is firing, disable sprinting and jumping
+            isSprinting = false;
+        }
+    }
+    void UpdateSprintTimer()
+    {
+        // Reset walk timer if not walking
+        if (!isWalking)
+        {
+            walkTimer = 0f;
+        }
+    }
 
     private void OnDead(float damage) // health delegate onDead
     {
@@ -240,8 +298,27 @@ public class Player : MonoBehaviour
     {
         if (!isFiring)
         {
-            float horizontalInput = MobileManager.GetAxisHorizontal();
-            bool isRunning = Input.GetKey(KeyCode.LeftShift) && (horizontalInput != 0); // Allow sprinting only when moving
+            float horizontalInput = 0;
+
+            // Check for mobile input
+            if (Application.isMobilePlatform)
+            {
+                horizontalInput = MobileManager.GetAxisHorizontal();
+            }
+            else
+            {
+                // Keyboard input
+                if (Input.GetKey(KeyCode.A))
+                {
+                    horizontalInput = -1;
+                }
+                else if (Input.GetKey(KeyCode.D))
+                {
+                    horizontalInput = 1;
+                }
+            }
+
+            bool isRunning = (Input.GetKey(KeyCode.LeftShift) || MobileManager.GetButtonSprint()) && Mathf.Abs(horizontalInput) > 0;
 
             UpdateSprintingState();
             SetSpeed(horizontalInput, isRunning);
@@ -254,7 +331,7 @@ public class Player : MonoBehaviour
             }
 
             // Check for 'G' key press to throw a grenade
-            if (MobileManager.GetButtonGrenade())
+            if (Input.GetKeyDown(KeyCode.G) || MobileManager.GetButtonGrenade())
             {
                 ThrowGrenade();
             }
@@ -269,14 +346,14 @@ public class Player : MonoBehaviour
 
 
 
+
     void UpdateSprintingState()
     {
-        // Check for LeftShift key or Sprint axis
-        bool sprintKeyDown = Input.GetKey(KeyCode.LeftShift);
-        bool sprintAxisActive = Mathf.Abs(Input.GetAxis("Sprint")) > 0.1f; // Adjust the threshold as needed
+        // Check for Sprint button
+        bool sprintButtonDown = MobileManager.GetButtonSprint();
 
         // Determine if sprinting should be active
-        isSprinting = (sprintKeyDown || sprintAxisActive) && Mathf.Abs(Input.GetAxis("Horizontal")) > 0;
+        isSprinting = sprintButtonDown && Mathf.Abs(Input.GetAxis("Horizontal")) > 0;
     }
 
 
@@ -288,7 +365,7 @@ public class Player : MonoBehaviour
 
     void UpdateAnimatorParameters()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
+        float horizontalInput = MobileManager.GetAxisHorizontal();
         bool isWalking = Mathf.Abs(horizontalInput) > 0;
         bool isIdle = !isWalking && !isSprinting;
 
@@ -297,6 +374,8 @@ public class Player : MonoBehaviour
         animator.SetBool("IsWalking", isWalking && !isSprinting);
         animator.SetBool("OnAir", !isGrounded);
         animator.SetBool("Fall", isFalling);
+
+        // Update the IsShooting parameter based on the isFiring variable
         animator.SetBool("IsShooting", isFiring);
 
         // Additional check to prevent sprinting animation when idle
@@ -309,17 +388,18 @@ public class Player : MonoBehaviour
 
 
 
+
     void Move()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
+        float horizontalInput = MobileManager.GetAxisHorizontal();
         transform.Translate(new Vector3(horizontalInput * speed * Time.deltaTime, 0, 0));
     }
 
     void FlipSprite()
     {
-        if (!isFiring) // Only flip when not shooting
+        if (!isFiring)
         {
-            float horizontalInput = Input.GetAxis("Horizontal");
+            float horizontalInput = MobileManager.GetAxisHorizontal();
             if (horizontalInput > 0)
             {
                 isFacingRight = true;
@@ -331,21 +411,7 @@ public class Player : MonoBehaviour
 
             spriteRenderer.flipX = !isFacingRight;
         }
-        else
-        {
-            // Flip the character based on the mouse position
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            if ((mousePosition.x > transform.position.x && !isFacingRight) ||
-                (mousePosition.x < transform.position.x && isFacingRight))
-            {
-                isFacingRight = !isFacingRight;
-                spriteRenderer.flipX = !isFacingRight;
-
-                weaponAimPoint.gameObject.SetActive(isFacingRight);
-                weaponAimPointFlipped.gameObject.SetActive(!isFacingRight);
-            }
-        }
     }
 
 
@@ -366,9 +432,7 @@ public class Player : MonoBehaviour
 
     void HandleShooting()
     {
-#if UNITY_STANDALONE || UNITY_EDITOR
-        // Computer input
-        if (Input.GetMouseButton(0) && canShoot && !isFiring)
+        if (MobileManager.GetButtonFire1() && canShoot && !isFiring)
         {
             isFiring = true;
             animator.SetBool("IsShooting", true);
@@ -376,62 +440,44 @@ public class Player : MonoBehaviour
             StartCoroutine(ShootingCooldown());
         }
 
-        if (Input.GetMouseButtonUp(0))
+        // Check if the shooting animation should be stopped
+        if (!MobileManager.GetButtonFire1() && isFiring)
         {
             isFiring = false;
             animator.SetBool("IsShooting", false);
         }
-#else
-    // Mobile input
-    if (MobileManager.GetButtonFire1() && canShoot && !isFiring)
-    {
-        isFiring = true;
-        animator.SetBool("IsShooting", true);
-        Shoot();
-        StartCoroutine(ShootingCooldown());
-    }
-
-    // Assuming no GetMouseButtonUp equivalent for mobile, modify as needed
-#endif
     }
 
     IEnumerator ShootingCooldown()
     {
-        while (Input.GetMouseButton(0))
+        // Shoot and wait for the specified rate of fire
+        do
         {
-            // Shoot and wait for the specified rate of fire
             Shoot();
             yield return new WaitForSeconds(1f / rateOfFire);
-        }
+        } while (MobileManager.GetButtonFire1());
 
-        canShoot = true; // Reset the canShoot flag when the mouse button is released
+        // Reset the canShoot flag when the mouse button is released
+        canShoot = true;
     }
-
-
     void Shoot()
     {
         Transform activeAimPoint = spriteRenderer.flipX ? weaponAimPointFlipped : weaponAimPoint;
 
+        // Calculate the shoot direction based on the character's flip state
+        Vector2 shootDirection = spriteRenderer.flipX ? Vector2.left : Vector2.right;
+
         GameObject bullet = Instantiate(bulletPrefab, activeAimPoint.position, Quaternion.identity);
         Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
-
-        // Always shoot in the direction the player is facing
-        Vector2 shootDirection = isFacingRight ? Vector2.right : Vector2.left;
         bulletRb.velocity = shootDirection * 10f;
 
-        // No need to calculate the angle in this case
-        // ...
+        // No need to calculate angle if shooting straight
 
         // No cooldown for shooting
         float adjustedAnimationDuration = Mathf.Min(shootAnimationDuration, 1f / rateOfFire);
         Invoke("ResetShootingAnimation", adjustedAnimationDuration);
     }
 
-
-    void ResetCooldown()
-    {
-        canShoot = true;
-    }
 
     void ResetShootingAnimation()
     {
