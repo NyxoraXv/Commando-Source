@@ -57,6 +57,8 @@ public class BossController : MonoBehaviour
     public Parallaxing parallax;
     public RunningTarget runningTarget;
 
+    private Health bossHealth;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -68,6 +70,8 @@ public class BossController : MonoBehaviour
         maxHealth = health.GetMaxHealth();
         rb = GetComponent<Rigidbody2D>();
         blinkingSprite = GetComponent<BlinkingSprite>();
+
+        bossHealth = GetComponent<Health>();
         
     }
 
@@ -151,11 +155,22 @@ public class BossController : MonoBehaviour
         
     }
 
-
     private void OnHit(float damage)
     {
         GameManager.AddScore(damage);
         blinkingSprite.Play();
+
+        float currentBossHealth = bossHealth.GetHealth();
+        float maxBossHealth = bossHealth.GetMaxHealth();
+
+        // Update the boss's health in the UI
+        UIManager.UpdateBossHealthUI(currentBossHealth, maxBossHealth);
+
+        if (!bossHealth.IsAlive())
+        {
+        // Deactivate boss health bar when the boss is defeated
+        UIManager.HideBossHealthBar();
+        }
     }
 
     private IEnumerator Die()
