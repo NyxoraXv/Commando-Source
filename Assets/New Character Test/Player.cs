@@ -21,17 +21,22 @@ public class MainPlayer : MonoBehaviour
     [Header("Shoot")]
     public float rateOfFire; // Shots per second
     public GameObject bulletPrefab;
+    public Transform Weapon;
 
     private float timeBetweenShots;
     private float lastShotTime;
 
     [Header("Aim Points")]
-    [SerializeField] private Transform aimPointLeft;
-    [SerializeField] private Transform aimPointRight;
-    [SerializeField] private Transform aimPointRightDown;
-    [SerializeField] private Transform aimPointRightUp;
-    [SerializeField] private Transform aimPointLeftDown;
-    [SerializeField] private Transform aimPointLeftUp;
+    [SerializeField] private Transform aimPoint;
+
+    [SerializeField] private float TopAngleLimit = 40f;
+    [SerializeField] private float BottomAngleLimit = -20f;
+
+    private Vector3 initScale, negatedScale;
+
+    private Vector2 _mouseWorldPos;
+
+    public GameObject foreground;
 
     private Health health;
 
@@ -43,8 +48,6 @@ public class MainPlayer : MonoBehaviour
         MedKit,
     };
 
-
-
     private void Start()
     {
         animator = gameObject.GetComponent<Animator>();
@@ -52,6 +55,8 @@ public class MainPlayer : MonoBehaviour
         avatar = gameObject.GetComponent<SpriteRenderer>();
         cinemachineBrain = Camera.main.GetComponent<Cinemachine.CinemachineBrain>();
         registerHealth();
+        initScale = transform.localScale;
+        negatedScale = new Vector3 (-gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z );
     }
 
     private void registerHealth()
@@ -67,6 +72,7 @@ public class MainPlayer : MonoBehaviour
         Died();
         GameManager.PlayerDied();
         AudioManager.PlayDeathAudio();
+        Destroy(Weapon.gameObject);
         Destroy(this);
     }
 
@@ -109,99 +115,129 @@ public class MainPlayer : MonoBehaviour
     private void HandleInput()
     {
         HandleMovement();
+        Aim();
     }
 
     private bool Move()
     {
         float horizontalAxis = Input.GetAxis("Horizontal");
 
-        if (Sprint() && ((horizontalAxis != 0) || MobileManager.GetAxisHorizontal() != 0))
+        if (Sprint() && ((horizontalAxis != 0) /*|| MobileManager.GetAxisHorizontal() != 0*/))
         {
             Vector2 movement = new Vector2(horizontalAxis, 0f) * (speed*speedMultiplier);
             rb.velocity = new Vector2(movement.x, rb.velocity.y);
-            FlipSprite(horizontalAxis);
+            Weapon.transform.localPosition = new Vector3(-0.032f, 0.295f, 0.3607626f);
             return true;
         }
-        else if (!Sprint() && ((horizontalAxis != 0) || MobileManager.GetAxisHorizontal() != 0))
+        else if (!Sprint() && ((horizontalAxis != 0)/* || MobileManager.GetAxisHorizontal() != 0*/))
         {
             Vector2 movement = new Vector2(horizontalAxis, 0f) * speed;
             rb.velocity = new Vector2(movement.x, rb.velocity.y);
-            FlipSprite(horizontalAxis);
+            Weapon.transform.localPosition = new Vector3(-0.143f, 0.409f, 0.030607626f);
+
             return true;
         }
         else
         {
+            Weapon.transform.localPosition = new Vector3(-0.143f, 0.409f, 0.030607626f);
             return false;
         }
     }
 
-    private float Aim()
+    private void Aim()
     {
-        if (Application.isMobilePlatform)
+        Vector3 mousePos = Input.mousePosition;
+        mousePos.z = 10f; // Example value, adjust as needed
+        mousePos = Camera.main.ScreenToWorldPoint(mousePos);
+
+        Vector2 pivotPoint = Weapon.position;
+
+        Vector2 direction = new Vector2(
+            mousePos.x - pivotPoint.x,
+            mousePos.y - pivotPoint.y
+        );
+
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        // Set the rotation without angle limits
+        Weapon.rotation = Quaternion.Euler(0f, 0f, angle);
+        aimPoint.rotation = Quaternion.Euler(0f, 0f, angle);
+
+        // Flip the character based on the direction
+        if (direction.x < 0f)
         {
-            return MobileManager.GetAxisVertical();
+            gameObject.transform.localScale = negatedScale;
         }
         else
         {
-            return Input.GetAxis("Vertical");
+            gameObject.transform.localScale = initScale;
+        }
+
+        // Optionally, if you want to flip the weapon sprite based on the direction
+        if (direction.x < 0f)
+        {
+            Weapon.transform.localScale = new Vector3(-1f, -1f, 1f);
+        }
+        else
+        {
+            Weapon.transform.localScale = new Vector3(1f, 1f, 1f);
         }
     }
+
+
+
+
+
 
     private bool Sprint()
     {
         float sprint = Input.GetAxis("Sprint");
-        if(sprint != 0)
+
+        if (sprint != 0)
         {
-            return sprint !=0;
 
-        }else if (MobileManager.GetButtonGrenade()) {
-
-            return MobileManager.GetButtonGrenade();
-
+            return true;
         }
         else
         {
+
             return false;
         }
     }
 
+
     private void FlipSprite(float axis)
     {
-        if(axis < 0)
-        {
-            avatar.flipX = true;
-        }else if(axis > 0)
-        {
-            avatar.flipX = false;
-        }
-        else
-        {
-            return;
-        }
+        avatar.flipX = axis != 0;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+
+    private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Walkable") || collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        if (collision.gameObject.CompareTag("Walkable") || collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Marco Boat"))
         {
             IsGrounded = true;
         }
     }
-
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Walkable") || collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        //Debug.Log(collision.collider.tag);
+        if (collision.collider.CompareTag("Water Dead"))
         {
-            IsGrounded = false;
+            health.Hit(9999);
+
+            if (foreground != null)
+                gameObject.transform.parent = foreground.transform;
         }
     }
 
 
     private bool Jump()
     {
-        if (IsGrounded && ((Input.GetAxis("Jump") != 0) || (MobileManager.GetButtonJump())))
+        if (IsGrounded && ((Input.GetAxis("Jump") != 0)/* || (MobileManager.GetButtonJump())*/))
         {
             rb.velocity = new Vector2(rb.velocity.x, JumpForce);
+            IsGrounded = false;
             return true;
         }
         else
@@ -215,11 +251,11 @@ public class MainPlayer : MonoBehaviour
         float currentTime = Time.time;
         bool fireButtonDown = Input.GetButtonDown("Fire1");
 
-        if ((fireButtonDown || MobileManager.GetButtonFire1()) && currentTime - lastShotTime >= timeBetweenShots)
+        if ((fireButtonDown/* || MobileManager.GetButtonFire1()*/) && currentTime - lastShotTime >= timeBetweenShots)
         {
             if (bulletPrefab != null)
             {
-                Transform aimPoint = GetAimPoint();
+                
                 Instantiate(bulletPrefab, aimPoint.position, aimPoint.rotation);
 
                 lastShotTime = currentTime;
@@ -233,50 +269,13 @@ public class MainPlayer : MonoBehaviour
 
 
 
-    Transform GetAimPoint()
-    {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-
-        Transform selectedAimPoint = null;
-
-        if(verticalInput != 0)
-        {
-            if (verticalInput > 0 && avatar.flipX == false)
-            {
-                selectedAimPoint = aimPointRightUp;
-            } else if (verticalInput > 0 && avatar.flipX == true)
-            {
-                selectedAimPoint = aimPointLeftUp;
-            } else if (verticalInput < 0 && avatar.flipX == false)
-            {
-                selectedAimPoint = aimPointRightDown;
-            } else if (verticalInput < 0 && avatar.flipX == true)
-            {
-                selectedAimPoint = aimPointLeftDown;
-            }
-        }
-        else
-        {
-            if (avatar.flipX == true)
-            {
-                selectedAimPoint = aimPointRight;
-            }
-            else
-            {
-                selectedAimPoint = aimPointLeft;
-            }
-        }
-
-        return selectedAimPoint;
-    }
 
 
     private void HandleMovement()
     {
-        animator.SetBool("IsWalking", (Move() && !Sprint()));
-        animator.SetBool("IsRunning", (Move() && Sprint()));
-        animator.SetFloat("Aim", Aim());
+        bool moved = Move();
+        animator.SetBool("IsWalking", (moved && !Sprint()));
+        animator.SetBool("IsRunning", (moved && Sprint()));
         animator.SetBool("Jump", Jump());
         animator.SetBool("IsGrounded", IsGrounded);
         Shoot();

@@ -9448,6 +9448,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6436869125425301155, guid: f93398acb6ec6b54da2a710c7e83a713,
         type: 3}
+      propertyPath: facingRight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6436869125425301155, guid: f93398acb6ec6b54da2a710c7e83a713,
+        type: 3}
       propertyPath: deathEffectPrefab
       value: 
       objectReference: {fileID: 4155764736166186941, guid: 3525de7394cea474c968d42607a0e80f,
