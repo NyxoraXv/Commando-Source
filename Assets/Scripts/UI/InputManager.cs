@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class InputManager : MonoBehaviour
 {
     [Header(" Elements ")]
-    [SerializeField] private Text text;
+    [SerializeField] private TMP_Text textMeshPro;
     [SerializeField] private KeyboardPopUp keyboard;
 
     // Start is called before the first frame update
@@ -18,12 +19,12 @@ public class InputManager : MonoBehaviour
 
     private void BackspacePressedCallback()
     {
-        if(text.text.Length > 0)
-        text.text = text.text.Substring(0, text.text.Length - 1);
+        if(textMeshPro.text.Length > 0)
+        textMeshPro.text = textMeshPro.text.Substring(0, textMeshPro.text.Length - 1);
     }
 
     private void KeyPressedCallback(char key)
     {
-        text.text += key.ToString();
+        textMeshPro.text += key.ToString();
     }
 }
