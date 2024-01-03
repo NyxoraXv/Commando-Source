@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour
     public Image gameOver;   //Text element showing the Game Over message
     public Image healthBar;
     public Image bossBar;
+    public GameObject bossBarParent;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI bombs;
     public TextMeshProUGUI ammoText;
@@ -61,7 +62,7 @@ public class UIManager : MonoBehaviour
             return;
 
         current.bossBar.gameObject.SetActive(true);
-
+        current.bossBarParent.SetActive(true);
         float fillAmount = health / maxHealth;
         current.bossBar.DOFillAmount(fillAmount, 0.5f); // Adjust duration as needed
     }
@@ -73,6 +74,7 @@ public class UIManager : MonoBehaviour
 
          // Deactivate the boss health bar
           current.bossBar.gameObject.SetActive(false);
+        current.bossBarParent.SetActive(false);
     }
 
    public static void UpdateBombsUI()

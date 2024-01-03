@@ -225,6 +225,7 @@ public class MainPlayer : MonoBehaviour
         if (collision.collider.CompareTag("Water Dead"))
         {
             health.Hit(9999);
+            animator.SetBool("IsDying", true);
 
             if (foreground != null)
                 gameObject.transform.parent = foreground.transform;
