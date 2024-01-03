@@ -52,6 +52,8 @@ public class Boss3Controller : MonoBehaviour
     public AudioClip thunderClip;
     public AudioClip sunClip;
 
+    private Health bossHealth;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -65,6 +67,8 @@ public class Boss3Controller : MonoBehaviour
         attack1Time = attack1Delta - 4;
 
         attack2Time = attack2Delta - 10;
+
+        bossHealth = GetComponent<Health>();
     }
 
     void Update()
@@ -188,6 +192,18 @@ public class Boss3Controller : MonoBehaviour
     {
         GameManager.AddScore(damage);
         blinkingSprite.Play();
+
+        float currentBossHealth = bossHealth.GetHealth();
+        float maxBossHealth = bossHealth.GetMaxHealth();
+
+        // Update the boss's health in the UI
+        UIManager.UpdateBossHealthUI(currentBossHealth, maxBossHealth);
+
+        if (!bossHealth.IsAlive())
+        {
+        // Deactivate boss health bar when the boss is defeated
+        UIManager.HideBossHealthBar();
+        }
     }
 
     private IEnumerator Fire1()

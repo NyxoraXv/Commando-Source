@@ -30,12 +30,16 @@ public class Boss2Controller : MonoBehaviour
     [Header("Audio")]
     public AudioClip rayClip;
 
+    private Health bossHealth;
+
     void Start()
     {
         topAnimator = top.GetComponent<Animator>();
         registerHealth();
         maxHealth = health.GetMaxHealth();
         playerTransform = GameManager.GetPlayer().transform;
+
+        bossHealth = top.GetComponent<Health>();
     }
 
     void FixedUpdate()
@@ -106,6 +110,18 @@ public class Boss2Controller : MonoBehaviour
     {
         GameManager.AddScore(damage);
         top.GetComponent<BlinkingSprite>().Play();
+
+        float currentBossHealth = bossHealth.GetHealth();
+        float maxBossHealth = bossHealth.GetMaxHealth();
+
+        // Update the boss's health in the UI
+        UIManager.UpdateBossHealthUI(currentBossHealth, maxBossHealth);
+
+        if (!bossHealth.IsAlive())
+        {
+        // Deactivate boss health bar when the boss is defeated
+        UIManager.HideBossHealthBar();
+        }
 
         // fasten if dying
         if (health.GetHealth() <= maxHealth / 4)
