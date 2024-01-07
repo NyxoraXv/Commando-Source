@@ -10,12 +10,12 @@ public class MainPlayer : MonoBehaviour
     private SpriteRenderer avatar;
 
     [Header("Walk and Sprint")]
-    public float speed = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.Levels[CharacterManager.Instance.GetOwnedCharacterLevel(CharacterManager.Instance.selectedCharacter)].Agility/10;
+    public float speed;
     public float speedMultiplier = 2f;
 
     [Header("Jump")]
     public LayerMask groundLayer;
-    public float JumpForce = ((CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.Levels[CharacterManager.Instance.GetOwnedCharacterLevel(CharacterManager.Instance.selectedCharacter)].Agility)/10);
+    public float JumpForce;
     private bool IsGrounded;
 
     [Header("Shoot")]
@@ -51,12 +51,16 @@ public class MainPlayer : MonoBehaviour
     private void Start()
     {
         animator = gameObject.GetComponent<Animator>();
+        animator.runtimeAnimatorController = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.PlayerController;
         rb = gameObject.GetComponent<Rigidbody2D>();
         avatar = gameObject.GetComponent<SpriteRenderer>();
         cinemachineBrain = Camera.main.GetComponent<Cinemachine.CinemachineBrain>();
         registerHealth();
         initScale = transform.localScale;
         negatedScale = new Vector3 (-gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z );
+
+        speed = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.Levels[CharacterManager.Instance.GetOwnedCharacterLevel(CharacterManager.Instance.selectedCharacter)].Agility*0.2f;
+        JumpForce = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.Levels[CharacterManager.Instance.GetOwnedCharacterLevel(CharacterManager.Instance.selectedCharacter)].Agility*1.2f;
     }
 
     private void registerHealth()

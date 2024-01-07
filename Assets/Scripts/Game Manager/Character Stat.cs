@@ -17,7 +17,7 @@ public class CharacterInformation : MonoBehaviour
         {
             public int Damage;
             public int HP;
-            public int Agility;
+            public float Agility;
             public int UpgradeCost;
         }
 
@@ -36,6 +36,7 @@ public class CharacterInformation : MonoBehaviour
 
         [Header("Character Player")]
         public RuntimeAnimatorController PlayerController;
+        public RuntimeAnimatorController PlayerPreviewController;
     }
 
     public new CharacterData Character;

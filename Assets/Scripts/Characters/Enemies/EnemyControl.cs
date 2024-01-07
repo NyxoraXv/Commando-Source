@@ -216,8 +216,6 @@ public class EnemyControl : MonoBehaviour
     private void OnHit(float damage)
     {
         animator.SetTrigger("isHitten");
-
-        GameManager.AddScore(damage);
         blinkingSprite.Play();
     }
 
@@ -227,6 +225,9 @@ public class EnemyControl : MonoBehaviour
 
     private IEnumerator Die()
     {
+
+        GameManager.AddScore(1f);
+
         PlayDeathAudio();
 
         // Disable the collider and kinematic behavior

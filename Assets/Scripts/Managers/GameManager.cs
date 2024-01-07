@@ -520,14 +520,16 @@ public class GameManager : MonoBehaviour
 
     public static void LoadHome()
     {
+        CurrencyManager.Instance.addGold(current.score);
+        CurrencyManager.Instance.addDiamond(current.score);
+        LevelManager.Instance.addXP(current.score * 10);
         LoadScene((int)Missions.Home);
     }
 
     public static void LoadAfterWinMission()
     {
         // currentMission is updated in the PlayerWin method
-        CurrencyManager.Instance.spendGold(-200);
-        LevelManager.Instance.addXP(200);
+
         
         LoadScene((int)Missions.Home);
     }

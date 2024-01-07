@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7361782805168507399
 Transform:
   m_ObjectHideFlags: 0
@@ -47,29 +47,31 @@ MonoBehaviour:
   Character:
     CharacterName: 0
     Levels:
-    - Damage: 50
+    - Damage: 25
       HP: 500
-      Agility: 5
+      Agility: 2.5
       UpgradeCost: 250
-    - Damage: 60
-      HP: 600
-      Agility: 6
+    - Damage: 40
+      HP: 700
+      Agility: 2.8
       UpgradeCost: 500
     - Damage: 70
       HP: 700
-      Agility: 8
+      Agility: 3.2
       UpgradeCost: 1000
     - Damage: 80
       HP: 800
-      Agility: 10
+      Agility: 3.4
       UpgradeCost: 2000
     - Damage: 100
       HP: 1000
-      Agility: 12
+      Agility: 4
       UpgradeCost: 3500
     MaxLevel: 5
     FullAvatar: {fileID: 21300000, guid: a3fec59306d4c1a4db3f2300501452b6, type: 3}
     MaskedAvatar: {fileID: 21300000, guid: 07438549819300b4ca729f080df9d412, type: 3}
     CroppedAvatar: {fileID: 0}
-    Price: 800
+    Price: 1
     PlayerController: {fileID: 9100000, guid: 2d46ab9957320654ea581cad9f7e90b4, type: 2}
+    PlayerPreviewController: {fileID: 9100000, guid: d3fbac5714394b046abaa7a499a3c439,
+      type: 2}

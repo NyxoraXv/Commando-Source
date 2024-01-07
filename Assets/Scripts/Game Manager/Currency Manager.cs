@@ -18,6 +18,12 @@ public class CurrencyManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
+
+    private void Update()
+    {
+        Refresh();
+    }
+
     public void Refresh()
     {
 
@@ -60,17 +66,11 @@ public class CurrencyManager : MonoBehaviour
 
     }
 
-    private void OnWillRenderObject()
-    {
-        Refresh();
-    }
-
     public bool spendGold(int Amount)
     {
         if (CurrentGold >= Amount)
         {
             CurrentGold -= Amount;
-            Refresh();
             return true;
         }
         else
@@ -84,7 +84,6 @@ public class CurrencyManager : MonoBehaviour
         if (CurrentDiamond >= Amount)
         {
             CurrentDiamond -= Amount;
-            Refresh();
             return true;
         }
         else
@@ -96,13 +95,11 @@ public class CurrencyManager : MonoBehaviour
     public void addGold(int Amount)
     {
         CurrentGold += Amount;
-        Refresh();
     }
 
     public void addDiamond(int Amount)
     {
         CurrentDiamond += Amount;
-        Refresh();
     }
 
     public void insufficientFund(int Amount, Transform transform, PopUpInstantiate.CurrencyType type)

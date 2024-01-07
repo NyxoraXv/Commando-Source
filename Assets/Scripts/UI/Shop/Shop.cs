@@ -32,6 +32,12 @@ public class Shop : MonoBehaviour
 
     private void CreateButtons()
     {
+        // Clear existing buttons
+        foreach (Transform child in buttonParent.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
         foreach (var character in characters)
         {
             Button buttonInstance = Instantiate(buttonPrefab, buttonParent.transform);
@@ -58,6 +64,19 @@ public class Shop : MonoBehaviour
         }
     }
 
+    private void RefreshUI()
+    {
+        if (current != null)
+        {
+            var characterData = characterManager.GetCharacterPrefab(current).GetComponent<CharacterInformation>().Character;
+            previewImage.sprite = characterData.FullAvatar;
+            nameText.text = characterData.CharacterName.ToString();
+            priceText.text = characterData.Price.ToString();
+        }
+
+        // Recreate buttons
+        CreateButtons();
+    }
 
     private bool IsCharacterOwned(Character character)
     {
@@ -94,10 +113,11 @@ public class Shop : MonoBehaviour
         if (CurrencyManager.Instance.spendGold(CharacterManager.Instance.GetCharacterPrefab(current).GetComponent<CharacterInformation>().Character.Price))
         {
             CharacterManager.Instance.AddOwnedCharacter(current);
+            RefreshUI();
         }
         else
         {
-            Debug.Log("idk, doesnt work");
+            Debug.Log("idk, doesn't work");
         }
     }
 }

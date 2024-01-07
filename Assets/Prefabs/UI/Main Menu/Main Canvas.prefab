@@ -449,7 +449,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 77.61808, y: -20.65797, z: 75.61031, w: 0}
+  m_margin: {x: -0.9203377, y: -20.65797, z: -0.31019592, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -3362,7 +3362,7 @@ MonoBehaviour:
   priceText: {fileID: 4939700125009441577}
   buttonPrefab: {fileID: 7554275419199770662, guid: d3952ca9bd47910498c4daeff003c12e,
     type: 3}
-  characters: 00000000
+  characters: 000000000300000001000000
   buttonParent: {fileID: 7296808481793312510}
 --- !u!1 &2301967585250058310
 GameObject:
@@ -3938,7 +3938,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 77.61808, y: -20.65797, z: 75.61031, w: 0}
+  m_margin: {x: 0.82492065, y: -20.65797, z: 1.4351578, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -5270,7 +5270,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 77.61808, y: -20.65797, z: 75.61031, w: 0}
+  m_margin: {x: 0.82491684, y: -20.65797, z: 0.5626259, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -15810,7 +15810,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.509434, g: 0.509434, b: 0.509434, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -18833,7 +18833,7 @@ Animator:
   m_GameObject: {fileID: 8672582754957757330}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d3fbac5714394b046abaa7a499a3c439, type: 2}
+  m_Controller: {fileID: 9100000, guid: 28fb34900be41b849b6b1a1d79cc7ec4, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -22579,8 +22579,18 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 75dd210cfe1a37048ac630fa6624533b,
+      objectReference: {fileID: 21300000, guid: 1025282fbde53c44ba4986787724820d,
         type: 3}
+    - target: {fileID: 1115514469092611747, guid: 080fd5d9b64240a4a9df1402f3ab9581,
+        type: 3}
+      propertyPath: m_UseSpriteMesh
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1115514469092611747, guid: 080fd5d9b64240a4a9df1402f3ab9581,
+        type: 3}
+      propertyPath: m_PreserveAspect
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4381986025128606860, guid: 080fd5d9b64240a4a9df1402f3ab9581,
         type: 3}
       propertyPath: m_IsActive
