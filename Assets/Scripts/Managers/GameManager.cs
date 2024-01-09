@@ -48,7 +48,6 @@ public class GameManager : MonoBehaviour
         LoadSettings();
         LoadRecords();
         SaveRecords();
-        GameReset();
     }
 
     void Update()
@@ -513,6 +512,8 @@ public class GameManager : MonoBehaviour
         UIManager.UpdateBombsUI();
         UIManager.UpdateAmmoUI();
         UIManager.UpdateScoreUI();
+
+        ReloadCurrentScene();
     }
 
     private static void ReloadCurrentScene()
@@ -566,7 +567,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator WaitNextMission()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(10f);
         LoadAfterWinMission();
     }
 

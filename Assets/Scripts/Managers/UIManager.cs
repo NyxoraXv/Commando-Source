@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using System.Collections;
+
 
 public class UIManager : MonoBehaviour
 {
@@ -46,9 +48,20 @@ public class UIManager : MonoBehaviour
 
         current.bossBar.gameObject.SetActive(false);
 
+        SetInitialAlpha(current.gameOver.GetComponent<Image>(), 0f);
+        SetInitialAlpha(current.homeButton.GetComponent<Image>(), 0f);
+        SetInitialAlpha(current.restartButton.GetComponent<Image>(), 0f);
+
         // set score text to 0
         UpdateScoreUI();
         UpdateBombsUI();
+    }
+
+    private void SetInitialAlpha(Image image, float alpha)
+    {
+        Color tempColor = image.color;
+        tempColor.a = alpha;
+        image.color = tempColor;
     }
 
     public static void UpdateScoreUI()
@@ -121,6 +134,8 @@ public class UIManager : MonoBehaviour
     Vector3 targetScale = current.gameOver.transform.localScale * 1f; // Double the current scale
 
     current.gameOver.transform.DOScale(targetScale, 0.5f).SetEase(Ease.OutBack);
+
+    current.StartCoroutine(FadeImage(current.gameOver.GetComponent<Image>(), 0f, 1f, 0.5f));
     }
 
     public static void Home()
@@ -130,6 +145,8 @@ public class UIManager : MonoBehaviour
 
         // Enable the home button
         current.homeButton.gameObject.SetActive(true);
+
+        current.StartCoroutine(FadeImage(current.homeButton.GetComponent<Image>(), 0f, 1f, 0.5f));
     }
 
     public static void Restart()
@@ -138,6 +155,8 @@ public class UIManager : MonoBehaviour
         return;
 
         current.restartButton.gameObject.SetActive(true);
+
+        current.StartCoroutine(FadeImage(current.restartButton.GetComponent<Image>(), 0f, 1f, 0.5f));
     }
 
 
@@ -150,7 +169,6 @@ public class UIManager : MonoBehaviour
     public static void AddRestartButton()
     {
         GameManager.GameReset();
-        GameManager.ReloadCurrentScene();
     }
 
     public static void UpdateHealthUI(float health, float maxHealth)
@@ -178,5 +196,29 @@ public class UIManager : MonoBehaviour
 
         current.winPointsText.SetText(GameManager.GetScore().ToString());
         current.winPointsText.gameObject.SetActive(true);
+    }
+
+    private static IEnumerator FadeImage(Image image, float startAlpha, float endAlpha, float duration)
+    {
+        float startTime = Time.time;
+        float elapsedTime = 0f;
+
+        Color startColor = image.color;
+        startColor.a = startAlpha;
+        image.color = startColor;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime = Time.time - startTime;
+            float percentageComplete = elapsedTime / duration;
+            Color newColor = image.color;
+            newColor.a = Mathf.Lerp(startAlpha, endAlpha, percentageComplete);
+            image.color = newColor;
+            yield return null;
+        }
+
+        Color finalColor = image.color;
+        finalColor.a = endAlpha;
+        image.color = finalColor;
     }
 }
