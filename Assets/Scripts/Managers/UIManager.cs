@@ -13,6 +13,8 @@ public class UIManager : MonoBehaviour
     //scripts access this one through its public static methods
     static UIManager current;
     public Image gameOver;   //Text element showing the Game Over message
+    public GameObject restartButton;
+    public GameObject homeButton;
     public Image healthBar;
     public Image bossBar;
     public GameObject bossBarParent;
@@ -35,6 +37,9 @@ public class UIManager : MonoBehaviour
 
         // disable game over text
         current.gameOver.gameObject.SetActive(false);
+
+        current.restartButton.gameObject.SetActive(false);
+        current.homeButton.gameObject.SetActive(false);
 
         current.winUI.gameObject.SetActive(false);
         current.winPointsText.gameObject.SetActive(false);
@@ -118,7 +123,35 @@ public class UIManager : MonoBehaviour
     current.gameOver.transform.DOScale(targetScale, 0.5f).SetEase(Ease.OutBack);
     }
 
+    public static void Home()
+    {
+        if(current == null)
+        return;
 
+        // Enable the home button
+        current.homeButton.gameObject.SetActive(true);
+    }
+
+    public static void Restart()
+    {
+        if(current == null)
+        return;
+
+        current.restartButton.gameObject.SetActive(true);
+    }
+
+
+    public static void AddHomeButton()
+    {
+        GameManager.LoadHome();
+    }
+
+
+    public static void AddRestartButton()
+    {
+        GameManager.GameReset();
+        GameManager.ReloadCurrentScene();
+    }
 
     public static void UpdateHealthUI(float health, float maxHealth)
     {

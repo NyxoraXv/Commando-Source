@@ -8191,6 +8191,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1914503707}
   m_CullTransparentMesh: 0
+--- !u!1 &1930166079 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3581739830345995368, guid: d957822e884ea974d9441386b3a76460,
+    type: 3}
+  m_PrefabInstance: {fileID: 2056230874}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1930166080 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3935918369249430419, guid: d957822e884ea974d9441386b3a76460,
+    type: 3}
+  m_PrefabInstance: {fileID: 2056230874}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1940090616
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8264,6 +8276,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5290d9d34e7620342b7843d0b81567c3, type: 3}
+--- !u!114 &1945618264 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5624265594902118953, guid: d957822e884ea974d9441386b3a76460,
+    type: 3}
+  m_PrefabInstance: {fileID: 2056230874}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930166080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1963194024
 GameObject:
   m_ObjectHideFlags: 0
@@ -8722,6 +8746,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: a47703202bc64334c91ebbf542119291,
         type: 3}
+    - target: {fileID: 3581739830345995368, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3935918369249430419, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5012892407533340688, guid: d957822e884ea974d9441386b3a76460,
         type: 3}
       propertyPath: m_IsActive
@@ -8748,6 +8782,16 @@ PrefabInstance:
       value: 406.9
       objectReference: {fileID: 0}
     - target: {fileID: 6361495261174932477, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6675727448156622072, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
+      propertyPath: m_Name
+      value: GameOver
+      objectReference: {fileID: 0}
+    - target: {fileID: 6675727448156622072, guid: d957822e884ea974d9441386b3a76460,
         type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -9052,6 +9096,11 @@ PrefabInstance:
       objectReference: {fileID: 2056230880}
     - target: {fileID: 8837762901952213425, guid: d957822e884ea974d9441386b3a76460,
         type: 3}
+      propertyPath: restart
+      value: 
+      objectReference: {fileID: 1945618264}
+    - target: {fileID: 8837762901952213425, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
       propertyPath: winText
       value: 
       objectReference: {fileID: 1844201471}
@@ -9062,9 +9111,19 @@ PrefabInstance:
       objectReference: {fileID: 2056230881}
     - target: {fileID: 8837762901952213425, guid: d957822e884ea974d9441386b3a76460,
         type: 3}
+      propertyPath: homeButton
+      value: 
+      objectReference: {fileID: 1930166079}
+    - target: {fileID: 8837762901952213425, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
       propertyPath: MobileCanvas
       value: 
       objectReference: {fileID: 393512150}
+    - target: {fileID: 8837762901952213425, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
+      propertyPath: restartButton
+      value: 
+      objectReference: {fileID: 1930166080}
     - target: {fileID: 8837762901952213425, guid: d957822e884ea974d9441386b3a76460,
         type: 3}
       propertyPath: characterAvatar
@@ -9152,6 +9211,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7013612831198926698, guid: d957822e884ea974d9441386b3a76460, type: 3}
+    - {fileID: 8340290552774640384, guid: d957822e884ea974d9441386b3a76460, type: 3}
+    - {fileID: 6178580122565712194, guid: d957822e884ea974d9441386b3a76460, type: 3}
     m_RemovedGameObjects:
     - {fileID: 5482484026718861885, guid: d957822e884ea974d9441386b3a76460, type: 3}
     - {fileID: 7013612831198926484, guid: d957822e884ea974d9441386b3a76460, type: 3}

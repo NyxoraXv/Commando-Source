@@ -246,21 +246,22 @@ public class GameManager : MonoBehaviour
     }
 
     public static void PlayerDied()
-    {
-        //If there is no current Game Manager, exit
-        if (current == null)
-            return;
+{
+    // If there is no current Game Manager, exit
+    if (current == null)
+        return;
 
-        //The game is now over
-        current.isGameOver = true;
+    // The game is now over
+    current.isGameOver = true;
 
-        //Tell UI Manager to show the game over text and tell the Audio Manager to play
-        //game over audio
-        UIManager.DisplayGameOverText();
-        AudioManager.PlayGameOverAudio();
+    // Tell UI Manager to show the game over text and tell the Audio Manager to play
+    // game over audio
+    UIManager.DisplayGameOverText();
+    UIManager.Home();
+    UIManager.Restart();
+    AudioManager.PlayGameOverAudio();
+}
 
-        current.StartCoroutine(current.WaitHome());
-    }
 
     public static void PlayerWin()
     {
@@ -499,6 +500,9 @@ public class GameManager : MonoBehaviour
     {
         if (!current)
             return;
+        
+        Debug.Log("Reset");
+
         // reset values
         Time.timeScale = 1;
         current.isGameOver = false;
@@ -511,6 +515,12 @@ public class GameManager : MonoBehaviour
         UIManager.UpdateScoreUI();
     }
 
+    private static void ReloadCurrentScene()
+    {
+    int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+    SceneManager.LoadScene(currentSceneIndex);
+    }
+
     public static void PauseExit()
     {
         if (!current)
@@ -520,9 +530,14 @@ public class GameManager : MonoBehaviour
 
     public static void LoadHome()
     {
+        if(current == null)
+        return;
+
         CurrencyManager.Instance.addGold(current.score);
         CurrencyManager.Instance.addDiamond(current.score);
         LevelManager.Instance.addXP(current.score * 10);
+
+        Debug.Log("Home button pressed!");
         LoadScene((int)Missions.Home);
     }
 
@@ -545,13 +560,13 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator WaitHome()
     {
-        yield return new WaitForSeconds(7f);
+        yield return new WaitForSeconds(1f);
         LoadHome();
     }
 
     private IEnumerator WaitNextMission()
     {
-        yield return new WaitForSeconds(7f);
+        yield return new WaitForSeconds(1f);
         LoadAfterWinMission();
     }
 
