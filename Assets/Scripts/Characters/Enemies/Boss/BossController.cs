@@ -97,7 +97,6 @@ public class BossController : MonoBehaviour
                 {
                     StartCoroutine(HalfHealth());
                 }
-                
                 /*Run and attacks*/
                 float playerDistance = transform.position.x - followPlayer.transform.position.x;
 
@@ -157,7 +156,7 @@ public class BossController : MonoBehaviour
 
     private void OnHit(float damage)
     {
-        GameManager.AddScore(damage);
+        GameManager.AddScore(+2);
         blinkingSprite.Play();
 
         float currentBossHealth = bossHealth.GetHealth();

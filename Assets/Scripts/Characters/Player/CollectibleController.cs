@@ -5,7 +5,7 @@ using UnityEngine;
 public class CollectibleController : MonoBehaviour
 {
     public MainPlayer.CollectibleType type = MainPlayer.CollectibleType.HeavyMachineGun;
-    private int collectiblePoints = 1000;
+    private int collectiblePoints = 10;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {

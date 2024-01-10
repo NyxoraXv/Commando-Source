@@ -17,12 +17,15 @@ public class UIManager : MonoBehaviour
     public Image gameOver;   //Text element showing the Game Over message
     public GameObject restartButton;
     public GameObject homeButton;
+    public GameObject continueButton;
     public Image healthBar;
     public Image bossBar;
     public GameObject bossBarParent;
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI loseScore;
     public TextMeshProUGUI bombs;
     public TextMeshProUGUI ammoText;
+    public TextMeshProUGUI coinRevive;
     public Image winUI;
     public TextMeshProUGUI winPointsText;
     public GameObject MobileCanvas;
@@ -42,6 +45,7 @@ public class UIManager : MonoBehaviour
 
         current.restartButton.gameObject.SetActive(false);
         current.homeButton.gameObject.SetActive(false);
+        current.continueButton.gameObject.SetActive(false);
 
         current.winUI.gameObject.SetActive(false);
         current.winPointsText.gameObject.SetActive(false);
@@ -51,6 +55,7 @@ public class UIManager : MonoBehaviour
         SetInitialAlpha(current.gameOver.GetComponent<Image>(), 0f);
         SetInitialAlpha(current.homeButton.GetComponent<Image>(), 0f);
         SetInitialAlpha(current.restartButton.GetComponent<Image>(), 0f);
+        SetInitialAlpha(current.continueButton.GetComponent<Image>(), 0f);
 
         // set score text to 0
         UpdateScoreUI();
@@ -72,6 +77,7 @@ public class UIManager : MonoBehaviour
 
         //Refresh the score
         current.scoreText.SetText(GameManager.GetScore().ToString());
+        current.loseScore.SetText(GameManager.GetScore().ToString());
     }
 
     public static void UpdateBossHealthUI(float health, float maxHealth)
@@ -159,6 +165,16 @@ public class UIManager : MonoBehaviour
         current.StartCoroutine(FadeImage(current.restartButton.GetComponent<Image>(), 0f, 1f, 0.5f));
     }
 
+    public static void Continue()
+    {
+        if(current == null)
+        return;
+
+        current.continueButton.gameObject.SetActive(true);
+
+        current.StartCoroutine(FadeImage(current.continueButton.GetComponent<Image>(), 0f, 1f, 0.5f));
+    }
+
 
     public static void AddHomeButton()
     {
@@ -169,6 +185,11 @@ public class UIManager : MonoBehaviour
     public static void AddRestartButton()
     {
         GameManager.GameReset();
+    }
+
+    public static void Revive()
+    {
+
     }
 
     public static void UpdateHealthUI(float health, float maxHealth)

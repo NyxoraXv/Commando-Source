@@ -253,11 +253,11 @@ public class GameManager : MonoBehaviour
     // The game is now over
     current.isGameOver = true;
 
-    // Tell UI Manager to show the game over text and tell the Audio Manager to play
     // game over audio
     UIManager.DisplayGameOverText();
     UIManager.Home();
     UIManager.Restart();
+    UIManager.Continue();
     AudioManager.PlayGameOverAudio();
 }
 

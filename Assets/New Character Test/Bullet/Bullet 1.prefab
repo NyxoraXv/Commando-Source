@@ -101,7 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletSpeed: 5
   lifeTime: 5
-  damageShot: 600
+  damageShot: 100
   launcher: 0
   explosionPrefab: {fileID: 1437680763721510, guid: a311f5de96916bf44bcb1dae61840939,
     type: 3}
