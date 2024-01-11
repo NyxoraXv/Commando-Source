@@ -903,11 +903,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2328072215170703004}
+  m_Father: {fileID: 7013612831472759307}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -75.1, y: 110.9}
+  m_AnchoredPosition: {x: -75.099976, y: 103.86997}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3754787880718170640
@@ -1158,11 +1158,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2328072215170703004}
+  m_Father: {fileID: 7013612831472759307}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 75.1, y: 110.9}
+  m_AnchoredPosition: {x: 75.10005, y: 103.86997}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6385383605910481053
@@ -1940,11 +1940,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2306402779408962923}
-  m_Father: {fileID: 2328072215170703004}
+  m_Father: {fileID: 7013612831472759307}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 93.309, y: -215.1922}
+  m_AnchoredPosition: {x: 399.99957, y: -319.6927}
   m_SizeDelta: {x: 107.0484, y: 29.8947}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &720637379085225817
@@ -2205,9 +2205,6 @@ RectTransform:
   - {fileID: 133977439038111319}
   - {fileID: 2679310379502540584}
   - {fileID: 8629846783722979158}
-  - {fileID: 8892541927045100184}
-  - {fileID: 2911258825255783081}
-  - {fileID: 162772850851377502}
   - {fileID: 5303900976731025596}
   m_Father: {fileID: 7013612831472759307}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2266,6 +2263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5ec545865611524cac8d85f64a134ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  duration: 2
 --- !u!1 &6923834916149451778
 GameObject:
   m_ObjectHideFlags: 0
@@ -2719,6 +2717,9 @@ RectTransform:
   - {fileID: 7013612829821514907}
   - {fileID: 5280294328036360539}
   - {fileID: 5694193148648427170}
+  - {fileID: 2911258825255783081}
+  - {fileID: 8892541927045100184}
+  - {fileID: 162772850851377502}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
