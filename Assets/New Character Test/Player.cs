@@ -41,6 +41,9 @@ public class MainPlayer : MonoBehaviour
     public float timeBetweenKnifes = 0.5f; // Time delay between consecutive knife attacks
     private float lastKnifeTime;
 
+    [Header("Grenade Prefab")]
+    public GameObject grenadePrefab;
+
 
     private Vector3 initScale, negatedScale;
 
@@ -73,6 +76,7 @@ public class MainPlayer : MonoBehaviour
         speed = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.Levels[CharacterManager.Instance.GetOwnedCharacterLevel(CharacterManager.Instance.selectedCharacter)].Agility*0.2f;
         JumpForce = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.Levels[CharacterManager.Instance.GetOwnedCharacterLevel(CharacterManager.Instance.selectedCharacter)].Agility*1.2f;
         GameManager.addAmmo(250);
+        GameManager.SetBombs(200);
     }
 
     private IEnumerator KnifeAttack()
@@ -169,6 +173,7 @@ public class MainPlayer : MonoBehaviour
     {
         HandleMovement();
         Aim();
+        ThrowGrenade();
     }
 
     private bool CheckEnemiesNearby()
@@ -341,6 +346,19 @@ public class MainPlayer : MonoBehaviour
             }
         }
     }
+
+    private void ThrowGrenade()
+    {
+        if (Input.GetAxis("grenade") == 1)
+        {
+            if (GameManager.GetBombs() > 0)
+            {
+                GameManager.RemoveBomb();
+                Instantiate(grenadePrefab, aimPoint.position, aimPoint.rotation);
+            }
+        }
+    }
+
 
     private void HandleMovement()
     {

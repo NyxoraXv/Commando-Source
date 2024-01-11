@@ -5430,6 +5430,17 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 28fb34900be41b849b6b1a1d79cc7ec4, type: 2}
     - target: {fileID: 2938017755305157029, guid: ea7e9298cecd4d648b055f4171c7c793,
         type: 3}
+      propertyPath: knifeRange
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2938017755305157029, guid: ea7e9298cecd4d648b055f4171c7c793,
+        type: 3}
+      propertyPath: grenadePrefab
+      value: 
+      objectReference: {fileID: 5665392374265219023, guid: 969c77ef74c77ee4e9f6a33b41a4fad4,
+        type: 3}
+    - target: {fileID: 2938017755305157029, guid: ea7e9298cecd4d648b055f4171c7c793,
+        type: 3}
       propertyPath: enemyLayer.m_Bits
       value: 512
       objectReference: {fileID: 0}
