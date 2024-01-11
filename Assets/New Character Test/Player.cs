@@ -39,6 +39,7 @@ public class MainPlayer : MonoBehaviour
     public GameObject foreground;
 
     private Health health;
+    private bool isDead;
 
     Cinemachine.CinemachineBrain cinemachineBrain;
     public enum CollectibleType
@@ -76,13 +77,23 @@ public class MainPlayer : MonoBehaviour
         Died();
         GameManager.PlayerDied();
         AudioManager.PlayDeathAudio();
-        Destroy(Weapon.gameObject);
-        Destroy(this);
+        Weapon.gameObject.SetActive(false);
+        this.enabled = false;
     }
 
     void Died()
     {
         animator.SetBool("isDying", true);
+        isDead = true;
+    }
+
+    void Revive()
+    {
+        animator.SetBool("isDying", false);
+        isDead = false;
+        Weapon.gameObject.SetActive(true);
+        this.enabled = true;
+        health.IncreaseHealth();
     }
 
     private void OnHit(float damage) // health delegate onHit
@@ -251,23 +262,24 @@ public class MainPlayer : MonoBehaviour
         }
     }
 
-    void Shoot()
+    private void Shoot()
     {
         float currentTime = Time.time;
-        bool fireButtonDown = Input.GetButtonDown("Fire1");
+        bool fireButtonPressed = Input.GetButton("Fire1");
 
-        if ((fireButtonDown/* || MobileManager.GetButtonFire1()*/) && currentTime - lastShotTime >= timeBetweenShots)
+        if (fireButtonPressed /* || MobileManager.GetButtonFire1() */)
         {
-            if (bulletPrefab != null)
+            if (currentTime - lastShotTime >= 1f / rateOfFire)
             {
-                
-                Instantiate(bulletPrefab, aimPoint.position, aimPoint.rotation);
-
-                lastShotTime = currentTime;
-            }
-            else
-            {
-                Debug.LogError("Bullet prefab is not assigned in the MainPlayer script.");
+                if (bulletPrefab != null)
+                {
+                    Instantiate(bulletPrefab, aimPoint.position, aimPoint.rotation);
+                    lastShotTime = currentTime;
+                }
+                else
+                {
+                    Debug.LogError("Bullet prefab is not assigned in the MainPlayer script.");
+                }
             }
         }
     }

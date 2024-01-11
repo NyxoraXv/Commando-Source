@@ -9660,6 +9660,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1689278991697342947, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
+      propertyPath: offset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1689278991697342947, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
+      propertyPath: offset.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5635637192038270855, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a47703202bc64334c91ebbf542119291,
+        type: 3}
     - target: {fileID: 7013612831472759307, guid: d957822e884ea974d9441386b3a76460,
         type: 3}
       propertyPath: m_Pivot.x
