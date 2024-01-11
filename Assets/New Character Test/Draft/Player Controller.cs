@@ -254,20 +254,16 @@ public class Player : MonoBehaviour
                 {
                     rateOfFire = 10;
                 }
-                else
-                {
-                    GameManager.RechargAmmoMG();
-                }
                 break;
             case CollectibleType.MedKit:
                 health.IncreaseHealth();
                 break;
             case CollectibleType.Ammo:
-                GameManager.AddAmmo();
+                GameManager.addAmmo(150);
 
                 if (!haveMachineGun)
                 {
-                    GameManager.SetHeavyMachineAmmo(0);
+                    GameManager.addAmmo(150);
                     UIManager.UpdateAmmoUI();
                 }
                 break;
