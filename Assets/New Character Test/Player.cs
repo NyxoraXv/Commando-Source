@@ -32,6 +32,16 @@ public class MainPlayer : MonoBehaviour
     [SerializeField] private float TopAngleLimit = 40f;
     [SerializeField] private float BottomAngleLimit = -20f;
 
+    [Header("Knife")]
+    public float knifeDamage = 500f; // Adjust damage as needed
+    public float knifeRange = 1.5f; // Adjust range as needed
+    public LayerMask enemyLayer; // Layer mask for enemies
+
+    private bool isKnifing = false;
+    public float timeBetweenKnifes = 0.5f; // Time delay between consecutive knife attacks
+    private float lastKnifeTime;
+
+
     private Vector3 initScale, negatedScale;
 
     private Vector2 _mouseWorldPos;
@@ -64,6 +74,31 @@ public class MainPlayer : MonoBehaviour
         JumpForce = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.Levels[CharacterManager.Instance.GetOwnedCharacterLevel(CharacterManager.Instance.selectedCharacter)].Agility*1.2f;
         GameManager.addAmmo(250);
     }
+
+    private IEnumerator KnifeAttack()
+    {
+        isKnifing = true;
+
+        yield return new WaitForSeconds(0.1f); // Adjust delay if needed, this is the animation delay
+
+        // Perform a raycast to detect enemies in front of the player
+        RaycastHit2D hit = Physics2D.Raycast(aimPoint.position, aimPoint.right, knifeRange, enemyLayer);
+
+        if (hit.collider != null)
+        {
+            // Damage the enemy
+            Health enemyHealth = hit.collider.GetComponent<Health>();
+            if (enemyHealth != null)
+            {
+                enemyHealth.Hit(knifeDamage);
+            }
+        }
+
+        yield return new WaitForSeconds(timeBetweenKnifes);
+
+        isKnifing = false;
+    }
+
 
     private void registerHealth()
     {
@@ -134,6 +169,14 @@ public class MainPlayer : MonoBehaviour
     {
         HandleMovement();
         Aim();
+    }
+
+    private bool CheckEnemiesNearby()
+    {
+        // Perform a raycast to detect enemies in front of the player
+        RaycastHit2D hit = Physics2D.Raycast(aimPoint.position, aimPoint.right, knifeRange, enemyLayer);
+
+        return (hit.collider != null);
     }
 
     private bool Move()
@@ -270,27 +313,34 @@ public class MainPlayer : MonoBehaviour
         float currentTime = Time.time;
         bool fireButtonPressed = Input.GetButton("Fire1");
 
-        if (fireButtonPressed /* || MobileManager.GetButtonFire1() */ && GameManager.getAmmo() > 0)
+        // Check if the player is not currently knifing and the fire button is pressed
+        if (!isKnifing && fireButtonPressed && GameManager.getAmmo() > 0)
         {
-            if (currentTime - lastShotTime >= 1f / rateOfFire)
+            // Check if there are enemies nearby before shooting
+            if (CheckEnemiesNearby())
             {
-                if (bulletPrefab != null)
+                // Perform knife attack
+                StartCoroutine(KnifeAttack());
+            }
+            else
+            {
+                // Otherwise, proceed with shooting
+                if (currentTime - lastShotTime >= 1f / rateOfFire)
                 {
-                    GameManager.spendAmmo(1);
-                    Instantiate(bulletPrefab, aimPoint.position, aimPoint.rotation);
-                    lastShotTime = currentTime;
-                }
-                else
-                {
-                    Debug.LogError("Bullet prefab is not assigned in the MainPlayer script.");
+                    if (bulletPrefab != null)
+                    {
+                        GameManager.spendAmmo(1);
+                        Instantiate(bulletPrefab, aimPoint.position, aimPoint.rotation);
+                        lastShotTime = currentTime;
+                    }
+                    else
+                    {
+                        Debug.LogError("Bullet prefab is not assigned in the MainPlayer script.");
+                    }
                 }
             }
         }
     }
-
-
-
-
 
     private void HandleMovement()
     {
