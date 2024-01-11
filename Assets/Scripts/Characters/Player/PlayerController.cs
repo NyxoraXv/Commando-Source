@@ -97,7 +97,6 @@ public class PlayerController : MonoBehaviour
         if (GameManager.IsGameOver() || !health.IsAlive())
             return;
 
-        CheckHeavyAmmo();
         Fire();
         ThrowGranate();
         MoveHorizontally();
@@ -472,7 +471,6 @@ public class PlayerController : MonoBehaviour
             BulletManager.GetNormalBulletPool().Spawn(projSpawner.transform.position, projSpawner.transform.rotation);
             yield return new WaitForSeconds(0.05f);
             BulletManager.GetNormalBulletPool().Spawn(projSpawner.transform.position, projSpawner.transform.rotation);
-            GameManager.RemoveHeavyMachineAmmo();
         }
         else
         {
@@ -541,41 +539,23 @@ public class PlayerController : MonoBehaviour
                 {
                     topAnimator.runtimeAnimatorController = machineGunAnimator;
                     bottomAnimator.runtimeAnimatorController = bottomMachineGunAnimator;
-                    GameManager.SetHeavyMachineAmmo(120);
                     UIManager.UpdateAmmoUI();
                     haveMachineGun = true;
-                }
-                else
-                {
-                    GameManager.RechargAmmoMG();
                 }
                 break;
             case CollectibleType.MedKit:
                 health.IncreaseHealth();
                 break;
             case CollectibleType.Ammo:
-                GameManager.AddAmmo();
 
                 if (!haveMachineGun)
                 {
-                    GameManager.SetHeavyMachineAmmo(0);
                     UIManager.UpdateAmmoUI();
                 }
                 break;
             default:
                 Debug.Log("Collectible not found");
                 break;
-        }
-    }
-
-    public void CheckHeavyAmmo()
-    {
-        if (GameManager.GetHeavyMachineAmmo() <= 0 && haveMachineGun)
-        {
-            topAnimator.runtimeAnimatorController = pistolAnimator;
-            bottomAnimator.runtimeAnimatorController = bottomPistolAnimator;
-            haveMachineGun = false;
-            UIManager.UpdateAmmoUI();
         }
     }
 }

@@ -95,6 +95,8 @@ public class MainPlayer : MonoBehaviour
         Weapon.gameObject.SetActive(true);
         this.enabled = true;
         health.IncreaseHealth();
+
+        UIManager.DisableReviveUI();
     }
 
     private void OnHit(float damage) // health delegate onHit

@@ -464,8 +464,6 @@ public class GameManager : MonoBehaviour
         if (!current)
             return;
         
-        Debug.Log("Reset");
-
         // reset values
         Time.timeScale = 1;
         current.isGameOver = false;
@@ -475,15 +473,14 @@ public class GameManager : MonoBehaviour
         // refresh if mission directly started from editor
         UIManager.UpdateBombsUI();
         UIManager.UpdateAmmoUI();
-        UIManager.UpdateScoreUI();
 
         ReloadCurrentScene();
     }
 
     private static void ReloadCurrentScene()
     {
-    int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-    SceneManager.LoadScene(currentSceneIndex);
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(currentSceneIndex);
     }
 
     public static void PauseExit()
@@ -499,7 +496,7 @@ public class GameManager : MonoBehaviour
         return;
 
         CurrencyManager.Instance.addGold(current.score);
-        CurrencyManager.Instance.addDiamond(current.score);
+        CurrencyManager.Instance.addDiamond(current.score / 10);
         LevelManager.Instance.addXP(current.score * 10);
 
         Debug.Log("Home button pressed!");
@@ -537,8 +534,13 @@ public class GameManager : MonoBehaviour
 
     public static void LoadScene(int id, bool skipReset = false)
     {
+        CurrencyManager.Instance.addGold(current.score);
+        CurrencyManager.Instance.addDiamond(current.score / 10);
+        LevelManager.Instance.addXP(current.score * 10);
+
         if (!skipReset)
             GameReset();
+
         SceneManager.LoadScene(id);
     }
 }

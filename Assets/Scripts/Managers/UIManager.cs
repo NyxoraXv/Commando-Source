@@ -142,8 +142,11 @@ public class UIManager : MonoBehaviour
 
     public static void Continue()
     {
+        if (current == null)
+            return;
         
         current.continueButton.gameObject.SetActive(true);
+        FadeImage(current.continueButton.GetComponent<Image>(), 0f, 1f, 0.5f);
         
     }
 
@@ -160,6 +163,14 @@ public class UIManager : MonoBehaviour
     public static void Revive()
     {
         GameManager.GetPlayer().GetComponent<MainPlayer>().Revive();
+    }
+
+    public static void DisableReviveUI()
+    {
+        current.continueButton.gameObject.SetActive(false);
+        current.restartButton.gameObject.SetActive(false);
+        current.homeButton.gameObject.SetActive(false);
+        current.gameOver.gameObject.SetActive(false);
     }
 
     public static void UpdateHealthUI(float health, float maxHealth)
