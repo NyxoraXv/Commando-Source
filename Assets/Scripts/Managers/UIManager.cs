@@ -100,13 +100,13 @@ public class UIManager : MonoBehaviour
         if (current == null)
             return;
 
-        if (GameManager.GetHeavyMachineAmmo() == 0)
+        if (GameManager.getAmmo() == 0)
         {
             current.ammoText.SetText("oo");
         }
         else
         {
-            current.ammoText.SetText(GameManager.GetHeavyMachineAmmo().ToString());
+            current.ammoText.SetText(GameManager.getAmmo().ToString());
         }
     }
 
@@ -159,7 +159,7 @@ public class UIManager : MonoBehaviour
 
     public static void Revive()
     {
-        // Implement the Revive logic here
+        GameManager.GetPlayer().GetComponent<MainPlayer>().Revive();
     }
 
     public static void UpdateHealthUI(float health, float maxHealth)

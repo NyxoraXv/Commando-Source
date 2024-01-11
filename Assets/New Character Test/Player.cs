@@ -62,6 +62,7 @@ public class MainPlayer : MonoBehaviour
 
         speed = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.Levels[CharacterManager.Instance.GetOwnedCharacterLevel(CharacterManager.Instance.selectedCharacter)].Agility*0.2f;
         JumpForce = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.Levels[CharacterManager.Instance.GetOwnedCharacterLevel(CharacterManager.Instance.selectedCharacter)].Agility*1.2f;
+        GameManager.addAmmo(250);
     }
 
     private void registerHealth()
@@ -87,7 +88,7 @@ public class MainPlayer : MonoBehaviour
         isDead = true;
     }
 
-    void Revive()
+    public void Revive()
     {
         animator.SetBool("isDying", false);
         isDead = false;
@@ -113,7 +114,7 @@ public class MainPlayer : MonoBehaviour
                 health.IncreaseHealth();
                 break;
             case CollectibleType.Ammo:
-                GameManager.AddAmmo();
+                GameManager.addAmmo(150);
                     UIManager.UpdateAmmoUI();
                 break;
             default:
@@ -267,12 +268,13 @@ public class MainPlayer : MonoBehaviour
         float currentTime = Time.time;
         bool fireButtonPressed = Input.GetButton("Fire1");
 
-        if (fireButtonPressed /* || MobileManager.GetButtonFire1() */)
+        if (fireButtonPressed /* || MobileManager.GetButtonFire1() */ && GameManager.getAmmo() > 0)
         {
             if (currentTime - lastShotTime >= 1f / rateOfFire)
             {
                 if (bulletPrefab != null)
                 {
+                    GameManager.spendAmmo(1);
                     Instantiate(bulletPrefab, aimPoint.position, aimPoint.rotation);
                     lastShotTime = currentTime;
                 }

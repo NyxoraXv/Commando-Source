@@ -172,13 +172,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   JumpForce: 10
-  rateOfFire: 1
+  rateOfFire: 5
   bulletPrefab: {fileID: 3542438601343707874, guid: e33cecc02f168fa4b9fa4ab2d2445f33,
     type: 3}
   Weapon: {fileID: 8003484413249760742}
   aimPoint: {fileID: 7742327139498762512}
   TopAngleLimit: 0
   BottomAngleLimit: 0
+  foreground: {fileID: 0}
 --- !u!114 &523120103920528663
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     int score = 0;
     int initialBombs = 10;
     int bombs;
-    int heavyMachineAmmo = 0;
+    int ammo;
     Difficulty difficulty = Difficulty.Medium;
     float bgmAudio = 1f;
     float sfxAudio = 1f;
@@ -170,50 +170,7 @@ public class GameManager : MonoBehaviour
         UIManager.UpdateBombsUI();
     }
 
-    public static int GetHeavyMachineAmmo()
-    {
-        //If there is no current Game Manager, return 0
-        if (current == null)
-            return 100;
 
-        //Return the state of the game
-        return current.heavyMachineAmmo;
-    }
-
-    public static void SetHeavyMachineAmmo(int ammo)
-    {
-        //If there is no current Game Manager, return 0
-        if (current == null)
-            return;
-
-        //Return the state of the game
-        current.heavyMachineAmmo = ammo;
-    }
-
-    public static void RemoveHeavyMachineAmmo()
-    {
-        //If there is no current Game Manager, exit
-        if (current == null)
-            return;
-
-        current.heavyMachineAmmo -= 3;
-        if (current.heavyMachineAmmo < 0)
-            current.heavyMachineAmmo = 0;
-        UIManager.UpdateAmmoUI();
-    }
-
-    public static void AddAmmo()
-    {
-        //If there is no current Game Manager, exit
-        if (current == null)
-            return;
-
-        current.bombs += 10;
-        //current.heavyMachineAmmo += 120;
-
-        UIManager.UpdateBombsUI();
-        //UIManager.UpdateAmmoUI();
-    }
 
     public static void SetBombs(int bombs = 10)
     {
@@ -223,14 +180,21 @@ public class GameManager : MonoBehaviour
         UIManager.UpdateBombsUI();
     }
 
-    public static void RechargAmmoMG()
+    public static void addAmmo(int ammo)
     {
-        //If there is no current Game Manager, exit
-        if (current == null)
-            return;
+        current.ammo += ammo;
+        UIManager.UpdateAmmoUI();
+    }
 
-        current.heavyMachineAmmo += 120;
-
+    public static int getAmmo()
+    {
+        return current.ammo;
+        UIManager.UpdateAmmoUI();
+    }
+    
+    public static void spendAmmo(int ammo)
+    {
+        current.ammo -= ammo;
         UIManager.UpdateAmmoUI();
     }
 
