@@ -86,8 +86,7 @@ public class UIManager : MonoBehaviour
             return;
 
         currencyDisplayInProgress = true;
-
-        current.Currency.gameObject.SetActive(true);
+        
 
         // Set initial alpha to 0f
         CanvasGroup canvasGroup = current.Currency.GetComponent<CanvasGroup>();
@@ -106,7 +105,6 @@ public class UIManager : MonoBehaviour
                 canvasGroup.DOFade(0f, 1f).SetDelay(3f)
                     .OnComplete(() =>
                     {
-                        current.Currency.gameObject.SetActive(false);
                         currencyDisplayInProgress = false;
                     });
             });

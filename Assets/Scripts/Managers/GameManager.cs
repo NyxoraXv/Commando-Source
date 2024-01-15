@@ -192,9 +192,9 @@ public class GameManager : MonoBehaviour
 
     public static void AddCurrency()
     {
-        CurrencyManager.Instance.addGold(current.score / 50);
-        CurrencyManager.Instance.addDiamond(current.score /80);
-        LevelManager.Instance.addXP(current.score * 1);
+        CurrencyManager.Instance.addGold(1);
+        CurrencyManager.Instance.addDiamond(1);
+        LevelManager.Instance.addXP(10);
     }
 
     public static int GetBombs()
