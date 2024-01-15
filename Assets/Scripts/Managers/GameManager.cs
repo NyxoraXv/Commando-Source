@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     //This class holds a static reference to itself to ensure that there will only be
     //one in existence. This is often referred to as a "singleton" design pattern. Other
     //scripts access this one through its public static methods
-    public static GameManager current;
+    static GameManager current;
     //static CurrencyManager currency;
 
     public enum Difficulty {Easy = 1, Medium = 2, Hard = 3 }
@@ -31,7 +31,6 @@ public class GameManager : MonoBehaviour
     float mission1Points = 0f;
     float mission2Points = 0f;
     float mission3Points = 0f;
-    bool isPlayerDead;
 
     [Header("Layers")]
     public LayerMask enemyLayer;
@@ -49,7 +48,6 @@ public class GameManager : MonoBehaviour
         LoadSettings();
         LoadRecords();
         SaveRecords();
-        isPlayerDead = false;
     }
 
     void Update()
@@ -106,42 +104,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public static void RevivePlayer()
-    {
-        // If there is no current Game Manager or the player is not dead, exit
-        if (current == null || !current.isPlayerDead)
-            return;
-
-        // Set player's health to full or any initial health value
-        var player = GetPlayer();
-        if (player)
-        {
-            var health = player.GetComponent<Health>();
-            if (health)
-            {
-                health.IncreaseHealth(health.GetMaxHealth());
-            }
-        }
-
-        // Optionally reset other player-related values
-        SetBombs(); // Reset bombs to default value
-        // Reset any other player-related values as needed
-
-        // Update UI and other necessary components
-        UIManager.UpdateBombsUI();
-        UIManager.UpdateAmmoUI();
-
-        // Set the player as alive
-        current.isPlayerDead = false;
-        current.isGameOver = false;
-
-        // You may want to play a revive sound or show a revive animation here
-
-        // Resume game or perform any additional actions needed after revival
-        Time.timeScale = 1f;
-    }
-
-
     public static bool ToggleGodMode()
     {
         var player = GetPlayer();
@@ -192,9 +154,9 @@ public class GameManager : MonoBehaviour
 
     public static void AddCurrency()
     {
-        CurrencyManager.Instance.addGold(1);
-        CurrencyManager.Instance.addDiamond(1);
-        LevelManager.Instance.addXP(10);
+        CurrencyManager.Instance.addGold(current.score / 40);
+        CurrencyManager.Instance.addDiamond(current.score / 60);
+        LevelManager.Instance.addXP(current.score * 1);
     }
 
     public static int GetBombs()
@@ -261,7 +223,8 @@ public class GameManager : MonoBehaviour
     if (current == null)
         return;
 
-     current.isPlayerDead = true;
+    // The game is now over
+    current.isGameOver = true;
 
     // game over audio
     UIManager.DisplayGameOverText();
