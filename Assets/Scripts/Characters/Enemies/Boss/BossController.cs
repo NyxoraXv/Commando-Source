@@ -194,7 +194,7 @@ public class BossController : MonoBehaviour
 
     public void setFollow(GameObject follow)
     {
-        followPlayer = GameManager.GetPlayer();
+        followPlayer = follow;
     }
 
     private IEnumerator Spawn()

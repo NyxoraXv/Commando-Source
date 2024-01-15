@@ -72,7 +72,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8003484413249760742}
   - component: {fileID: 6249376375824716949}
-  - component: {fileID: 2082334299683471256}
   m_Layer: 15
   m_Name: Weapon
   m_TagString: Untagged
@@ -149,27 +148,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &2082334299683471256
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4989798503098087678}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 1f4ba5ce332537641a5b683c7f845951, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7075540455007373143
 GameObject:
   m_ObjectHideFlags: 0
@@ -220,7 +198,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c31ed02d5b98dae45b1a7fc95a629df6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bottomAnimator: {fileID: 2082334299683471256}
   speed: 1
   speedMultiplier: 2
   groundLayer:
@@ -237,22 +214,11 @@ MonoBehaviour:
   TopAngleLimit: 0
   BottomAngleLimit: 0
   knifeDamage: 500
-<<<<<<< HEAD
   knifeRange: 1.5
   enemyLayer:
     serializedVersion: 2
     m_Bits: 0
   timeBetweenKnifes: 0.5
-=======
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 512
-  knifeHitVFXPrefab: {fileID: 100002, guid: 5d0554b4b6133a0428cbdab0f15661e6, type: 3}
-  timeBetweenKnifes: 0.5
-  grenadePrefab: {fileID: 5665392374265219023, guid: 969c77ef74c77ee4e9f6a33b41a4fad4,
-    type: 3}
-  grenadeCooldown: 1
->>>>>>> 365c794 (1)
   foreground: {fileID: 0}
 --- !u!114 &523120103920528663
 MonoBehaviour:
@@ -360,7 +326,7 @@ Animator:
   m_GameObject: {fileID: 7075540455007373143}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 28fb34900be41b849b6b1a1d79cc7ec4, type: 2}
+  m_Controller: {fileID: 9100000, guid: 2d46ab9957320654ea581cad9f7e90b4, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

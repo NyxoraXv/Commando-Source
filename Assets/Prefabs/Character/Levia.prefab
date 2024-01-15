@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7361782805168507399
 Transform:
   m_ObjectHideFlags: 0
@@ -47,31 +47,30 @@ MonoBehaviour:
   Character:
     CharacterName: 2
     Levels:
-    - Damage: 20
-      HP: 200
-      Agility: 3
-      UpgradeCost: 200
-    - Damage: 40
-      HP: 250
-      Agility: 3.2
+    - Damage: 123
+      HP: 1412
+      Agility: 4124
+      UpgradeCost: 125
+    - Damage: 3123
+      HP: 412
+      Agility: 421
       UpgradeCost: 250
-    - Damage: 50
-      HP: 300
-      Agility: 3.4
+    - Damage: 213
+      HP: 2
+      Agility: 2
       UpgradeCost: 375
-    - Damage: 60
-      HP: 350
-      Agility: 3.5
+    - Damage: 321
+      HP: 2
+      Agility: 242
       UpgradeCost: 500
-    - Damage: 75
-      HP: 500
-      Agility: 3.6
+    - Damage: 321
+      HP: 2
+      Agility: 242
       UpgradeCost: 500
     MaxLevel: 5
-    FullAvatar: {fileID: 21300000, guid: 26c1c7de22d3d5e47a3e649e9f567540, type: 3}
-    MaskedAvatar: {fileID: 21300000, guid: d6ca98a252a0a364b8550ba3f73b4d19, type: 3}
+    FullAvatar: {fileID: 21300000, guid: 9a58398248d5a964cbb41b12ccda5775, type: 3}
+    MaskedAvatar: {fileID: 21300000, guid: e328cf5fb3dd76c4481209c03dfb0fe8, type: 3}
     CroppedAvatar: {fileID: 0}
     Price: 1
-    PlayerController: {fileID: 22100000, guid: 041e362c7d5833b4fb00899d4a25a657, type: 2}
-    PlayerPreviewController: {fileID: 22100000, guid: 9fd5a61b38e311c4fa6fe50baef6c144,
-      type: 2}
+    PlayerController: {fileID: 9100000, guid: f1d456962f38e41439c5dfbc093759f4, type: 2}
+    PlayerPreviewController: {fileID: 0}

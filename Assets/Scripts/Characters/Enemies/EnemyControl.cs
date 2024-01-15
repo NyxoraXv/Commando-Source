@@ -64,9 +64,9 @@ public class EnemyControl : MonoBehaviour
         }
     }
 
-    public void setFollow()
+    public void setFollow(GameObject follow)
     {
-        followPlayer = GameManager.GetPlayer();
+        followPlayer = follow;
     }
 
     private void registerHealth()

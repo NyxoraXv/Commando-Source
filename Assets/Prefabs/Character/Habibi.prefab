@@ -68,8 +68,8 @@ MonoBehaviour:
       Agility: 4
       UpgradeCost: 750
     MaxLevel: 5
-    FullAvatar: {fileID: 21300000, guid: 06370bfd98799f942b47e801b7c6931c, type: 3}
-    MaskedAvatar: {fileID: 21300000, guid: ea7c85d86c8adb64c8ab023e00e1f27b, type: 3}
+    FullAvatar: {fileID: 21300000, guid: 1025282fbde53c44ba4986787724820d, type: 3}
+    MaskedAvatar: {fileID: 21300000, guid: 1025282fbde53c44ba4986787724820d, type: 3}
     CroppedAvatar: {fileID: 0}
     Price: 1
     PlayerController: {fileID: 22100000, guid: 588dec7395814d246b2617475087499d, type: 2}
