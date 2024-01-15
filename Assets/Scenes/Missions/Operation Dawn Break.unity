@@ -10286,6 +10286,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: a47703202bc64334c91ebbf542119291,
         type: 3}
+    - target: {fileID: 6361495261174932477, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7013612831472759307, guid: d957822e884ea974d9441386b3a76460,
         type: 3}
       propertyPath: m_Pivot.x
@@ -10391,11 +10396,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 8837762901952213425, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
+      propertyPath: Currency
+      value: 
+      objectReference: {fileID: 1859724674}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d957822e884ea974d9441386b3a76460, type: 3}
+--- !u!1 &1859724674 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4507451524206153848, guid: d957822e884ea974d9441386b3a76460,
+    type: 3}
+  m_PrefabInstance: {fileID: 1859724673}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1866716904
 GameObject:
   m_ObjectHideFlags: 0

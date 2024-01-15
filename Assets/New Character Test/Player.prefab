@@ -31,6 +31,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8003484413249760742}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4308166809234712855
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5170268315157267760}
+  m_Layer: 15
+  m_Name: Grenade
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5170268315157267760
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4308166809234712855}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0.32966426, w: 0.9440983}
+  m_LocalPosition: {x: 0.201, y: -0.091, z: -0.036076263}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8003484413249760742}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4989798503098087678
 GameObject:
   m_ObjectHideFlags: 0
@@ -63,6 +94,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7742327139498762512}
+  - {fileID: 5170268315157267760}
   m_Father: {fileID: 5990949584047184952}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6249376375824716949
@@ -199,10 +231,13 @@ MonoBehaviour:
   bulletPrefab: {fileID: 3542438601343707874, guid: e33cecc02f168fa4b9fa4ab2d2445f33,
     type: 3}
   Weapon: {fileID: 8003484413249760742}
+  granadeSpawner: {fileID: 4308166809234712855}
+  granate: {fileID: 5665392374265219023, guid: 969c77ef74c77ee4e9f6a33b41a4fad4, type: 3}
   aimPoint: {fileID: 7742327139498762512}
   TopAngleLimit: 0
   BottomAngleLimit: 0
   knifeDamage: 500
+<<<<<<< HEAD
   enemyLayer:
     serializedVersion: 2
     m_Bits: 512
@@ -211,6 +246,13 @@ MonoBehaviour:
   grenadePrefab: {fileID: 5665392374265219023, guid: 969c77ef74c77ee4e9f6a33b41a4fad4,
     type: 3}
   grenadeCooldown: 1
+=======
+  knifeRange: 1.5
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  timeBetweenKnifes: 0.5
+>>>>>>> DESKTOP-WEBGL-DRAFT-2
   foreground: {fileID: 0}
 --- !u!114 &523120103920528663
 MonoBehaviour:
