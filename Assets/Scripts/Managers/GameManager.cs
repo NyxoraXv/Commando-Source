@@ -175,7 +175,9 @@ public class GameManager : MonoBehaviour
             return;
 
         current.score += amount;
+        UIManager.DisplayCurrency();
         UIManager.UpdateScoreUI();
+        AddCurrency();
     }
 
     public static int GetScore()
@@ -186,6 +188,13 @@ public class GameManager : MonoBehaviour
 
         //Return the state of the game
         return current.score;
+    }
+
+    public static void AddCurrency()
+    {
+        CurrencyManager.Instance.addGold(current.score / 50);
+        CurrencyManager.Instance.addDiamond(current.score /80);
+        LevelManager.Instance.addXP(current.score * 1);
     }
 
     public static int GetBombs()
@@ -532,10 +541,6 @@ public class GameManager : MonoBehaviour
         if(current == null)
         return;
 
-        CurrencyManager.Instance.addGold(current.score);
-        CurrencyManager.Instance.addDiamond(current.score / 10);
-        LevelManager.Instance.addXP(current.score * 10);
-
         Debug.Log("Home button pressed!");
         LoadScene((int)Missions.Home);
     }
@@ -571,10 +576,6 @@ public class GameManager : MonoBehaviour
 
     public static void LoadScene(int id, bool skipReset = false)
     {
-        CurrencyManager.Instance.addGold(current.score);
-        CurrencyManager.Instance.addDiamond(current.score / 10);
-        LevelManager.Instance.addXP(current.score * 10);
-
         if (!skipReset)
             GameReset();
 
