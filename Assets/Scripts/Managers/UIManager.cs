@@ -27,10 +27,6 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI winPointsText;
     public GameObject MobileCanvas;
     public GameObject Currency;
-    public GameObject currencyShop;
-    public GameObject backButton;
-    public GameObject buyButton;
-    public GameObject shopUI;
 
     public Image characterAvatar;
 
@@ -54,10 +50,6 @@ public class UIManager : MonoBehaviour
         current.Currency.gameObject.SetActive(false);
         current.homeWin.gameObject.SetActive(false);
         current.restartWin.gameObject.SetActive(false);
-        current.backButton.gameObject.SetActive(false);
-        current.buyButton.gameObject.SetActive(false);
-        current.shopUI.gameObject.SetActive(false);
-        current.currencyShop.gameObject.SetActive(false);
 
         SetInitialAlpha(current.gameOver.GetComponent<Image>(), 0f);
         SetInitialAlpha(current.homeButton.GetComponent<Image>(), 0f);
@@ -229,22 +221,6 @@ public class UIManager : MonoBehaviour
     {
         if (CurrencyManager.Instance.spendGold(10)) { GameManager.GetPlayer().GetComponent<MainPlayer>().Revive(); }
         
-    }
-
-    public static void AddBackButton()
-    {
-        current.shopUI.gameObject.SetActive(false);
-        current.backButton.gameObject.SetActive(false);
-        current.buyButton.gameObject.SetActive(false);
-        current.currencyShop.gameObject.SetActive(false);
-    }
-
-    public static void AddShopButton()
-    {
-        current.shopUI.gameObject.SetActive(true);
-        current.backButton.gameObject.SetActive(true);
-        current.buyButton.gameObject.SetActive(true);
-        current.currencyShop.gameObject.SetActive(true);
     }
 
     public static void DisableReviveUI()

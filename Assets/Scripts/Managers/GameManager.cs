@@ -192,8 +192,8 @@ public class GameManager : MonoBehaviour
 
     public static void AddCurrency()
     {
-        CurrencyManager.Instance.addGold(current.score / 40);
-        CurrencyManager.Instance.addDiamond(current.score / 60);
+        CurrencyManager.Instance.addGold(current.score / 50);
+        CurrencyManager.Instance.addDiamond(current.score /80);
         LevelManager.Instance.addXP(current.score * 1);
     }
 
