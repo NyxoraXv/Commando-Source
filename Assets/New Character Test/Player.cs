@@ -24,10 +24,6 @@ public class MainPlayer : MonoBehaviour
     public GameObject bulletPrefab;
     public Transform Weapon;
 
-    [Header("Granate")]
-    public GameObject granadeSpawner;
-    public GameObject granate;
-
     private float timeBetweenShots;
     private float lastShotTime;
 
@@ -91,29 +87,6 @@ public class MainPlayer : MonoBehaviour
         GameManager.SetBombs(15);
     }
 
-    void ThrowGranade()
-    {
-        Debug.Log("Throw");
-        if (GameManager.GetBombs() > 0)
-        {
-            Debug.Log("Throw");
-            rateOfFire = rateOfFire + Time.deltaTime;
-            if (MobileManager.GetButtonGrenade())
-            {
-                GameManager.RemoveBomb();
-                if (rateOfFire > lastShotTime)
-                {
-                    lastShotTime = rateOfFire + timeBetweenShots;
-
-                    StartCoroutine(WaitGranade());
-
-                    lastShotTime = lastShotTime - rateOfFire;
-                    rateOfFire = 0.0f;
-                }
-            }
-        }
-    }
-
     private IEnumerator KnifeAttack()
     {
         isKnifing = true;
@@ -146,13 +119,6 @@ public class MainPlayer : MonoBehaviour
         yield return new WaitForSeconds(timeBetweenKnifes);
 
         isKnifing = false;
-    }
-
-    private IEnumerator WaitGranade()
-    {
-        yield return new WaitForSeconds(0.1f);
-        BulletManager.GetGrenadePool().Spawn(granadeSpawner.transform.position, granadeSpawner.transform.rotation);
-        yield return new WaitForSeconds(0.15f);
     }
 
 

@@ -3,7 +3,6 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 using System.Collections;
-using System.Collections.Generic;
 
 public class UIManager : MonoBehaviour
 {
@@ -11,9 +10,7 @@ public class UIManager : MonoBehaviour
 
     public Image gameOver;
     public GameObject restartButton;
-    public GameObject restartWin;
     public GameObject homeButton;
-    public GameObject homeWin;
     public GameObject continueButton;
     public Image healthBar;
     public Image bossBar;
@@ -26,11 +23,8 @@ public class UIManager : MonoBehaviour
     public Image winUI;
     public TextMeshProUGUI winPointsText;
     public GameObject MobileCanvas;
-    public GameObject Currency;
 
     public Image characterAvatar;
-
-    static bool currencyDisplayInProgress = false;
 
     void Awake()
     {
@@ -47,18 +41,11 @@ public class UIManager : MonoBehaviour
         current.winUI.gameObject.SetActive(false);
         current.winPointsText.gameObject.SetActive(false);
         current.bossBar.gameObject.SetActive(false);
-        current.Currency.gameObject.SetActive(false);
-        current.homeWin.gameObject.SetActive(false);
-        current.restartWin.gameObject.SetActive(false);
 
         SetInitialAlpha(current.gameOver.GetComponent<Image>(), 0f);
         SetInitialAlpha(current.homeButton.GetComponent<Image>(), 0f);
         SetInitialAlpha(current.restartButton.GetComponent<Image>(), 0f);
         SetInitialAlpha(current.continueButton.GetComponent<Image>(), 0f);
-        SetInitialAlpha(current.winUI.GetComponent<Image>(), 0f);
-        SetInitialAlpha(current.homeWin.GetComponent<Image>(), 0f);
-        SetInitialAlpha(current.restartWin.GetComponent<Image>(), 0f);
-        SetInitialAlpha(current.winPointsText.GetComponent<Image>(), 0f);
 
         UpdateScoreUI();
         UpdateBombsUI();
@@ -75,54 +62,10 @@ public class UIManager : MonoBehaviour
     {
         if (current == null)
             return;
-        
+
         current.scoreText.SetText(GameManager.GetScore().ToString());
         current.loseScore.SetText(GameManager.GetScore().ToString());
     }
-
-    public static void DisplayCurrency()
-    {
-        if (current == null || currencyDisplayInProgress)
-            return;
-
-        currencyDisplayInProgress = true;
-
-        current.Currency.gameObject.SetActive(true);
-
-        // Set initial alpha to 0f
-        CanvasGroup canvasGroup = current.Currency.GetComponent<CanvasGroup>();
-        if (canvasGroup == null)
-        {
-            canvasGroup = current.Currency.AddComponent<CanvasGroup>();
-        }
-
-        canvasGroup.alpha = 0f;
-
-        // Use DOTween to fade in the Currency UI over 1 second
-        canvasGroup.DOFade(1f, 1f)
-            .OnKill(() =>
-            {
-                // After fade-in is complete, use DOTween to fade out the Currency UI after 3 seconds
-                canvasGroup.DOFade(0f, 1f).SetDelay(3f)
-                    .OnComplete(() =>
-                    {
-                        current.Currency.gameObject.SetActive(false);
-                        currencyDisplayInProgress = false;
-                    });
-            });
-    }
-
-    private static void SetInitialAlpha(GameObject gameObject, float alpha)
-{
-    CanvasGroup canvasGroup = gameObject.GetComponent<CanvasGroup>();
-    if (canvasGroup == null)
-    {
-        canvasGroup = gameObject.AddComponent<CanvasGroup>();
-    }
-
-    canvasGroup.alpha = alpha;
-}
-
 
     public static void UpdateBossHealthUI(float health, float maxHealth)
     {
@@ -248,13 +191,6 @@ public class UIManager : MonoBehaviour
         current.winUI.gameObject.SetActive(true);
         current.winPointsText.SetText(GameManager.GetScore().ToString());
         current.winPointsText.gameObject.SetActive(true);
-        current.homeWin.gameObject.SetActive(true);
-        current.restartWin.gameObject.SetActive(true);
-
-        FadeImage(current.winUI.GetComponent<Image>(), 0f, 1f, 0.5f);
-        FadeImage(current.homeWin.GetComponent<Image>(), 0f, 1f, 0.5f);
-        FadeImage(current.restartWin.GetComponent<Image>(), 0f, 1f, 0.5f);
-        FadeImage(current.winPointsText.GetComponent<Image>(), 0f, 1f, 0.5f);
     }
 
     private static void FadeImage(Image image, float startAlpha, float endAlpha, float duration)

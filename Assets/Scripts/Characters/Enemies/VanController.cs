@@ -95,7 +95,7 @@ public class VanController : MonoBehaviour
     private void OnHit(float damage)
     {
       
-        GameManager.AddScore(1);
+        GameManager.AddScore(+1);
         blinkingSprite.Play();
     }
 
