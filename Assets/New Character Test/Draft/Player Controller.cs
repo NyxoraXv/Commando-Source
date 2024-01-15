@@ -256,7 +256,7 @@ public class Player : MonoBehaviour
                 }
                 break;
             case CollectibleType.MedKit:
-                health.IncreaseHealth();
+                health.IncreaseHealth(health.GetMaxHealth()*0.2f);
                 break;
             case CollectibleType.Ammo:
                 GameManager.addAmmo(150);

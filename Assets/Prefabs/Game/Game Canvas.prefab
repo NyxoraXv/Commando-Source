@@ -3364,7 +3364,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Arms
+  m_text: 'Ammo
 
 '
   m_isRightToLeft: 0
