@@ -7,6 +7,7 @@ public class MainPlayer : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Animator animator;
+    public Animator bottomAnimator;
     private SpriteRenderer avatar;
 
     [Header("Walk and Sprint")]
@@ -38,13 +39,22 @@ public class MainPlayer : MonoBehaviour
 
     [Header("Knife")]
     public float knifeDamage = 500f; // Adjust damage as needed
-    public float knifeRange = 1.5f; // Adjust range as needed
+    private float knifeRange = 0.35f; // Adjust range as needed
     public LayerMask enemyLayer; // Layer mask for enemies
+    public GameObject knifeHitVFXPrefab;
 
     private bool isKnifing = false;
-    public float timeBetweenKnifes = 0.5f; // Time delay between consecutive knife attacks
+    public float timeBetweenKnifes = 0.2f; // Time delay between consecutive knife attacks
     private float lastKnifeTime;
 
+<<<<<<< HEAD
+=======
+    [Header("Grenade")]
+    public GameObject grenadePrefab;
+    private float lastGrenadeThrowTime;
+    public float grenadeCooldown = 2.0f;
+
+>>>>>>> 365c794 (1)
 
     private Vector3 initScale, negatedScale;
 
@@ -54,6 +64,10 @@ public class MainPlayer : MonoBehaviour
 
     private Health health;
     private bool isDead;
+
+    private bool isHeavyMachineGunActive = false;
+    private float heavyMachineGunDuration = 5f;
+    private float currentHeavyMachineGunTime = 0f;
 
     Cinemachine.CinemachineBrain cinemachineBrain;
     public enum CollectibleType
@@ -77,6 +91,7 @@ public class MainPlayer : MonoBehaviour
         speed = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.Levels[CharacterManager.Instance.GetOwnedCharacterLevel(CharacterManager.Instance.selectedCharacter)].Agility*0.2f;
         JumpForce = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.Levels[CharacterManager.Instance.GetOwnedCharacterLevel(CharacterManager.Instance.selectedCharacter)].Agility*1.2f;
         GameManager.addAmmo(250);
+<<<<<<< HEAD
     }
 
     void ThrowGranade()
@@ -100,6 +115,9 @@ public class MainPlayer : MonoBehaviour
                 }
             }
         }
+=======
+        GameManager.SetBombs(15);
+>>>>>>> 365c794 (1)
     }
 
     private IEnumerator KnifeAttack()
@@ -109,15 +127,25 @@ public class MainPlayer : MonoBehaviour
         yield return new WaitForSeconds(0.1f); // Adjust delay if needed, this is the animation delay
 
         // Perform a raycast to detect enemies in front of the player
-        RaycastHit2D hit = Physics2D.Raycast(aimPoint.position, aimPoint.right, knifeRange, enemyLayer);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, aimPoint.right, knifeRange, enemyLayer);
 
         if (hit.collider != null)
         {
-            // Damage the enemy
-            Health enemyHealth = hit.collider.GetComponent<Health>();
-            if (enemyHealth != null)
+            // Check if the hit object is within the valid range
+            float distanceToEnemy = Vector2.Distance(transform.position, hit.point);
+
+            if (distanceToEnemy <= knifeRange)
             {
-                enemyHealth.Hit(knifeDamage);
+                // Instantiate the VFX at the hit point
+                Instantiate(knifeHitVFXPrefab, hit.point, Quaternion.identity);
+
+                // Damage the enemy
+                bottomAnimator.SetTrigger("IsKniving");
+                Health enemyHealth = hit.collider.GetComponent<Health>();
+                if (enemyHealth != null)
+                {
+                    enemyHealth.Hit(knifeDamage);
+                }
             }
         }
 
@@ -132,6 +160,7 @@ public class MainPlayer : MonoBehaviour
         BulletManager.GetGrenadePool().Spawn(granadeSpawner.transform.position, granadeSpawner.transform.rotation);
         yield return new WaitForSeconds(0.15f);
     }
+
 
 
     private void registerHealth()
@@ -163,30 +192,34 @@ public class MainPlayer : MonoBehaviour
         isDead = false;
         Weapon.gameObject.SetActive(true);
         this.enabled = true;
-        health.IncreaseHealth();
+        health.Revive();
+        registerHealth();
 
         UIManager.DisableReviveUI();
     }
 
     private void OnHit(float damage) // health delegate onHit
     {
+        if (!isDead) { 
         UIManager.UpdateHealthUI(health.GetHealth(), health.GetMaxHealth());
         AudioManager.PlayMeleeTakeAudio();
+        }
     }
-
     public void getCollectible(CollectibleType type)
     {
         switch (type)
         {
             case CollectibleType.HeavyMachineGun:
-                UIManager.UpdateAmmoUI();
+                // Activate the Heavy Machine Gun power-up
+                ActivateHeavyMachineGun();
                 break;
             case CollectibleType.MedKit:
-                health.IncreaseHealth();
+                health.IncreaseHealth(health.GetMaxHealth() * 0.2f);
                 break;
             case CollectibleType.Ammo:
                 GameManager.addAmmo(150);
-                    UIManager.UpdateAmmoUI();
+                GameManager.SetBombs(15);
+                UIManager.UpdateAmmoUI();
                 break;
             default:
                 Debug.Log("Collectible not found");
@@ -194,9 +227,37 @@ public class MainPlayer : MonoBehaviour
         }
     }
 
+    private void ActivateHeavyMachineGun()
+    {
+        isHeavyMachineGunActive = true;
+        rateOfFire *= 4f;
+        currentHeavyMachineGunTime = 0f;
+
+        // Optionally, you can add visual/audio effects to indicate the activation of the Heavy Machine Gun power-up.
+    }
+
+    private void DeactivateHeavyMachineGun()
+    {
+        isHeavyMachineGunActive = false;
+        rateOfFire /= 4f;
+
+        // Optionally, you can add visual/audio effects to indicate the deactivation of the Heavy Machine Gun power-up.
+    }
+
     private void Update()
     {
             HandleInput();
+        if (isHeavyMachineGunActive)
+        {
+            currentHeavyMachineGunTime += Time.deltaTime;
+
+            // Check if the Heavy Machine Gun duration has elapsed
+            if (currentHeavyMachineGunTime >= heavyMachineGunDuration)
+            {
+                // Deactivate the Heavy Machine Gun power-up
+                DeactivateHeavyMachineGun();
+            }
+        }
     }
 
     private void HandleInput()
@@ -376,6 +437,28 @@ public class MainPlayer : MonoBehaviour
         }
     }
 
+<<<<<<< HEAD
+=======
+    private void ThrowGrenade()
+    {
+        if (Input.GetAxis("grenade") == 1)
+        {
+            if (Time.time - lastGrenadeThrowTime >= grenadeCooldown)
+            {
+                if (GameManager.GetBombs() > 0)
+                {
+                    bottomAnimator.SetTrigger("IsThrowing");
+                    GameManager.RemoveBomb();
+                    Instantiate(grenadePrefab, aimPoint.position, aimPoint.rotation);
+                    lastGrenadeThrowTime = Time.time;
+
+                }
+            }
+        }
+    }
+
+
+>>>>>>> 365c794 (1)
     private void HandleMovement()
     {
         bool moved = Move();

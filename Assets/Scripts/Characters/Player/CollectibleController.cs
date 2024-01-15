@@ -12,7 +12,6 @@ public class CollectibleController : MonoBehaviour
         if (GameManager.IsPlayer(collision))
         {
             GameManager.GetPlayer().GetComponent<MainPlayer>().getCollectible(type);
-            GameManager.AddScore(collectiblePoints);
 
             if (type == MainPlayer.CollectibleType.Ammo) // collectible sound
             {

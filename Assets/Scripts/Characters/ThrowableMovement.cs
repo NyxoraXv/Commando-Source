@@ -5,7 +5,7 @@ using UnityEngine;
 public class ThrowableMovement : MonoBehaviour
 {
     [Header("Throwable Details")]
-    private float throwableDamagePlayer = 300f;
+    private float throwableDamagePlayer = 1000f;
     private float throwableDamageEnemy = 10f;
     private float throwableDamageBoss = 25f;
     private float throwableDamageHeavybomb = 50f;
@@ -56,21 +56,7 @@ public class ThrowableMovement : MonoBehaviour
     void Init()
     {
         rb = GetComponent<Rigidbody2D>();
-        switch (rb.rotation)
-        {
-            case 0:
-                throwableDirection = Quaternion.AngleAxis(45, Vector3.forward) * Vector3.right;
-                break;
-            case 180:
-                throwableDirection = Quaternion.AngleAxis(-45, Vector3.forward) * Vector3.left;
-                break;
-            case -90:
-                throwableDirection = Quaternion.AngleAxis(-45, Vector3.forward) * Vector3.left;
-                break;
-            case 90:
-                throwableDirection = Quaternion.AngleAxis(45, Vector3.forward) * Vector3.right;
-                break;
-        }
+        throwableDirection = transform.right; // Assuming right is the forward direction
 
         rb.gravityScale = .5f;
         rb.rotation = 0;
@@ -78,6 +64,7 @@ public class ThrowableMovement : MonoBehaviour
         hasHit = false;
         isSpawned = true;
     }
+
 
     private void Despawn()
     {
@@ -118,7 +105,7 @@ public class ThrowableMovement : MonoBehaviour
         if (hasHit)
             return;
 
-        if (GameManager.CanTriggerThrowable(collider) && !(launcher == LauncherType.Player && GameManager.IsPlayer(collider)) && !(launcher == LauncherType.Enemy && (collider.CompareTag("Enemy")|| collider.CompareTag("EnemyBomb"))))
+        if (GameManager.CanTriggerThrowable(collider) && !(launcher == LauncherType.Player && GameManager.IsPlayer(collider)) && !(launcher == LauncherType.Enemy && (collider.CompareTag("Enemy")|| collider.CompareTag("EnemyBomb") || collider.CompareTag("Walkable"))))
         {
             hasHit = true;
 

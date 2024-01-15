@@ -219,7 +219,8 @@ public class UIManager : MonoBehaviour
 
     public static void Revive()
     {
-        GameManager.GetPlayer().GetComponent<MainPlayer>().Revive();
+        if (CurrencyManager.Instance.spendGold(10)) { GameManager.GetPlayer().GetComponent<MainPlayer>().Revive(); }
+        
     }
 
     public static void DisableReviveUI()
