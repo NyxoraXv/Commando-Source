@@ -24,10 +24,6 @@ public class MainPlayer : MonoBehaviour
     public GameObject bulletPrefab;
     public Transform Weapon;
 
-    [Header("Granate")]
-    public GameObject granadeSpawner;
-    public GameObject granate;
-
     private float timeBetweenShots;
     private float lastShotTime;
 
@@ -47,14 +43,11 @@ public class MainPlayer : MonoBehaviour
     public float timeBetweenKnifes = 0.2f; // Time delay between consecutive knife attacks
     private float lastKnifeTime;
 
-<<<<<<< HEAD
-=======
     [Header("Grenade")]
     public GameObject grenadePrefab;
     private float lastGrenadeThrowTime;
     public float grenadeCooldown = 2.0f;
 
->>>>>>> 365c794 (1)
 
     private Vector3 initScale, negatedScale;
 
@@ -86,38 +79,12 @@ public class MainPlayer : MonoBehaviour
         cinemachineBrain = Camera.main.GetComponent<Cinemachine.CinemachineBrain>();
         registerHealth();
         initScale = transform.localScale;
-        negatedScale = new Vector3 (-gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z );
+        negatedScale = new Vector3(-gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
 
-        speed = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.Levels[CharacterManager.Instance.GetOwnedCharacterLevel(CharacterManager.Instance.selectedCharacter)].Agility*0.2f;
-        JumpForce = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.Levels[CharacterManager.Instance.GetOwnedCharacterLevel(CharacterManager.Instance.selectedCharacter)].Agility*1.2f;
+        speed = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.Levels[CharacterManager.Instance.GetOwnedCharacterLevel(CharacterManager.Instance.selectedCharacter)].Agility * 0.2f;
+        JumpForce = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.Levels[CharacterManager.Instance.GetOwnedCharacterLevel(CharacterManager.Instance.selectedCharacter)].Agility * 1.2f;
         GameManager.addAmmo(250);
-<<<<<<< HEAD
-    }
-
-    void ThrowGranade()
-    {
-        Debug.Log("Throw");
-        if (GameManager.GetBombs() > 0)
-        {
-            Debug.Log("Throw");
-            rateOfFire = rateOfFire + Time.deltaTime;
-            if (MobileManager.GetButtonGrenade())
-            {
-                GameManager.RemoveBomb();
-                if (rateOfFire > lastShotTime)
-                {
-                    lastShotTime = rateOfFire + timeBetweenShots;
-
-                    StartCoroutine(WaitGranade());
-
-                    lastShotTime = lastShotTime - rateOfFire;
-                    rateOfFire = 0.0f;
-                }
-            }
-        }
-=======
         GameManager.SetBombs(15);
->>>>>>> 365c794 (1)
     }
 
     private IEnumerator KnifeAttack()
@@ -152,13 +119,6 @@ public class MainPlayer : MonoBehaviour
         yield return new WaitForSeconds(timeBetweenKnifes);
 
         isKnifing = false;
-    }
-
-    private IEnumerator WaitGranade()
-    {
-        yield return new WaitForSeconds(0.1f);
-        BulletManager.GetGrenadePool().Spawn(granadeSpawner.transform.position, granadeSpawner.transform.rotation);
-        yield return new WaitForSeconds(0.15f);
     }
 
 
@@ -200,9 +160,10 @@ public class MainPlayer : MonoBehaviour
 
     private void OnHit(float damage) // health delegate onHit
     {
-        if (!isDead) { 
-        UIManager.UpdateHealthUI(health.GetHealth(), health.GetMaxHealth());
-        AudioManager.PlayMeleeTakeAudio();
+        if (!isDead)
+        {
+            UIManager.UpdateHealthUI(health.GetHealth(), health.GetMaxHealth());
+            AudioManager.PlayMeleeTakeAudio();
         }
     }
     public void getCollectible(CollectibleType type)
@@ -246,7 +207,7 @@ public class MainPlayer : MonoBehaviour
 
     private void Update()
     {
-            HandleInput();
+        HandleInput();
         if (isHeavyMachineGunActive)
         {
             currentHeavyMachineGunTime += Time.deltaTime;
@@ -264,6 +225,7 @@ public class MainPlayer : MonoBehaviour
     {
         HandleMovement();
         Aim();
+        ThrowGrenade();
     }
 
     private bool CheckEnemiesNearby()
@@ -280,7 +242,7 @@ public class MainPlayer : MonoBehaviour
 
         if (Sprint() && ((horizontalAxis != 0) /*|| MobileManager.GetAxisHorizontal() != 0*/))
         {
-            Vector2 movement = new Vector2(horizontalAxis, 0f) * (speed*speedMultiplier);
+            Vector2 movement = new Vector2(horizontalAxis, 0f) * (speed * speedMultiplier);
             rb.velocity = new Vector2(movement.x, rb.velocity.y);
             Weapon.transform.localPosition = new Vector3(-0.032f, 0.295f, 0.3607626f);
             return true;
@@ -437,8 +399,6 @@ public class MainPlayer : MonoBehaviour
         }
     }
 
-<<<<<<< HEAD
-=======
     private void ThrowGrenade()
     {
         if (Input.GetAxis("grenade") == 1)
@@ -458,7 +418,6 @@ public class MainPlayer : MonoBehaviour
     }
 
 
->>>>>>> 365c794 (1)
     private void HandleMovement()
     {
         bool moved = Move();
