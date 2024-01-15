@@ -60,9 +60,9 @@ public class Health : MonoBehaviour
         return health;
     }
 
-    public void IncreaseHealth()
+    public void IncreaseHealth(float heal)
     {
-        health += maxHealth * 0.2f;
+        health += heal;
         health = Mathf.Min(health, maxHealth);
         UIManager.UpdateHealthUI(health, maxHealth);
     }
@@ -92,6 +92,16 @@ public class Health : MonoBehaviour
         else
         {
             ShowBloodDrip(); // Optionally show blood drip when hit
+        }
+    }
+
+    public void Revive()
+    {
+        if (!IsAlive())
+        {
+            health = maxHealth;
+            UIManager.UpdateHealthUI(health, maxHealth);
+            HideBloodDrip();
         }
     }
 

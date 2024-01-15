@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Levia Controller
+  m_Controller: {fileID: 9100000, guid: 2d46ab9957320654ea581cad9f7e90b4, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 9d6dc348b5e437b43aba609675f9ae3a, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: de7e636e715c3d54c8615f138e5bdac4, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: ea864df6c594d714c8e601e12442e5ae, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 5401937c28c9b9d44b11080ee97e72fa, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: a25dd61725e0ba44ba166114d410127b, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 940736c5adca3be4ca32426b24a3ed0f, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 038ed2143afd58f46a12e3b103a537bb, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: ac01892d45426d049beeb9d18e1ba3ef, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 0270fbf74c50fc8428f4af5231271663, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: cfa2e8d4038e1be47bb5719b8dbf39e0, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: ae65f12b9b948c5479125889a5317e69, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: a79a30b44e5a29043ab2953df4b62b98, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 8b114618252e7014a92e2a9ac5c301ec, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 1b0acfe02bbdbb24692882cb4eb54793, type: 2}

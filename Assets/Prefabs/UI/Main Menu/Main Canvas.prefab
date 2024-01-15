@@ -3203,6 +3203,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 7935897474627043560}
   - {fileID: 7127611729900561250}
   - {fileID: 2223535765705240869}
   - {fileID: 4765806049363470217}
@@ -3362,7 +3363,7 @@ MonoBehaviour:
   priceText: {fileID: 4939700125009441577}
   buttonPrefab: {fileID: 7554275419199770662, guid: d3952ca9bd47910498c4daeff003c12e,
     type: 3}
-  characters: 000000000300000001000000
+  characters: 00000000030000000100000002000000
   buttonParent: {fileID: 7296808481793312510}
 --- !u!1 &2301967585250058310
 GameObject:
@@ -4814,6 +4815,81 @@ MonoBehaviour:
   CardParent: {fileID: 4110582041013888333}
   tweenDuration: 1
   delayBetweenTweens: 0.1
+--- !u!1 &3119831333690186180
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7935897474627043560}
+  - component: {fileID: 639073601316431979}
+  - component: {fileID: 1066800600510947215}
+  m_Layer: 5
+  m_Name: Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &7935897474627043560
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3119831333690186180}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5097952940422249156}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &639073601316431979
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3119831333690186180}
+  m_CullTransparentMesh: 1
+--- !u!114 &1066800600510947215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3119831333690186180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: cde55b910a03bc74481a999aa160a777, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &3137838480705312497
 GameObject:
   m_ObjectHideFlags: 0
@@ -14728,8 +14804,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 415661935a0c2e24a829dd476d7e5c3c, type: 2}
-  m_Color: {r: 0.12156863, g: 0.12156863, b: 0.12156863, a: 1}
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.12156863, g: 0.12156863, b: 0.12156863, a: 0.48235294}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -22004,6 +22080,12 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4110582041013888333}
     m_Modifications:
+    - target: {fileID: 1115514469092611747, guid: 080fd5d9b64240a4a9df1402f3ab9581,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3aca08e2198901c40822a4a4de746062,
+        type: 3}
     - target: {fileID: 2532736487629360983, guid: 080fd5d9b64240a4a9df1402f3ab9581,
         type: 3}
       propertyPath: m_EffectColor.b
@@ -22207,7 +22289,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: de0d6d38d927dd1438e1d67f5dbf7ed1,
+      objectReference: {fileID: 21300000, guid: c088d58dbd9693c47bfdf6c41725c4c8,
         type: 3}
     - target: {fileID: 4381986025128606860, guid: 080fd5d9b64240a4a9df1402f3ab9581,
         type: 3}
@@ -22393,7 +22475,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: e328cf5fb3dd76c4481209c03dfb0fe8,
+      objectReference: {fileID: 21300000, guid: 26c1c7de22d3d5e47a3e649e9f567540,
         type: 3}
     - target: {fileID: 4381986025128606860, guid: 080fd5d9b64240a4a9df1402f3ab9581,
         type: 3}
