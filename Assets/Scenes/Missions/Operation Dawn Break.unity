@@ -10269,6 +10269,11 @@ PrefabInstance:
       propertyPath: offset.y
       value: -0
       objectReference: {fileID: 0}
+    - target: {fileID: 3581739830345995368, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5635637192038270855, guid: d957822e884ea974d9441386b3a76460,
         type: 3}
       propertyPath: m_Sprite
@@ -10278,7 +10283,7 @@ PrefabInstance:
     - target: {fileID: 6361495261174932477, guid: d957822e884ea974d9441386b3a76460,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7013612831472759307, guid: d957822e884ea974d9441386b3a76460,
         type: 3}
@@ -10384,6 +10389,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Game Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 8072423303390447070, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8837762901952213425, guid: d957822e884ea974d9441386b3a76460,
         type: 3}
@@ -13436,6 +13446,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -0.49999714
       objectReference: {fileID: 0}
+    - target: {fileID: 4557179304222601527, guid: 013691a4010499344a76e0f79245a20a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4557179304444368594, guid: 013691a4010499344a76e0f79245a20a,
         type: 3}
       propertyPath: m_Sprite
@@ -13570,7 +13585,7 @@ PrefabInstance:
     - target: {fileID: 4557179305537590297, guid: 013691a4010499344a76e0f79245a20a,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
