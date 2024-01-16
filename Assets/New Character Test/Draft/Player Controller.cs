@@ -145,7 +145,7 @@ public class Player : MonoBehaviour
     private void OnDead(float damage) // health delegate onDead
     {
         Died();
-        GameManager.PlayerDied();
+        GameManager.PlayerDied("Water Dead");
         AudioManager.PlayDeathAudio();
     }
 
@@ -178,7 +178,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            /*Animazione in base a se è in piedi o meno*/
+            /*Animazione in base a se ï¿½ in piedi o meno*/
             animator.SetBool("isThrowingGranate", false);
             wasFiring2 = false;
         }

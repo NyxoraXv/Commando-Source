@@ -217,7 +217,7 @@ public class GameManager : MonoBehaviour
         return current.isGameOver;
     }
 
-    public static void PlayerDied()
+    public static void PlayerDied(string causeOfDeath)
 {
     // If there is no current Game Manager, exit
     if (current == null)
@@ -226,11 +226,22 @@ public class GameManager : MonoBehaviour
     // The game is now over
     current.isGameOver = true;
 
-    // game over audio
-    UIManager.DisplayGameOverText();
-    UIManager.Home();
-    UIManager.Restart();
-    UIManager.Continue();
+    if (causeOfDeath == "Water Dead")
+    {
+        // If the player died due to "Water Dead," display game over text, home, and restart
+        UIManager.DisplayGameOverText();
+        UIManager.Home();
+        UIManager.Restart();
+    }
+    else
+    {
+        UIManager.DisplayGameOverText();
+        UIManager.Home();
+        UIManager.Restart();
+        UIManager.Continue();
+    }
+
+    // Play game over audio
     AudioManager.PlayGameOverAudio();
 }
 

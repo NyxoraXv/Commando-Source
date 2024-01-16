@@ -66,6 +66,8 @@ public class MainPlayer : MonoBehaviour
     private float heavyMachineGunDuration = 5f;
     private float currentHeavyMachineGunTime = 0f;
 
+    private string causeOfDeath;
+
     Cinemachine.CinemachineBrain cinemachineBrain;
     public enum CollectibleType
     {
@@ -168,7 +170,7 @@ public class MainPlayer : MonoBehaviour
     private void OnDead(float damage) // health delegate onDead
     {
         Died();
-        GameManager.PlayerDied();
+        GameManager.PlayerDied("Water Dead");
         AudioManager.PlayDeathAudio();
         Weapon.gameObject.SetActive(false);
         this.enabled = false;
@@ -375,6 +377,8 @@ public class MainPlayer : MonoBehaviour
         //Debug.Log(collision.collider.tag);
         if (collision.collider.CompareTag("Water Dead"))
         {
+            string causeOfDeath = "Water Dead";
+
             health.Hit(9999);
             animator.SetBool("IsDying", true);
 
