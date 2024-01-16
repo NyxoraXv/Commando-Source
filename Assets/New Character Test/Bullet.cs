@@ -11,6 +11,8 @@ public class BulletHandler : MonoBehaviour
     public float bulletSpeed = 10f;  // New variable for bullet speed
     public float lifeTime = 5f;
     public float damageShot;
+
+    private ParticleSystem particleSystem;
     public enum LauncherType
     {
         Player,

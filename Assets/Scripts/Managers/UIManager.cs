@@ -51,7 +51,6 @@ public class UIManager : MonoBehaviour
         current.winUI.gameObject.SetActive(false);
         current.winPointsText.gameObject.SetActive(false);
         current.bossBar.gameObject.SetActive(false);
-        current.Currency.gameObject.SetActive(false);
         current.homeWin.gameObject.SetActive(false);
         current.restartWin.gameObject.SetActive(false);
         current.backButton.gameObject.SetActive(false);
@@ -284,5 +283,13 @@ public class UIManager : MonoBehaviour
         image.DOFade(endAlpha, duration)
             .From(startAlpha)
             .SetEase(Ease.Linear);
+    }
+
+    public void BuyAmmo()
+    {
+        if (CurrencyManager.Instance.spendGold(100))
+        {
+            GameManager.addAmmo(150);
+        }
     }
 }

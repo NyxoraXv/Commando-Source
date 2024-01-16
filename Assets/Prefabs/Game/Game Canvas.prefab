@@ -3143,7 +3143,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 8837762901952213425}
           m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-          m_MethodName: Revive
+          m_MethodName: BuyAmmo
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -4728,7 +4728,7 @@ MonoBehaviour:
   winPointsText: {fileID: 807017147247300708}
   MobileCanvas: {fileID: 0}
   Currency: {fileID: 4507451524206153848}
-  CurrencyShop: {fileID: 8224285509742965475}
+  currencyShop: {fileID: 8224285509742965475}
   backButton: {fileID: 5014569773998752180}
   buyButton: {fileID: 4954525316661128751}
   shopUI: {fileID: 1666107278664188862}
@@ -4821,6 +4821,7 @@ GameObject:
   - component: {fileID: 4427525414288153222}
   - component: {fileID: 3906671654593761178}
   - component: {fileID: 5958350047095210998}
+  - component: {fileID: 1028094825304769660}
   m_Layer: 5
   m_Name: Frame
   m_TagString: Untagged
@@ -4915,6 +4916,20 @@ MonoBehaviour:
   baked: 0
   modifiedFromInspector: 0
   bakedShadows: []
+--- !u!114 &1028094825304769660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7417407946431826899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 316c1926662fe6e4b9010babfc0bebb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetFillAmount: 1
+  duration: 1
 --- !u!1 &7519833218120885656
 GameObject:
   m_ObjectHideFlags: 0

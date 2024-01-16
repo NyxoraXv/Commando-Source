@@ -37,6 +37,7 @@ public class CharacterInformation : MonoBehaviour
         [Header("Character Player")]
         public RuntimeAnimatorController PlayerController;
         public RuntimeAnimatorController PlayerPreviewController;
+        public Vector3 HandPivot;
     }
 
     public new CharacterData Character;

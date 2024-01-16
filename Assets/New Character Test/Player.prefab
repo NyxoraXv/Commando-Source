@@ -199,6 +199,8 @@ MonoBehaviour:
   bulletPrefab: {fileID: 3542438601343707874, guid: e33cecc02f168fa4b9fa4ab2d2445f33,
     type: 3}
   Weapon: {fileID: 8003484413249760742}
+  granadeSpawner: {fileID: 0}
+  granate: {fileID: 0}
   aimPoint: {fileID: 7742327139498762512}
   TopAngleLimit: 0
   BottomAngleLimit: 0
@@ -318,7 +320,7 @@ Animator:
   m_GameObject: {fileID: 7075540455007373143}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 28fb34900be41b849b6b1a1d79cc7ec4, type: 2}
+  m_Controller: {fileID: 22100000, guid: 041e362c7d5833b4fb00899d4a25a657, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

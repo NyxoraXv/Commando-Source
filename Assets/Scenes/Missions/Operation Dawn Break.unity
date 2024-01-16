@@ -5631,7 +5631,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 28fb34900be41b849b6b1a1d79cc7ec4, type: 2}
+      objectReference: {fileID: 9100000, guid: 1f4ba5ce332537641a5b683c7f845951, type: 2}
     - target: {fileID: 2938017755305157029, guid: ea7e9298cecd4d648b055f4171c7c793,
         type: 3}
       propertyPath: knifeRange
@@ -10411,6 +10411,11 @@ PrefabInstance:
       propertyPath: Currency
       value: 
       objectReference: {fileID: 1859724674}
+    - target: {fileID: 8837762901952213425, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
+      propertyPath: currencyShop
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
