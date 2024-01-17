@@ -108,7 +108,7 @@ public class PlayerController : MonoBehaviour
     private void OnDead(float damage) // health delegate onDead
     {
         Died();
-        GameManager.PlayerDied();
+        GameManager.PlayerDied("Water Dead");
         AudioManager.PlayDeathAudio();
     }
 

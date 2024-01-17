@@ -1766,7 +1766,7 @@ PrefabInstance:
     - target: {fileID: 1866510319001186920, guid: e6ecc3aab9e52aa4791973b906dda33f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.513598
+      value: 1.5130703
       objectReference: {fileID: 0}
     - target: {fileID: 1866510319001186920, guid: e6ecc3aab9e52aa4791973b906dda33f,
         type: 3}
@@ -10296,6 +10296,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6675727448156622072, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7013612831472759307, guid: d957822e884ea974d9441386b3a76460,
         type: 3}
       propertyPath: m_Pivot.x
@@ -10406,6 +10411,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8224285509742965475, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8837762901952213425, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
+      propertyPath: homeWin
+      value: 
+      objectReference: {fileID: 1859724676}
     - target: {fileID: 8837762901952213425, guid: d957822e884ea974d9441386b3a76460,
         type: 3}
       propertyPath: Currency
@@ -10413,17 +10428,46 @@ PrefabInstance:
       objectReference: {fileID: 1859724674}
     - target: {fileID: 8837762901952213425, guid: d957822e884ea974d9441386b3a76460,
         type: 3}
+      propertyPath: homeButton
+      value: 
+      objectReference: {fileID: 1859724675}
+    - target: {fileID: 8837762901952213425, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
+      propertyPath: restartWin
+      value: 
+      objectReference: {fileID: 1859724677}
+    - target: {fileID: 8837762901952213425, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
       propertyPath: currencyShop
       value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8224285509742965475, guid: d957822e884ea974d9441386b3a76460, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d957822e884ea974d9441386b3a76460, type: 3}
 --- !u!1 &1859724674 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4507451524206153848, guid: d957822e884ea974d9441386b3a76460,
+    type: 3}
+  m_PrefabInstance: {fileID: 1859724673}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1859724675 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1189245833146672570, guid: d957822e884ea974d9441386b3a76460,
+    type: 3}
+  m_PrefabInstance: {fileID: 1859724673}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1859724676 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3581739830345995368, guid: d957822e884ea974d9441386b3a76460,
+    type: 3}
+  m_PrefabInstance: {fileID: 1859724673}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1859724677 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8072423303390447070, guid: d957822e884ea974d9441386b3a76460,
     type: 3}
   m_PrefabInstance: {fileID: 1859724673}
   m_PrefabAsset: {fileID: 0}
@@ -12041,6 +12085,16 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.92875
       objectReference: {fileID: 0}
+    - target: {fileID: 1268712063833133872, guid: 87975f218fa12d3448559109f6b6aa57,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.0678
+      objectReference: {fileID: 0}
+    - target: {fileID: 1268712063833133872, guid: 87975f218fa12d3448559109f6b6aa57,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 41.3588
+      objectReference: {fileID: 0}
     - target: {fileID: 1268712064012097500, guid: 87975f218fa12d3448559109f6b6aa57,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -13276,7 +13330,7 @@ PrefabInstance:
     - target: {fileID: 2431320819883578219, guid: b7f8e7b35f7be624e80727a89ad67fae,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -13.028931
+      value: -13.029458
       objectReference: {fileID: 0}
     - target: {fileID: 2431320819883578219, guid: b7f8e7b35f7be624e80727a89ad67fae,
         type: 3}

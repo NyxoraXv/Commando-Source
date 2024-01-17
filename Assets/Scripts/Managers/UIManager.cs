@@ -27,7 +27,6 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI winPointsText;
     public GameObject MobileCanvas;
     public GameObject Currency;
-    public GameObject currencyShop;
     public GameObject backButton;
     public GameObject buyButton;
     public GameObject shopUI;
@@ -56,7 +55,6 @@ public class UIManager : MonoBehaviour
         current.backButton.gameObject.SetActive(false);
         current.buyButton.gameObject.SetActive(false);
         current.shopUI.gameObject.SetActive(false);
-        current.currencyShop.gameObject.SetActive(false);
 
         SetInitialAlpha(current.gameOver.GetComponent<Image>(), 0f);
         SetInitialAlpha(current.homeButton.GetComponent<Image>(), 0f);
@@ -109,7 +107,7 @@ public class UIManager : MonoBehaviour
             .OnKill(() =>
             {
                 // After fade-in is complete, use DOTween to fade out the Currency UI after 3 seconds
-                canvasGroup.DOFade(0f, 1f).SetDelay(3f)
+                canvasGroup.DOFade(0f, 1f).SetDelay(10f)
                     .OnComplete(() =>
                     {
                         currencyDisplayInProgress = false;
@@ -173,16 +171,48 @@ public class UIManager : MonoBehaviour
     }
 
     public static void DisplayGameOverText()
-    {
-        if (current == null)
-            return;
+{
+    if (current == null)
+        return;
 
+    // Check if the game over condition is met (you may need to customize this condition based on your game logic)
+    bool isGameOver = true;
+
+    if (isGameOver)
+    {
         current.gameOver.gameObject.SetActive(true);
         Vector3 targetScale = current.gameOver.transform.localScale * 1f;
         current.gameOver.transform.DOScale(targetScale, 0.5f).SetEase(Ease.OutBack);
 
         FadeImage(current.gameOver, 0f, 1f, 0.5f);
     }
+}
+
+    private void OnCollisionEnter(Collision collision)
+{
+    if (collision.collider.CompareTag("Water Dead"))
+    {
+        DisableGameOver();
+    }
+    else
+    {
+        DisplayGameOverText(); 
+    }
+}
+
+    public static void DisableGameOver()
+{
+    if (current == null)
+        return;
+
+    // Check if the game over condition is met (you may need to customize this condition based on your game logic)
+    bool isGameOver = true;
+
+    if (isGameOver)
+    {
+        current.gameOver.gameObject.SetActive(false);
+    }
+}
 
     public static void Home()
     {
@@ -226,6 +256,7 @@ public class UIManager : MonoBehaviour
     {
         if (CurrencyManager.Instance.spendGold(10)) { GameManager.GetPlayer().GetComponent<MainPlayer>().Revive(); }
         
+        DisplayCurrency();
     }
 
     public static void AddBackButton()
@@ -233,7 +264,8 @@ public class UIManager : MonoBehaviour
         current.shopUI.gameObject.SetActive(false);
         current.backButton.gameObject.SetActive(false);
         current.buyButton.gameObject.SetActive(false);
-        current.currencyShop.gameObject.SetActive(false);
+
+        DisplayCurrency();
     }
 
     public static void AddShopButton()
@@ -241,7 +273,8 @@ public class UIManager : MonoBehaviour
         current.shopUI.gameObject.SetActive(true);
         current.backButton.gameObject.SetActive(true);
         current.buyButton.gameObject.SetActive(true);
-        current.currencyShop.gameObject.SetActive(true);
+
+        DisplayCurrency();
     }
 
     public static void DisableReviveUI()
@@ -291,5 +324,6 @@ public class UIManager : MonoBehaviour
         {
             GameManager.addAmmo(150);
         }
+        DisplayCurrency();
     }
 }
