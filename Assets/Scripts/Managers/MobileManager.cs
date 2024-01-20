@@ -46,8 +46,11 @@ public class MobileManager : MonoBehaviour
 
     private void UpdateButtonState(ref bool buttonState, bool value, string debugMessage)
     {
-        buttonState = value;
-        Debug.Log(debugMessage);
+        if (buttonState != value)
+        {
+            buttonState = value;
+            Debug.Log(debugMessage);
+        }
     }
 
     public void PressGrenadeButton()
