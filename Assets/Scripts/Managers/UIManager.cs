@@ -63,10 +63,20 @@ public class UIManager : MonoBehaviour
         SetInitialAlpha(current.winUI.GetComponent<Image>(), 0f);
         SetInitialAlpha(current.homeWin.GetComponent<Image>(), 0f);
         SetInitialAlpha(current.restartWin.GetComponent<Image>(), 0f);
-        SetInitialAlpha(current.winPointsText.GetComponent<Image>(), 0f);
 
+        
         UpdateScoreUI();
         UpdateBombsUI();
+        if (IsMobile())
+        {MobileCanvas.SetActive(true);}
+        else
+        { MobileCanvas.SetActive(false);}
+    }
+
+    public static bool IsMobile()
+    {
+        //return SystemInfo.deviceType == DeviceType.Handheld;
+        return true;
     }
 
     private void SetInitialAlpha(Image image, float alpha)

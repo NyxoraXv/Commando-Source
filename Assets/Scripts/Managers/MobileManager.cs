@@ -8,12 +8,14 @@ public class MobileManager : MonoBehaviour
     public Button jumpButton;
     public Button shootButton;
     public FloatingJoystick joystick;
+    public FloatingJoystick ArmJoystick;
 
     private static MobileManager current;
 
     private bool isPressingGrenade;
     private bool isPressingShoot;
     private bool isPressingJump;
+    private bool isPressingRun;
 
 #if UNITY_STANDALONE
     private bool forceOnStandalone = false;
@@ -129,15 +131,21 @@ public class MobileManager : MonoBehaviour
 
     public static bool GetButtonSprint()
     {
-        return true;
+        if (!current)
+        {
+            Debug.LogError("MobileManager not initialized!");
+            return false;
+        }
+
+        return current.GetButtonState(current.isPressingRun, "Run");
     }
 
     private float GetAxisValue(float joystickValue, string axisName)
     {
-        float axisValue = Mathf.Abs(joystickValue) < 0.5f ? 0 : (joystickValue > Mathf.Epsilon ? 1 : (joystickValue < -Mathf.Epsilon ? -1 : 0));
-        Debug.Log($"{axisName} - {axisValue}");
-        return axisValue;
+        Debug.Log($"{axisName} - {joystickValue}");
+        return joystickValue;
     }
+
 
     public static float GetAxisHorizontal()
     {
@@ -160,4 +168,27 @@ public class MobileManager : MonoBehaviour
 
         return current.GetAxisValue(current.joystick.Vertical, "Vertical");
     }
+
+    public static float GetArmAxisVertical()
+    {
+        if (!current)
+        {
+            Debug.LogError("MobileManager not initialized!");
+            return 0;
+        }
+
+        return current.GetAxisValue(current.ArmJoystick.Vertical, "Vertical");
+    }
+
+    public static float GetArmAxisHorizontal()
+    {
+        if (!current)
+        {
+            Debug.LogError("MobileManager not initialized!");
+            return 0;
+        }
+
+        return current.GetAxisValue(current.ArmJoystick.Horizontal, "Horizontal");
+    }
+
 }

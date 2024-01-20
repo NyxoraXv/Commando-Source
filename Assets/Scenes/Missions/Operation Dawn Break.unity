@@ -1766,7 +1766,7 @@ PrefabInstance:
     - target: {fileID: 1866510319001186920, guid: e6ecc3aab9e52aa4791973b906dda33f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.5130703
+      value: 1.513598
       objectReference: {fileID: 0}
     - target: {fileID: 1866510319001186920, guid: e6ecc3aab9e52aa4791973b906dda33f,
         type: 3}
@@ -3054,6 +3054,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a042bc72e1f5a84b9945acd8d01bcf3, type: 3}
+--- !u!1 &600567157 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 348205582986890895, guid: 4853b4cf614694c46a2c414598638aa2,
+    type: 3}
+  m_PrefabInstance: {fileID: 1513237717}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &611056312 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1866510319001186921, guid: e6ecc3aab9e52aa4791973b906dda33f,
@@ -10438,6 +10444,11 @@ PrefabInstance:
       objectReference: {fileID: 1859724677}
     - target: {fileID: 8837762901952213425, guid: d957822e884ea974d9441386b3a76460,
         type: 3}
+      propertyPath: MobileCanvas
+      value: 
+      objectReference: {fileID: 600567157}
+    - target: {fileID: 8837762901952213425, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
       propertyPath: currencyShop
       value: 
       objectReference: {fileID: 0}
@@ -11044,8 +11055,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 5.4946084, y: 0, z: 1}
-  m_Center: {x: 3.0687768, y: 0.19211885, z: 0}
+  m_Size: {x: 5.9491158, y: 0, z: 1}
+  m_Center: {x: 2.9778757, y: 0.19211885, z: 0}
 --- !u!4 &1942368580
 Transform:
   m_ObjectHideFlags: 0
@@ -13330,7 +13341,7 @@ PrefabInstance:
     - target: {fileID: 2431320819883578219, guid: b7f8e7b35f7be624e80727a89ad67fae,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -13.029458
+      value: -13.028931
       objectReference: {fileID: 0}
     - target: {fileID: 2431320819883578219, guid: b7f8e7b35f7be624e80727a89ad67fae,
         type: 3}
@@ -14059,8 +14070,8 @@ SceneRoots:
   - {fileID: 4557179303736094702}
   - {fileID: 6284434189459712126}
   - {fileID: 1951655369}
-  - {fileID: 1513237717}
   - {fileID: 654601211}
+  - {fileID: 1513237717}
   - {fileID: 1360356733}
   - {fileID: 1410738206}
   - {fileID: 1131175194}

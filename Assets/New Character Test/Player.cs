@@ -20,7 +20,7 @@ public class MainPlayer : MonoBehaviour
     private bool IsGrounded;
 
     [Header("Shoot")]
-    public float rateOfFire; // Shots per second
+    public float rateOfFire;    
     public GameObject bulletPrefab;
     public Transform Weapon;
 
@@ -38,13 +38,13 @@ public class MainPlayer : MonoBehaviour
     [SerializeField] private float BottomAngleLimit = -20f;
 
     [Header("Knife")]
-    public float knifeDamage = 500f; // Adjust damage as needed
-    private float knifeRange = 0.35f; // Adjust range as needed
-    public LayerMask enemyLayer; // Layer mask for enemies
+    public float knifeDamage = 500f;     
+    private float knifeRange = 0.35f;     
+    public LayerMask enemyLayer;     
     public GameObject knifeHitVFXPrefab;
 
     private bool isKnifing = false;
-    public float timeBetweenKnifes = 0.2f; // Time delay between consecutive knife attacks
+    public float timeBetweenKnifes = 0.2f;       
     private float lastKnifeTime;
 
     [Header("Grenade")]
@@ -67,6 +67,8 @@ public class MainPlayer : MonoBehaviour
     private float currentHeavyMachineGunTime = 0f;
 
     private string causeOfDeath;
+
+    private bool isMobile;
 
     Cinemachine.CinemachineBrain cinemachineBrain;
     public enum CollectibleType
@@ -91,6 +93,8 @@ public class MainPlayer : MonoBehaviour
         JumpForce = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.Levels[CharacterManager.Instance.GetOwnedCharacterLevel(CharacterManager.Instance.selectedCharacter)].Agility*1.2f;
         GameManager.addAmmo(250);
         GameManager.SetBombs(15);
+
+        isMobile = UIManager.IsMobile();
     }
 
     void ThrowGranade()
@@ -120,22 +124,18 @@ public class MainPlayer : MonoBehaviour
     {
         isKnifing = true;
 
-        yield return new WaitForSeconds(0.1f); // Adjust delay if needed, this is the animation delay
+        yield return new WaitForSeconds(0.1f);          
 
-        // Perform a raycast to detect enemies in front of the player
         RaycastHit2D hit = Physics2D.Raycast(transform.position, aimPoint.right, knifeRange, enemyLayer);
 
         if (hit.collider != null)
         {
-            // Check if the hit object is within the valid range
             float distanceToEnemy = Vector2.Distance(transform.position, hit.point);
 
             if (distanceToEnemy <= knifeRange)
             {
-                // Instantiate the VFX at the hit point
                 Instantiate(knifeHitVFXPrefab, hit.point, Quaternion.identity);
 
-                // Damage the enemy
                 bottomAnimator.SetTrigger("IsKniving");
                 Health enemyHealth = hit.collider.GetComponent<Health>();
                 if (enemyHealth != null)
@@ -162,12 +162,11 @@ public class MainPlayer : MonoBehaviour
     private void registerHealth()
     {
         health = GetComponent<Health>();
-        // register health delegate
         health.onDead += OnDead;
         health.onHit += OnHit;
     }
 
-    private void OnDead(float damage) // health delegate onDead
+    private void OnDead(float damage)    
     {
         Died();
         GameManager.PlayerDied("Water Dead");
@@ -194,7 +193,7 @@ public class MainPlayer : MonoBehaviour
         UIManager.DisableReviveUI();
     }
 
-    private void OnHit(float damage) // health delegate onHit
+    private void OnHit(float damage)    
     {
         if (!isDead) { 
         UIManager.UpdateHealthUI(health.GetHealth(), health.GetMaxHealth());
@@ -206,7 +205,6 @@ public class MainPlayer : MonoBehaviour
         switch (type)
         {
             case CollectibleType.HeavyMachineGun:
-                // Activate the Heavy Machine Gun power-up
                 ActivateHeavyMachineGun();
                 break;
             case CollectibleType.MedKit:
@@ -229,7 +227,6 @@ public class MainPlayer : MonoBehaviour
         rateOfFire *= 4f;
         currentHeavyMachineGunTime = 0f;
 
-        // Optionally, you can add visual/audio effects to indicate the activation of the Heavy Machine Gun power-up.
     }
 
     private void DeactivateHeavyMachineGun()
@@ -237,20 +234,17 @@ public class MainPlayer : MonoBehaviour
         isHeavyMachineGunActive = false;
         rateOfFire /= 4f;
 
-        // Optionally, you can add visual/audio effects to indicate the deactivation of the Heavy Machine Gun power-up.
     }
 
     private void Update()
     {
-            HandleInput();
+        HandleInput();
         if (isHeavyMachineGunActive)
         {
             currentHeavyMachineGunTime += Time.deltaTime;
 
-            // Check if the Heavy Machine Gun duration has elapsed
             if (currentHeavyMachineGunTime >= heavyMachineGunDuration)
             {
-                // Deactivate the Heavy Machine Gun power-up
                 DeactivateHeavyMachineGun();
             }
         }
@@ -265,7 +259,6 @@ public class MainPlayer : MonoBehaviour
 
     private bool CheckEnemiesNearby()
     {
-        // Perform a raycast to detect enemies in front of the player
         RaycastHit2D hit = Physics2D.Raycast(aimPoint.position, aimPoint.right, knifeRange, enemyLayer);
 
         return (hit.collider != null);
@@ -273,16 +266,26 @@ public class MainPlayer : MonoBehaviour
 
     private bool Move()
     {
-        float horizontalAxis = Input.GetAxis("Horizontal");
+        float horizontalAxis;
 
-        if (Sprint() && ((horizontalAxis != 0) /*|| MobileManager.GetAxisHorizontal() != 0*/))
+        if (isMobile)
+        {
+            horizontalAxis = MobileManager.GetAxisHorizontal();
+        }
+        else
+        {
+            horizontalAxis = Input.GetAxis("Horizontal");
+        }
+        
+
+        if (Sprint() && ((horizontalAxis != 0)))
         {
             Vector2 movement = new Vector2(horizontalAxis, 0f) * (speed*speedMultiplier);
             rb.velocity = new Vector2(movement.x, rb.velocity.y);
             Weapon.transform.localPosition = new Vector3(-0.032f, 0.295f, 0.3607626f);
             return true;
         }
-        else if (!Sprint() && ((horizontalAxis != 0)/* || MobileManager.GetAxisHorizontal() != 0*/))
+        else if (!Sprint() && ((horizontalAxis != 0)    ))
         {
             Vector2 movement = new Vector2(horizontalAxis, 0f) * speed;
             rb.velocity = new Vector2(movement.x, rb.velocity.y);
@@ -299,43 +302,83 @@ public class MainPlayer : MonoBehaviour
 
     private void Aim()
     {
-        Vector3 mousePos = Input.mousePosition;
-        mousePos.z = 10f; // Example value, adjust as needed
-        mousePos = Camera.main.ScreenToWorldPoint(mousePos);
+        Vector2 direction = new Vector2(0, 0);
 
-        Vector2 pivotPoint = Weapon.position;
-
-        Vector2 direction = new Vector2(
-            mousePos.x - pivotPoint.x,
-            mousePos.y - pivotPoint.y
-        );
-
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-        // Set the rotation without angle limits
-        Weapon.rotation = Quaternion.Euler(0f, 0f, angle);
-        aimPoint.rotation = Quaternion.Euler(0f, 0f, angle);
-
-        // Flip the character based on the direction
-        if (direction.x < 0f)
+        if (isMobile)
         {
-            gameObject.transform.localScale = negatedScale;
+            // Use mobile aim controls
+            float mobileAimHorizontal = MobileManager.GetArmAxisHorizontal();
+            float mobileAimVertical = MobileManager.GetArmAxisVertical();
+
+            // Check if mobileAimHorizontal and mobileAimVertical are not zero
+            if (mobileAimHorizontal != 0f || mobileAimVertical != 0f)
+            {
+                direction = new Vector2(mobileAimHorizontal, mobileAimVertical);
+
+                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+                Weapon.rotation = Quaternion.Euler(0f, 0f, angle);
+                aimPoint.rotation = Quaternion.Euler(0f, 0f, angle);
+
+                if (direction.x < 0f)
+                {
+                    gameObject.transform.localScale = negatedScale;
+                }
+                else
+                {
+                    gameObject.transform.localScale = initScale;
+                }
+
+                if (direction.x < 0f)
+                {
+                    Weapon.transform.localScale = new Vector3(-1f, -1f, 1f);
+                }
+                else
+                {
+                    Weapon.transform.localScale = new Vector3(1f, 1f, 1f);
+                }
+            }
         }
         else
         {
-            gameObject.transform.localScale = initScale;
-        }
+            // Use mouse aim controls
+            Vector3 mousePos = Input.mousePosition;
+            mousePos.z = 10f;
+            mousePos = Camera.main.ScreenToWorldPoint(mousePos);
 
-        // Optionally, if you want to flip the weapon sprite based on the direction
-        if (direction.x < 0f)
-        {
-            Weapon.transform.localScale = new Vector3(-1f, -1f, 1f);
-        }
-        else
-        {
-            Weapon.transform.localScale = new Vector3(1f, 1f, 1f);
+            Vector2 pivotPoint = Weapon.position;
+
+            direction = new Vector2(
+                mousePos.x - pivotPoint.x,
+                mousePos.y - pivotPoint.y
+            );
+
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+            Weapon.rotation = Quaternion.Euler(0f, 0f, angle);
+            aimPoint.rotation = Quaternion.Euler(0f, 0f, angle);
+
+            if (direction.x < 0f)
+            {
+                gameObject.transform.localScale = negatedScale;
+            }
+            else
+            {
+                gameObject.transform.localScale = initScale;
+            }
+
+            if (direction.x < 0f)
+            {
+                Weapon.transform.localScale = new Vector3(-1f, -1f, 1f);
+            }
+            else
+            {
+                Weapon.transform.localScale = new Vector3(1f, 1f, 1f);
+            }
         }
     }
+
+
 
 
 
@@ -374,7 +417,6 @@ public class MainPlayer : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //Debug.Log(collision.collider.tag);
         if (collision.collider.CompareTag("Water Dead"))
         {
             string causeOfDeath = "Water Dead";
@@ -390,7 +432,7 @@ public class MainPlayer : MonoBehaviour
 
     private bool Jump()
     {
-        if (IsGrounded && ((Input.GetAxis("Jump") != 0)/* || (MobileManager.GetButtonJump())*/))
+        if (IsGrounded && ((Input.GetAxis("Jump") != 0) || MobileManager.GetButtonJump()))
         {
             rb.velocity = new Vector2(rb.velocity.x, JumpForce);
             IsGrounded = false;
@@ -405,20 +447,32 @@ public class MainPlayer : MonoBehaviour
     private void Shoot()
     {
         float currentTime = Time.time;
-        bool fireButtonPressed = Input.GetButton("Fire1");
+        bool fireButtonPressed;
 
-        // Check if the player is not currently knifing and the fire button is pressed
+        if (isMobile)
+        {
+            if(MobileManager.GetArmAxisHorizontal() != 0 || MobileManager.GetArmAxisVertical() != 0)
+            {
+                fireButtonPressed = true;
+            }
+            else
+            {
+                fireButtonPressed = false ;
+            }
+        }
+        else
+        {
+            fireButtonPressed = Input.GetButton("Fire1");
+        }
+
         if (!isKnifing && fireButtonPressed && GameManager.getAmmo() > 0)
         {
-            // Check if there are enemies nearby before shooting
             if (CheckEnemiesNearby())
             {
-                // Perform knife attack
                 StartCoroutine(KnifeAttack());
             }
             else
             {
-                // Otherwise, proceed with shooting
                 if (currentTime - lastShotTime >= 1f / rateOfFire)
                 {
                     if (bulletPrefab != null)
@@ -432,13 +486,14 @@ public class MainPlayer : MonoBehaviour
                         Debug.LogError("Bullet prefab is not assigned in the MainPlayer script.");
                     }
                 }
+                
             }
         }
     }
 
     private void ThrowGrenade()
     {
-        if (Input.GetAxis("grenade") == 1)
+        if (Input.GetAxis("grenade") == 1 || MobileManager.GetButtonGrenade())
         {
             if (Time.time - lastGrenadeThrowTime >= grenadeCooldown)
             {
