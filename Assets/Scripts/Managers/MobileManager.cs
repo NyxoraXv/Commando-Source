@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,190 +9,223 @@ public class MobileManager : MonoBehaviour
     public Button jumpButton;
     public Button shootButton;
     public FloatingJoystick joystick;
-    public FloatingJoystick ArmJoystick;
-
-    private static MobileManager current;
-
-    private bool isPressingGrenade;
-    private bool isPressingShoot;
-    private bool isPressingJump;
-    private bool isPressingRun;
-
+    public FloatingJoystick armJoystick;
+    static MobileManager current;
+    bool btnPressGrenade;
+    bool btnPressShoot;
+    bool btnPressJump;
 #if UNITY_STANDALONE
     private bool forceOnStandalone = false;
 #endif
 
-    private void Awake()
+    void Awake()
     {
         current = this;
     }
 
-    private void Start()
+    void Start()
     {
 #if UNITY_STANDALONE
-        // Remove this condition or set forceOnStandalone to true
-        forceOnStandalone = true; 
-        Debug.Log("Standalone mode: Disabling buttons and joystick.");
-        DisableMobileControls();
+        if (!forceOnStandalone)
+        {
+            grenadeButton.gameObject.SetActive(false);
+            jumpButton.gameObject.SetActive(false);
+            shootButton.gameObject.SetActive(false);
+            joystick.gameObject.SetActive(false);
+        }
 #endif
     }
 
-    private void DisableMobileControls()
+    void LateUpdate()
     {
-        grenadeButton.gameObject.SetActive(false);
-        jumpButton.gameObject.SetActive(false);
-        shootButton.gameObject.SetActive(false);
-        joystick.gameObject.SetActive(false);
+        btnPressShoot = false;
+        btnPressJump = false;
+        btnPressGrenade = false;
     }
 
-    private void UpdateButtonState(ref bool buttonState, bool value, string debugMessage)
+    public void ClickButtonShoot()
     {
-        if (buttonState != value)
-        {
-            buttonState = value;
-            Debug.Log(debugMessage);
-        }
+        btnPressShoot = true;
     }
 
-    public void PressGrenadeButton()
+    public void ClickButtonJump()
     {
-        UpdateButtonState(ref isPressingGrenade, true, "Grenade button pressed.");
+        btnPressJump = true;
     }
 
-    public void ReleaseGrenadeButton()
+    public void ClickButtonGrenade()
     {
-        UpdateButtonState(ref isPressingGrenade, false, "Grenade button released.");
+        btnPressGrenade = true;
     }
 
-    public void PressShootButton()
+    bool _GetButtonGrenade()
     {
-        UpdateButtonState(ref isPressingShoot, true, "Shoot button pressed.");
+        return btnPressGrenade;
     }
 
-    public void ReleaseShootButton()
+    static public bool GetButtonGrenade()
     {
-        UpdateButtonState(ref isPressingShoot, false, "Shoot button released.");
-    }
+        if (!current)
+            return false;
 
-    public void PressJumpButton()
-    {
-        UpdateButtonState(ref isPressingJump, true, "Jump button pressed.");
-    }
-
-    public void ReleaseJumpButton()
-    {
-        UpdateButtonState(ref isPressingJump, false, "Jump button released.");
-    }
-
-    private bool GetButtonState(bool buttonState, string inputName)
-    {
 #if UNITY_STANDALONE
-        if (forceOnStandalone)
-        {
-            Debug.Log($"{inputName} - Standalone mode: {buttonState}");
-            return buttonState;
-        }
-        Debug.Log($"{inputName} - Standalone mode: {Input.GetButton(inputName)}");
-        return Input.GetButton(inputName);
+        if (current.forceOnStandalone)
+           return current._GetButtonGrenade();
+        return Input.GetKeyDown(KeyCode.G);
 #else
-        Debug.Log($"{inputName} - {buttonState}");
-        return buttonState;
+        return current._GetButtonGrenade();
 #endif
     }
 
-    public static bool GetButtonGrenade()
+    bool _GetButtonFire1()
+    {
+        return btnPressShoot;
+    }
+
+    static public bool GetButtonFire1()
     {
         if (!current)
-        {
-            Debug.LogError("MobileManager not initialized!");
             return false;
-        }
 
-        return current.GetButtonState(current.isPressingGrenade, "Grenade");
+#if UNITY_STANDALONE
+        if (current.forceOnStandalone)
+            return current._GetButtonFire1();
+        return Input.GetButton("Fire1");
+#else
+        return current._GetButtonFire1();
+#endif
     }
 
-    public static bool GetButtonFire1()
+    bool _GetButtonJump()
+    {
+        return btnPressJump;
+    }
+
+    static public bool GetButtonJump()
     {
         if (!current)
-        {
-            Debug.LogError("MobileManager not initialized!");
             return false;
-        }
 
-        return current.GetButtonState(current.isPressingShoot, "Fire1");
+#if UNITY_STANDALONE
+        if (current.forceOnStandalone)
+            return current._GetButtonJump();
+        return Input.GetButton("Jump");
+#else
+        return current._GetButtonJump();
+#endif
     }
 
-    public static bool GetButtonJump()
+    bool _GetButtonCrouch()
+    {
+        return joystick.Vertical < -0.5f;
+    }
+
+    static public bool GetButtonCrouch()
     {
         if (!current)
-        {
-            Debug.LogError("MobileManager not initialized!");
             return false;
-        }
 
-        return current.GetButtonState(current.isPressingJump, "Jump");
+#if UNITY_STANDALONE
+        if (current.forceOnStandalone)
+            return current._GetButtonCrouch();
+        return Input.GetButton("Crouch");
+#else
+        return current._GetButtonCrouch();
+#endif
     }
 
-    public static bool GetButtonSprint()
+    float _GetAxisHorizontal()
     {
-        if (!current)
-        {
-            Debug.LogError("MobileManager not initialized!");
-            return false;
-        }
-
-        return current.GetButtonState(current.isPressingRun, "Run");
-    }
-
-    private float GetAxisValue(float joystickValue, string axisName)
-    {
-        Debug.Log($"{axisName} - {joystickValue}");
-        return joystickValue;
-    }
-
-
-    public static float GetAxisHorizontal()
-    {
-        if (!current)
-        {
-            Debug.LogError("MobileManager not initialized!");
+        // remove small sensibility
+        if (Mathf.Abs(joystick.Horizontal) < 0.5f)
             return 0;
-        }
-
-        return current.GetAxisValue(current.joystick.Horizontal, "Horizontal");
+        // give full sensibility
+        if (joystick.Horizontal > Mathf.Epsilon)
+            return 1;
+        else if (joystick.Horizontal < -Mathf.Epsilon)
+            return -1;
+        else // 0 or whatever
+            return 0; // joystick.Horizontal
     }
 
-    public static float GetAxisVertical()
+    static public float GetAxisHorizontal()
     {
         if (!current)
-        {
-            Debug.LogError("MobileManager not initialized!");
             return 0;
-        }
 
-        return current.GetAxisValue(current.joystick.Vertical, "Vertical");
+#if UNITY_STANDALONE
+        if (current.forceOnStandalone)
+            return current._GetAxisHorizontal();
+        return Input.GetAxis("Horizontal");
+#else
+        return current._GetAxisHorizontal();
+#endif
     }
 
-    public static float GetArmAxisVertical()
+    float _GetAxisVertical()
+    {
+        // remove small sensibility
+        if (Mathf.Abs(joystick.Vertical) < 0.5f)
+            return 0;
+        // give full sensibility
+        if (joystick.Vertical > Mathf.Epsilon)
+            return 1;
+        else if (joystick.Vertical < -Mathf.Epsilon)
+            return -1;
+        else // 0 or whatever
+            return 0; // joystick.Vertical
+    }
+
+    static public float GetAxisVertical()
     {
         if (!current)
-        {
-            Debug.LogError("MobileManager not initialized!");
             return 0;
-        }
 
-        return current.GetAxisValue(current.ArmJoystick.Vertical, "Vertical");
+#if UNITY_STANDALONE
+        if (current.forceOnStandalone)
+            return current._GetAxisVertical();
+        return Input.GetAxis("Vertical");
+#else
+        return current._GetAxisVertical();
+#endif
+    }
+    float _GetArmAxisHorizontal()
+    {
+        // remove small sensibility
+        return armJoystick.Horizontal;
     }
 
-    public static float GetArmAxisHorizontal()
+    static public float GetArmAxisHorizontal()
     {
         if (!current)
-        {
-            Debug.LogError("MobileManager not initialized!");
             return 0;
-        }
 
-        return current.GetAxisValue(current.ArmJoystick.Horizontal, "Horizontal");
+#if UNITY_STANDALONE
+        if (current.forceOnStandalone)
+            return current._GetAxisHorizontal();
+        return Input.GetAxis("Horizontal");
+#else
+        return current._GetArmAxisHorizontal();
+#endif
     }
 
+    float _GetArmAxisVertical()
+    {
+        // remove small sensibility
+        return armJoystick.Vertical;
+    }
+
+    static public float GetArmAxisVertical()
+    {
+        if (!current)
+            return 0;
+
+#if UNITY_STANDALONE
+        if (current.forceOnStandalone)
+            return current._GetAxisVertical();
+        return Input.GetAxis("Vertical");
+#else
+        return current._GetArmAxisVertical();
+#endif
+    }
 }

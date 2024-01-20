@@ -346,7 +346,7 @@ public class Player : MonoBehaviour
     void UpdateSprintingState()
     {
         // Check for Sprint button
-        bool sprintButtonDown = MobileManager.GetButtonSprint();
+        bool sprintButtonDown = MobileManager.GetButtonFire1();
 
         // Determine if sprinting should be active
         isSprinting = sprintButtonDown && Mathf.Abs(Input.GetAxis("Horizontal")) > 0;

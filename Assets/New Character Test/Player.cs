@@ -387,17 +387,34 @@ public class MainPlayer : MonoBehaviour
 
     private bool Sprint()
     {
-        float sprint = Input.GetAxis("Sprint");
-
-        if (sprint != 0)
+        if (isMobile)
         {
+            bool sprint = false;
 
-            return true;
+            if (MobileManager.GetButtonSprint())
+            {
+                sprint = !sprint;
+                return sprint;
+            }
+            else
+            {
+                return sprint;
+            }
         }
         else
         {
+            float sprint = Input.GetAxis("Sprint");
 
-            return false;
+            if (sprint != 0)
+            {
+
+                return true;
+            }
+            else
+            {
+
+                return false;
+            }
         }
     }
 
