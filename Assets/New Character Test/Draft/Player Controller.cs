@@ -346,7 +346,7 @@ public class Player : MonoBehaviour
     void UpdateSprintingState()
     {
         // Check for Sprint button
-        bool sprintButtonDown = MobileManager.GetButtonFire1();
+        bool sprintButtonDown = MobileManager.GetButtonSprint();
 
         // Determine if sprinting should be active
         isSprinting = sprintButtonDown && Mathf.Abs(Input.GetAxis("Horizontal")) > 0;
@@ -428,7 +428,7 @@ public class Player : MonoBehaviour
 
     void HandleShooting()
     {
-        if (MobileManager.GetButtonFire1() && canShoot && !isFiring)
+        /*if (MobileManager.GetButtonFire1() && canShoot && !isFiring)
         {
             isFiring = true;
             animator.SetBool("IsShooting", true);
@@ -441,10 +441,10 @@ public class Player : MonoBehaviour
         {
             isFiring = false;
             animator.SetBool("IsShooting", false);
-        }
+        }*/
     }
 
-    IEnumerator ShootingCooldown()
+    /*IEnumerator ShootingCooldown()
     {
         // Shoot and wait for the specified rate of fire
         do
@@ -455,7 +455,7 @@ public class Player : MonoBehaviour
 
         // Reset the canShoot flag when the mouse button is released
         canShoot = true;
-    }
+    }*/
     void Shoot()
     {
         Transform activeAimPoint = spriteRenderer.flipX ? weaponAimPointFlipped : weaponAimPoint;

@@ -97,7 +97,7 @@ public class PlayerController : MonoBehaviour
         if (GameManager.IsGameOver() || !health.IsAlive())
             return;
 
-        Fire();
+        //Fire();
         ThrowGranate();
         MoveHorizontally();
         MoveVertically();
@@ -124,7 +124,7 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(WaitCrouch());
     }
 
-    void Fire()
+    /*void Fire()
     {
         shotTime = shotTime + Time.deltaTime;
 
@@ -135,7 +135,7 @@ public class PlayerController : MonoBehaviour
                
                 if (CanMelee())
                 {
-                    /*Animazione in base a se è in piedi o meno*/
+                    /*Animazione in base a se è in piedi o meno*//*
                     if (bottomAnimator.GetBool("isCrouched"))
                     {
                         bottomAnimator.SetBool("isMeleeRange", true);
@@ -145,7 +145,7 @@ public class PlayerController : MonoBehaviour
                         topAnimator.SetBool("isMeleeRange", true);
                     }
                     /*fine*/
-
+    /*
                     if (shotTime > nextFire)
                     {
                         nextFire = shotTime + fireDelta;
@@ -192,7 +192,7 @@ public class PlayerController : MonoBehaviour
             bottomAnimator.SetBool("isFiring", false);
             wasFiring = false;
         }
-    }
+    }*/
 
     void ThrowGranate()
     {

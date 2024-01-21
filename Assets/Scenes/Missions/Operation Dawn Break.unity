@@ -8288,13 +8288,30 @@ PrefabInstance:
     - target: {fileID: 348205582986890895, guid: 4853b4cf614694c46a2c414598638aa2,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1484372628238204579, guid: 4853b4cf614694c46a2c414598638aa2,
+        type: 3}
+      propertyPath: sprintButton
+      value: 
+      objectReference: {fileID: 1513237718}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4853b4cf614694c46a2c414598638aa2, type: 3}
+--- !u!114 &1513237718 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 348205583127616923, guid: 4853b4cf614694c46a2c414598638aa2,
+    type: 3}
+  m_PrefabInstance: {fileID: 1513237717}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1517478246
 GameObject:
   m_ObjectHideFlags: 0
@@ -10276,6 +10293,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 74349141066268427, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1689278991697342947, guid: d957822e884ea974d9441386b3a76460,
         type: 3}
       propertyPath: offset.x
@@ -10297,6 +10319,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: a47703202bc64334c91ebbf542119291,
         type: 3}
+    - target: {fileID: 5694193148648427170, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 2.7157
+      objectReference: {fileID: 0}
+    - target: {fileID: 5694193148648427170, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.00039672852
+      objectReference: {fileID: 0}
+    - target: {fileID: 5694193148648427170, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -1.3578033
+      objectReference: {fileID: 0}
     - target: {fileID: 6361495261174932477, guid: d957822e884ea974d9441386b3a76460,
         type: 3}
       propertyPath: m_IsActive
@@ -10407,10 +10444,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7013612831472759348, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7013612831472759351, guid: d957822e884ea974d9441386b3a76460,
         type: 3}
       propertyPath: m_Name
       value: Game Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 7013612831472759351, guid: d957822e884ea974d9441386b3a76460,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8072423303390447070, guid: d957822e884ea974d9441386b3a76460,
         type: 3}

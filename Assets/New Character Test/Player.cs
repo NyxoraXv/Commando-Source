@@ -69,6 +69,7 @@ public class MainPlayer : MonoBehaviour
     private string causeOfDeath;
 
     private bool isMobile;
+    private bool mobileSprint = false;
 
     Cinemachine.CinemachineBrain cinemachineBrain;
     public enum CollectibleType
@@ -389,17 +390,7 @@ public class MainPlayer : MonoBehaviour
     {
         if (isMobile)
         {
-            bool sprint = false;
-
-            if (MobileManager.GetButtonSprint())
-            {
-                sprint = !sprint;
-                return sprint;
-            }
-            else
-            {
-                return sprint;
-            }
+            return true;
         }
         else
         {
@@ -416,6 +407,7 @@ public class MainPlayer : MonoBehaviour
                 return false;
             }
         }
+
     }
 
 
