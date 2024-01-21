@@ -95,7 +95,7 @@ public class MainPlayer : MonoBehaviour
         GameManager.addAmmo(250);
         GameManager.SetBombs(15);
 
-        isMobile = UIManager.IsMobile();
+        isMobile = UIManager.isMobile();
     }
 
     void ThrowGranade()
@@ -225,6 +225,7 @@ public class MainPlayer : MonoBehaviour
     private void ActivateHeavyMachineGun()
     {
         isHeavyMachineGunActive = true;
+        UIManager.TriggerRateOfFireUI(heavyMachineGunDuration);
         rateOfFire *= 4f;
         currentHeavyMachineGunTime = 0f;
 

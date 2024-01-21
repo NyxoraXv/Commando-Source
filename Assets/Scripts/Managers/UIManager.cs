@@ -4,6 +4,7 @@ using TMPro;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 public class UIManager : MonoBehaviour
 {
@@ -30,6 +31,8 @@ public class UIManager : MonoBehaviour
     public GameObject backButton;
     public GameObject buyButton;
     public GameObject shopUI;
+    public GameObject RateOfFireUI;
+    public Image RateOfFireSlide;
 
     public Image characterAvatar;
 
@@ -64,19 +67,24 @@ public class UIManager : MonoBehaviour
         SetInitialAlpha(current.homeWin.GetComponent<Image>(), 0f);
         SetInitialAlpha(current.restartWin.GetComponent<Image>(), 0f);
 
-        
+
         UpdateScoreUI();
         UpdateBombsUI();
-        if (IsMobile())
-        {MobileCanvas.SetActive(true);}
+        if (isMobile())
+        { MobileCanvas.SetActive(true); }
         else
-        { MobileCanvas.SetActive(false);}
+        { MobileCanvas.SetActive(false); }
     }
 
-    public static bool IsMobile()
+
+    [DllImport("__Internal")]
+    private static extern bool IsMobile();
+    public static bool isMobile()
     {
-        //return SystemInfo.deviceType == DeviceType.Handheld;
-        return true;
+#if !UNITY_EDITOR && UNITY_WEBGL
+        return IsMobile();
+#endif
+        return false;
     }
 
     private void SetInitialAlpha(Image image, float alpha)
@@ -90,7 +98,7 @@ public class UIManager : MonoBehaviour
     {
         if (current == null)
             return;
-        
+
         current.scoreText.SetText(GameManager.GetScore().ToString());
         current.loseScore.SetText(GameManager.GetScore().ToString());
     }
@@ -101,7 +109,7 @@ public class UIManager : MonoBehaviour
             return;
 
         currencyDisplayInProgress = true;
-        
+
 
         // Set initial alpha to 0f
         CanvasGroup canvasGroup = current.Currency.GetComponent<CanvasGroup>();
@@ -123,6 +131,19 @@ public class UIManager : MonoBehaviour
                         currencyDisplayInProgress = false;
                     });
             });
+    }
+
+    public static void TriggerRateOfFireUI(float duration){
+        current.RateOfFireSlide.DOFillAmount(0f, duration)
+    .From(1f)
+    .SetEase(Ease.InOutCubic)
+    .OnComplete(() => {
+        current.RateOfFireUI.SetActive(false);
+    })
+    .OnStart(() => {
+        current.RateOfFireUI.SetActive(true);
+    });
+
     }
 
     private static void SetInitialAlpha(GameObject gameObject, float alpha)

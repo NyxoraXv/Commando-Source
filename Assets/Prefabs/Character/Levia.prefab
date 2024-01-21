@@ -75,3 +75,4 @@ MonoBehaviour:
     PlayerController: {fileID: 22100000, guid: 041e362c7d5833b4fb00899d4a25a657, type: 2}
     PlayerPreviewController: {fileID: 22100000, guid: 9fd5a61b38e311c4fa6fe50baef6c144,
       type: 2}
+    HandPivot: {x: 0, y: 0, z: 0}

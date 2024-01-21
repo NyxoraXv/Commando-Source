@@ -122,9 +122,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grenadeButton: {fileID: 8221396237392791613}
   jumpButton: {fileID: 348205583361001113}
-  shootButton: {fileID: 5356081813045811206}
+  sprintButton: {fileID: 348205583127616923}
   joystick: {fileID: 8482288779606530533}
   ArmJoystick: {fileID: 7506518612296112421}
+  grenadeButtonClicked: 0
+  jumpButtonClicked: 0
+  sprintButtonClicked: 0
 --- !u!114 &2820025666536135763
 MonoBehaviour:
   m_ObjectHideFlags: 0
