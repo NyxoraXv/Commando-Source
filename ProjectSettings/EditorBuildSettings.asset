@@ -20,4 +20,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Missions/Fireflies.unity
     guid: fee058c969922e3488325c8c3e46e1f8
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 5990828fe5b225c42a99eed46c345dc3,
+      type: 2}
+    com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000,
+      guid: b4bc9604ac9ded149a86bc334e6e2579, type: 2}
