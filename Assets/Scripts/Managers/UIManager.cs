@@ -80,7 +80,7 @@ public class UIManager : MonoBehaviour
     [DllImport("__Internal")]
     private static extern bool IsMobile();
     public static bool isMobile()
-    {
+    { 
 #if !UNITY_EDITOR && UNITY_WEBGL
         return IsMobile();
 #endif

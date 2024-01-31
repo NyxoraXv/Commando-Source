@@ -442,15 +442,31 @@ public class MainPlayer : MonoBehaviour
 
     private bool Jump()
     {
-        if (IsGrounded && ((Input.GetAxis("Jump") != 0) || MobileManager.GetButtonJump()))
+        if (isMobile)
         {
-            rb.velocity = new Vector2(rb.velocity.x, JumpForce);
-            IsGrounded = false;
-            return true;
+            if (MobileManager.GetButtonJump())
+            {
+                rb.velocity = new Vector2(rb.velocity.x, JumpForce);
+                IsGrounded = false;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         else
         {
-            return false;
+            if (IsGrounded && ((Input.GetAxis("Jump") != 0)))
+            {
+                rb.velocity = new Vector2(rb.velocity.x, JumpForce);
+                IsGrounded = false;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 
