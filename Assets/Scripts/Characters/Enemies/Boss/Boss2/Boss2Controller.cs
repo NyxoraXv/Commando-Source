@@ -108,7 +108,6 @@ public class Boss2Controller : MonoBehaviour
 
     private void OnHit(float damage)
     {
-        GameManager.AddScore(damage);
         top.GetComponent<BlinkingSprite>().Play();
 
         float currentBossHealth = bossHealth.GetHealth();
@@ -135,6 +134,7 @@ public class Boss2Controller : MonoBehaviour
     private void OnDead(float damage)
     {
         StartCoroutine(Explode());
+        GameManager.AddRewardAll(500, 0.23f, 25f, 250);
         GameManager.PlayerWin();
         StopBossCoroutines();
     }

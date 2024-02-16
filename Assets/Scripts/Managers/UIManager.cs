@@ -285,7 +285,7 @@ public class UIManager : MonoBehaviour
 
     public static void Revive()
     {
-        if (CurrencyManager.Instance.spendGold(10)) { GameManager.GetPlayer().GetComponent<MainPlayer>().Revive(); }
+        if (CurrencyManager.Instance.spendFRG(10)) { GameManager.GetPlayer().GetComponent<MainPlayer>().Revive(); }
         
         DisplayCurrency();
     }
@@ -351,7 +351,7 @@ public class UIManager : MonoBehaviour
 
     public void BuyAmmo()
     {
-        if (CurrencyManager.Instance.spendGold(100))
+        if (CurrencyManager.Instance.spendFRG(100))
         {
             GameManager.addAmmo(150);
         }

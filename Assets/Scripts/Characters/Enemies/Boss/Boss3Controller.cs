@@ -174,6 +174,7 @@ public class Boss3Controller : MonoBehaviour
     {
         headSpawner.GetComponent<Animator>().SetBool("isDying", true);
         mouthSpawner.GetComponent<Animator>().SetBool("isDying", true);
+        GameManager.AddRewardAll(500, 0.23f, 25f, 250);
 
         StopCoroutine(Fire1());
         StopCoroutine(Fire2Wait());
@@ -190,7 +191,6 @@ public class Boss3Controller : MonoBehaviour
 
     private void OnHit(float damage)
     {
-        GameManager.AddScore(damage);
         blinkingSprite.Play();
 
         float currentBossHealth = bossHealth.GetHealth();

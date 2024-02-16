@@ -151,7 +151,6 @@ public class HeliController : MonoBehaviour
     {
         animator.SetTrigger("isHitten");
 
-        GameManager.AddScore(+2);
         blinkingSprite.Play();
     }
 
@@ -164,6 +163,7 @@ public class HeliController : MonoBehaviour
     private IEnumerator Die()
     {
         AudioManager.PlayMetalSlugDestroy2();
+        GameManager.AddRewardAll(100, 0.05f, 5f, 50);
         animator.SetBool("isDying", true);
         if (rb)
             rb.isKinematic = true;

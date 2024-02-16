@@ -127,19 +127,19 @@ public class GameManager : MonoBehaviour
 
     public static void AddScore(float amount)
     {
-        AddScore((int)amount);
+        AddRewardAll((int)amount);
     }
 
-    public static void AddScore(int amount)
+    public static void AddRewardAll(int amountScore = 0, float FRG = 0f, float LUNC = 0f, int xp = 0)
     {
         //If there is no current Game Manager, exit
         if (current == null)
             return;
 
-        current.score += amount;
+        current.score += amountScore;
         UIManager.DisplayCurrency();
         UIManager.UpdateScoreUI();
-        AddCurrency();
+        AddReward(FRG, LUNC, xp);
     }
 
     public static int GetScore()
@@ -152,11 +152,11 @@ public class GameManager : MonoBehaviour
         return current.score;
     }
 
-    public static void AddCurrency()
+    public static void AddReward(float FRG = 0F, float LUNC = 0f, int XP = 0)
     {
-        CurrencyManager.Instance.addGold(1);
-        CurrencyManager.Instance.addDiamond(1);
-        LevelManager.Instance.addXP(10);
+        CurrencyManager.Instance.addFRG(FRG);
+        CurrencyManager.Instance.addLUNC(LUNC);
+        LevelManager.Instance.addXP(XP);
     }
 
     public static int GetBombs()
@@ -255,6 +255,9 @@ public class GameManager : MonoBehaviour
         UIManager.DisplayWinUI();
         AudioManager.PlayLevelCompleteAudio();
         AudioManager.PlayGameOverAudio();
+
+        SaveManager.Instance.score = current.score;
+        SaveManager.Instance.Save();
 
         current.isGameOver = true;
 

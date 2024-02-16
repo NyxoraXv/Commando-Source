@@ -21,7 +21,7 @@ public class PopUpInstantiate : MonoBehaviour
     public CurrencyType Type { get; set; }
 
 
-    public void Instantiate(int Amount)
+    public void pop(float Amount)
     {
         switch (Type)
         {
@@ -36,7 +36,7 @@ public class PopUpInstantiate : MonoBehaviour
         }
     }
 
-    private void InstantiateCurrencyPrefab(CurrencyType type, int Amount)
+    private void InstantiateCurrencyPrefab(CurrencyType type, float Amount)
     {
         Icon.sprite = selectedSprite;
         amountDisplay.text = Amount.ToString();

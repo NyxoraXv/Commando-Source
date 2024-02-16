@@ -7,7 +7,11 @@ public enum Character
     Sucipto,
     Habibi,
     Levia,
-    Nurul
+    Nurul,
+    Guan,
+    Nana,
+    Dylan,
+    Unknown
 }
 
 public class CharacterManager : MonoBehaviour
@@ -64,9 +68,13 @@ public class CharacterManager : MonoBehaviour
         characterObjects[Character.Habibi] = habibi;
         characterObjects[Character.Levia] = levia;
         characterObjects[Character.Nurul] = nurul;
+        characterObjects[Character.Guan] = frg;
+        characterObjects[Character.Nana] = levi;
+        characterObjects[Character.Dylan] = bigboy;
+        characterObjects[Character.Unknown] = modelx;
     }
 
-    [SerializeField] private GameObject sucipto, habibi, nurul, levia;
+    [SerializeField] private GameObject sucipto, habibi, nurul, levia, frg, levi, bigboy, modelx;
 
     private void Start()
     {

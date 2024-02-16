@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3563596037907735314}
   - component: {fileID: 2705414511077166885}
   - component: {fileID: 9108472977005183931}
+  - component: {fileID: 1123468740779158712}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: GameManager
@@ -48,8 +49,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f6c4c59d967741499f2aac79a4e945e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentGold: 0
-  CurrentDiamond: 0
+  CurrentLUNC: 0
+  CurrentFRG: 0
   insufficientFundObject: {fileID: 0}
 --- !u!114 &-3273356639008598148
 MonoBehaviour:
@@ -111,3 +112,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MissionInformation: []
+--- !u!114 &1123468740779158712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3309609548692264067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79345c2793c99ff4988d09959e6d8e5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

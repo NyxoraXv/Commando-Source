@@ -70,6 +70,9 @@ public class MainPlayer : MonoBehaviour
 
     private bool isMobile;
     private bool mobileSprint = false;
+    
+    private Vector3 handPivotIdle;
+    private Vector3 handPivotRun;
 
     Cinemachine.CinemachineBrain cinemachineBrain;
     public enum CollectibleType
@@ -83,12 +86,17 @@ public class MainPlayer : MonoBehaviour
     {
         animator = gameObject.GetComponent<Animator>();
         animator.runtimeAnimatorController = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.PlayerController;
+        handPivotIdle = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.HandPivotIdle;
+        handPivotRun = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.HandPivotRun;
+
         rb = gameObject.GetComponent<Rigidbody2D>();
         avatar = gameObject.GetComponent<SpriteRenderer>();
         cinemachineBrain = Camera.main.GetComponent<Cinemachine.CinemachineBrain>();
         registerHealth();
         initScale = transform.localScale;
         negatedScale = new Vector3 (-gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z );
+
+        Weapon.GetComponent<Animator>().runtimeAnimatorController = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.Weapon;
 
         speed = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.Levels[CharacterManager.Instance.GetOwnedCharacterLevel(CharacterManager.Instance.selectedCharacter)].Agility*0.2f;
         JumpForce = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.Levels[CharacterManager.Instance.GetOwnedCharacterLevel(CharacterManager.Instance.selectedCharacter)].Agility*1.2f;
@@ -100,10 +108,10 @@ public class MainPlayer : MonoBehaviour
 
     void ThrowGranade()
     {
-        Debug.Log("Throw");
+        //Debug.Log("Throw");
         if (GameManager.GetBombs() > 0)
         {
-            Debug.Log("Throw");
+            //Debug.Log("Throw");
             rateOfFire = rateOfFire + Time.deltaTime;
             if (MobileManager.GetButtonGrenade())
             {
@@ -217,7 +225,7 @@ public class MainPlayer : MonoBehaviour
                 UIManager.UpdateAmmoUI();
                 break;
             default:
-                Debug.Log("Collectible not found");
+                //Debug.Log("Collectible not found");
                 break;
         }
     }
@@ -284,20 +292,20 @@ public class MainPlayer : MonoBehaviour
         {
             Vector2 movement = new Vector2(horizontalAxis, 0f) * (speed*speedMultiplier);
             rb.velocity = new Vector2(movement.x, rb.velocity.y);
-            Weapon.transform.localPosition = new Vector3(-0.032f, 0.295f, 0.3607626f);
+            Weapon.transform.localPosition = handPivotRun;
             return true;
         }
         else if (!Sprint() && ((horizontalAxis != 0)    ))
         {
             Vector2 movement = new Vector2(horizontalAxis, 0f) * speed;
             rb.velocity = new Vector2(movement.x, rb.velocity.y);
-            Weapon.transform.localPosition = new Vector3(-0.143f, 0.409f, 0.030607626f);
+            Weapon.transform.localPosition = handPivotIdle;
 
             return true;
         }
         else
         {
-            Weapon.transform.localPosition = new Vector3(-0.143f, 0.409f, 0.030607626f);
+            Weapon.transform.localPosition = handPivotIdle;
             return false;
         }
     }
@@ -509,7 +517,7 @@ public class MainPlayer : MonoBehaviour
                     }
                     else
                     {
-                        Debug.LogError("Bullet prefab is not assigned in the MainPlayer script.");
+                        //Debug.LogError("Bullet prefab is not assigned in the MainPlayer script.");
                     }
                 }
                 

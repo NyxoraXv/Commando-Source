@@ -156,7 +156,6 @@ public class BossController : MonoBehaviour
 
     private void OnHit(float damage)
     {
-        GameManager.AddScore(+2);
         blinkingSprite.Play();
 
         float currentBossHealth = bossHealth.GetHealth();
@@ -296,7 +295,7 @@ public class BossController : MonoBehaviour
     private void OnDead(float damage)
     {
         this.GetComponent<Animator>().SetBool("isDying", true);
-
+        GameManager.AddRewardAll(500, 0.23f, 25f, 250);
         StopCoroutine("Sprint");
         StopCoroutine("WaitFire");
         GameManager.PlayerWin();

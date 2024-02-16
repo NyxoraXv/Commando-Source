@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7361782805168507399
 Transform:
   m_ObjectHideFlags: 0
@@ -50,23 +50,23 @@ MonoBehaviour:
     - Damage: 20
       HP: 200
       Agility: 3
-      UpgradeCost: 200
+      UpgradeCost: 0.2
     - Damage: 40
       HP: 250
       Agility: 3.2
-      UpgradeCost: 250
+      UpgradeCost: 0.25
     - Damage: 50
       HP: 300
       Agility: 3.4
-      UpgradeCost: 375
+      UpgradeCost: 0.375
     - Damage: 60
       HP: 350
       Agility: 3.5
-      UpgradeCost: 500
+      UpgradeCost: 0.5
     - Damage: 75
       HP: 500
       Agility: 3.6
-      UpgradeCost: 500
+      UpgradeCost: 0.15
     MaxLevel: 5
     FullAvatar: {fileID: 21300000, guid: 26c1c7de22d3d5e47a3e649e9f567540, type: 3}
     MaskedAvatar: {fileID: 21300000, guid: d6ca98a252a0a364b8550ba3f73b4d19, type: 3}
@@ -75,4 +75,6 @@ MonoBehaviour:
     PlayerController: {fileID: 22100000, guid: 041e362c7d5833b4fb00899d4a25a657, type: 2}
     PlayerPreviewController: {fileID: 22100000, guid: 9fd5a61b38e311c4fa6fe50baef6c144,
       type: 2}
-    HandPivot: {x: 0, y: 0, z: 0}
+    Weapon: {fileID: 9100000, guid: 1f4ba5ce332537641a5b683c7f845951, type: 2}
+    HandPivotIdle: {x: -0.137, y: 0.322, z: 0}
+    HandPivotRun: {x: 0.116, y: 0.223, z: 0}

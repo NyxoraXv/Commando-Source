@@ -7,7 +7,7 @@ using System;
 public class CurrencyManager : MonoBehaviour
 {
     public static CurrencyManager Instance;
-    public int CurrentGold, CurrentDiamond;
+    public float CurrentLUNC, CurrentFRG;
     public GameObject insufficientFundObject;
 
     private void Awake()
@@ -44,17 +44,9 @@ public class CurrencyManager : MonoBehaviour
                 if (GoldDisplay != null && DiamondDisplay != null)
                 {
                     // Update the text values
-                    GoldDisplay.text = CurrentGold.ToString();
-                    DiamondDisplay.text = CurrentDiamond.ToString();
+                    GoldDisplay.text = CurrentLUNC.ToString();
+                    DiamondDisplay.text = CurrentFRG.ToString();
                 }
-                else
-                {
-                    Debug.LogError("TextMeshProUGUI component is missing on either Gold or Diamond objects.");
-                }
-            }
-            else
-            {
-                Debug.LogError("Gold or Diamond object not found.");
             }
         }
         catch (Exception e)
@@ -66,11 +58,11 @@ public class CurrencyManager : MonoBehaviour
 
     }
 
-    public bool spendGold(int Amount)
+    public bool spendFRG(float Amount)
     {
-        if (CurrentGold >= Amount)
+        if (CurrentLUNC >= Amount)
         {
-            CurrentGold -= Amount;
+            CurrentLUNC -= Amount;
             return true;
         }
         else
@@ -79,11 +71,11 @@ public class CurrencyManager : MonoBehaviour
         }
     }
 
-    public bool spendDiamond(int Amount)
+    public bool spendLUNC(float Amount)
     {
-        if (CurrentDiamond >= Amount)
+        if (CurrentFRG >= Amount)
         {
-            CurrentDiamond -= Amount;
+            CurrentFRG -= Amount;
             return true;
         }
         else
@@ -92,17 +84,17 @@ public class CurrencyManager : MonoBehaviour
         }
     }
 
-    public void addGold(int Amount)
+    public void addFRG(float Amount)
     {
-        CurrentGold += Amount;
+        CurrentLUNC += Amount;
     }
 
-    public void addDiamond(int Amount)
+    public void addLUNC(float Amount)
     {
-        CurrentDiamond += Amount;
+        CurrentFRG += Amount;
     }
 
-    public void insufficientFund(int Amount, Transform transform, PopUpInstantiate.CurrencyType type)
+    public void insufficientFund(float Amount, Transform transform, PopUpInstantiate.CurrencyType type)
     {
         GameObject popup = Instantiate(insufficientFundObject, transform);
         PopUpInstantiate popupInstantiateScript = popup.GetComponent<PopUpInstantiate>();
@@ -110,7 +102,7 @@ public class CurrencyManager : MonoBehaviour
         if (popupInstantiateScript != null)
         {
             // Call a method on the PopUpInstantiate script to set parameters
-            popupInstantiateScript.Instantiate(Amount);
+            popupInstantiateScript.pop(Amount);
         }
         else
         {

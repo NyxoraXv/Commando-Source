@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3521382923466883720
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7361782805168507399}
+  - component: {fileID: 8795136070211642473}
+  m_Layer: 0
+  m_Name: Combat Woman
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &7361782805168507399
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3521382923466883720}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8795136070211642473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3521382923466883720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 195989177958f884b9d317fdc02e0a1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Character:
+    CharacterName: 5
+    Levels:
+    - Damage: 25
+      HP: 500
+      Agility: 2.5
+      UpgradeCost: 0.1
+    - Damage: 40
+      HP: 700
+      Agility: 2.8
+      UpgradeCost: 0.25
+    - Damage: 70
+      HP: 700
+      Agility: 3.2
+      UpgradeCost: 0.5
+    - Damage: 80
+      HP: 800
+      Agility: 3.4
+      UpgradeCost: 1
+    - Damage: 100
+      HP: 1000
+      Agility: 4
+      UpgradeCost: 3
+    MaxLevel: 5
+    FullAvatar: {fileID: 21300000, guid: 4ac132e6fb1e9f54f8218d5ecb678ec5, type: 3}
+    MaskedAvatar: {fileID: 21300000, guid: 4ac132e6fb1e9f54f8218d5ecb678ec5, type: 3}
+    CroppedAvatar: {fileID: 0}
+    Price: 1
+    PlayerController: {fileID: 22100000, guid: f40d97659dcf2454597a015d9e91f219, type: 2}
+    PlayerPreviewController: {fileID: 22100000, guid: 57a0487562f37a64d843858eac20ea4a,
+      type: 2}
+    Weapon: {fileID: 22100000, guid: d21fb95327b41154492e77c973be382b, type: 2}
+    HandPivotIdle: {x: -0.166, y: 0.386, z: 0}
+    HandPivotRun: {x: -0.031, y: 0.294, z: 0}

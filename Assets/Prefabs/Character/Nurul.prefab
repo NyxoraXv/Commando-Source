@@ -50,23 +50,23 @@ MonoBehaviour:
     - Damage: 50
       HP: 500
       Agility: 2.3
-      UpgradeCost: 300
+      UpgradeCost: 0.3
     - Damage: 70
       HP: 600
       Agility: 2.5
-      UpgradeCost: 480
+      UpgradeCost: 0.48
     - Damage: 90
       HP: 750
       Agility: 2.7
-      UpgradeCost: 660
+      UpgradeCost: 0.66
     - Damage: 110
       HP: 900
       Agility: 2.9
-      UpgradeCost: 840
+      UpgradeCost: 0.84
     - Damage: 150
       HP: 1200
       Agility: 3.1
-      UpgradeCost: 1100
+      UpgradeCost: 1.1
     MaxLevel: 5
     FullAvatar: {fileID: 21300000, guid: c088d58dbd9693c47bfdf6c41725c4c8, type: 3}
     MaskedAvatar: {fileID: 21300000, guid: 9a1cc8c87a4e5d24e9d1ba046fef47de, type: 3}
@@ -75,3 +75,6 @@ MonoBehaviour:
     PlayerController: {fileID: 22100000, guid: cbb47bf018f7fb34a88943023b16a7be, type: 2}
     PlayerPreviewController: {fileID: 22100000, guid: d2422a99de8024e43b28569dd552e291,
       type: 2}
+    Weapon: {fileID: 9100000, guid: 1f4ba5ce332537641a5b683c7f845951, type: 2}
+    HandPivotIdle: {x: -0.104, y: 0.372, z: 0}
+    HandPivotRun: {x: 0.018, y: 0.314, z: 0}

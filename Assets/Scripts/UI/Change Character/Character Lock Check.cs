@@ -8,7 +8,7 @@ public class CharacterLockCheck : MonoBehaviour
     {
         Character card = this.GetComponentInParent<EnumCard>().Character;
 
-        if (SaveManager.Instance.playerData.characterInfo.OwnedCharacters.TryGetValue(card, out int index))
+        if (true/*SaveManager.Instance.playerData.characterInfo.OwnedCharacters.TryGetValue(card, out int index)*/)
         {
             gameObject.SetActive(false);
         }

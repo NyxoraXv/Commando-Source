@@ -5,7 +5,7 @@ using UnityEngine;
 public class UpgradeButton : MonoBehaviour
 {
     private ChangeCharacterManager changeCharacterManager;
-    private int goldToSpend;
+    private float FRGToSpend;
     public TMPro.TextMeshProUGUI price;
 
     public void onClick()
@@ -24,24 +24,24 @@ public class UpgradeButton : MonoBehaviour
 
         
 
-        goldToSpend = changeCharacterManager.CalculateUpgradeCost();
-        Debug.Log("goldToSpend calculated : " + goldToSpend);
+        FRGToSpend = changeCharacterManager.CalculateUpgradeCost();
+        Debug.Log("goldToSpend calculated : " + FRGToSpend);
 
-        if (CurrencyManager.Instance.spendGold(goldToSpend))
+        if (CurrencyManager.Instance.spendFRG(FRGToSpend))
         {
             CharacterManager.Instance.UpgradeCharacter(changeCharacterManager.selectedCard.Character);
             Debug.Log("Character Upgraded");
         }
         else
         {
-            CurrencyManager.Instance.insufficientFund(CurrencyManager.Instance.CurrentGold - goldToSpend,
+            CurrencyManager.Instance.insufficientFund(CurrencyManager.Instance.CurrentFRG - FRGToSpend,
                                                     GameObject.FindWithTag("Main Menu Parent").transform,
                                                     PopUpInstantiate.CurrencyType.Gold);
 
             Debug.LogWarning("Character Upgrade Fail");
         }
 
-        price.text = ("Upgrade Cost: " + goldToSpend);
+        price.text = ("Upgrade Cost: " + FRGToSpend);
         changeCharacterManager.RefreshUIWithoutParameters();
     }
 }

@@ -18,7 +18,7 @@ public class CharacterInformation : MonoBehaviour
             public int Damage;
             public int HP;
             public float Agility;
-            public int UpgradeCost;
+            public float UpgradeCost;
         }
 
         public List<LevelData> Levels = new List<LevelData>();
@@ -37,7 +37,10 @@ public class CharacterInformation : MonoBehaviour
         [Header("Character Player")]
         public RuntimeAnimatorController PlayerController;
         public RuntimeAnimatorController PlayerPreviewController;
-        public Vector3 HandPivot;
+        public RuntimeAnimatorController Weapon;
+        public Vector3 HandPivotIdle;
+        public Vector3 HandPivotRun;
+
     }
 
     public new CharacterData Character;

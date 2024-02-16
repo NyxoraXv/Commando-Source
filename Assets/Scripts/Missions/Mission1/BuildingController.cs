@@ -38,8 +38,11 @@ public class BuildingController : MonoBehaviour
     {
         if (health.IsAlive())
         {
-            GameManager.AddScore(1);
             blinkingSprite.Play();
+        }
+        else
+        {
+            GameManager.AddRewardAll(100, 0.05f, 1f, 50);
         }
     }
 }

@@ -133,6 +133,18 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -3273356639008598148, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
+      propertyPath: frg
+      value: 
+      objectReference: {fileID: 3521382923466883720, guid: 18e250a3ff8de4b4fa2e70cbdf7e7c35,
+        type: 3}
+    - target: {fileID: -3273356639008598148, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      propertyPath: levi
+      value: 
+      objectReference: {fileID: 3521382923466883720, guid: d25d3c56c1e0044409569e5b06a2d459,
+        type: 3}
+    - target: {fileID: -3273356639008598148, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
       propertyPath: levia
       value: 
       objectReference: {fileID: 3521382923466883720, guid: 9b9d4b6881f22044cad8f72bb83646a6,
@@ -145,9 +157,21 @@ PrefabInstance:
         type: 3}
     - target: {fileID: -3273356639008598148, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
+      propertyPath: bigboy
+      value: 
+      objectReference: {fileID: 3521382923466883720, guid: 08e96db30369d844aa8d963a9fd83627,
+        type: 3}
+    - target: {fileID: -3273356639008598148, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
       propertyPath: habibi
       value: 
       objectReference: {fileID: 3521382923466883720, guid: 6c57a4a2c0576894bb84ff91a9c119aa,
+        type: 3}
+    - target: {fileID: -3273356639008598148, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      propertyPath: modelx
+      value: 
+      objectReference: {fileID: 3521382923466883720, guid: 7620f5928c9120e4eb1c78ab7ad10db1,
         type: 3}
     - target: {fileID: -3273356639008598148, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
@@ -572,7 +596,11 @@ PrefabInstance:
     - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3309609548692264067, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1666444559}
   m_SourcePrefab: {fileID: 100100000, guid: 47af4844d7c9fdb498941bf9d6c926f2, type: 3}
 --- !u!1 &268086818
 GameObject:
@@ -740,6 +768,31 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1666444551 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3309609548692264067, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+    type: 3}
+  m_PrefabInstance: {fileID: 235179108}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1666444559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1666444551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9db29bc812c85240b91efe6a15bc569, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rankColumnPrefab: {fileID: 0}
+  scrollViewContent: {fileID: 0}
+  rankNumberText: {fileID: 0}
+  playerNameText: {fileID: 0}
+  scoreText: {fileID: 0}
+  playerNameTextPersonal: {fileID: 0}
+  scoreTextPersonal: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -226,7 +226,7 @@ public class EnemyControl : MonoBehaviour
     private IEnumerator Die()
     {
 
-        GameManager.AddScore(1);
+        GameManager.AddRewardAll(10, 1f, 0.01f);
 
         PlayDeathAudio();
 

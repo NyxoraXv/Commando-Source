@@ -158,9 +158,9 @@ public class ChangeCharacterManager : MonoBehaviour
         animator.runtimeAnimatorController = characterInformation.Character.PlayerPreviewController;
 
         // Append the local position tween
-        Avatar.GetComponent<RectTransform>().transform.DOLocalMoveX(-542f, 1f)
+        Avatar.GetComponent<RectTransform>().transform.DOLocalMoveX(-476f, 1f)
              .SetEase(Ease.InOutCubic)
-             .From(-591f);
+             .From(-718f);
     }
 
     public bool isEquipped()
@@ -174,7 +174,7 @@ public class ChangeCharacterManager : MonoBehaviour
         return isEquipped;
     }
 
-    public int CalculateUpgradeCost()
+    public float CalculateUpgradeCost()
     {
         GameObject CharacterPrefab = CharacterManager.Instance.GetCharacterPrefab(selectedCard.Character);
         CharacterInformation characterInformation = CharacterPrefab.GetComponent<CharacterInformation>();

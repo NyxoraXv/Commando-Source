@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: FRG Hand Controller
+  m_Controller: {fileID: 9100000, guid: 1f4ba5ce332537641a5b683c7f845951, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: ef006d9a0c866a64190a97f6ef650cbe, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 6c2854fd0a5618f45952ae319ba1e84f, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 847b23bc01299b44383fb027de7dd016, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 0ddf4ee3cc468aa4384ecb854476b586, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: d446b87188d538d41830a445c3abd206, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 3406218dd47558b43ad8fbe9f9d68491, type: 2}

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class LoginAnimation : MonoBehaviour
 {
-    public Image Container, Decorator, textBox;
+/*    public Image Container, Decorator, textBox;
     public Ease ease;
     public Transform text;
 
@@ -42,5 +42,5 @@ public class LoginAnimation : MonoBehaviour
     {
 
         text.GetComponent<TMPro.TextMeshProUGUI>().DOColor(new Color(1f, 1f, 1f, 0f), 0f);
-    }
+    }*/
 }

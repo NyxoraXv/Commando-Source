@@ -3,6 +3,8 @@ using System.IO;
 using UnityEngine;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.ComponentModel;
+using System.Collections;
 
 public class SaveManager : MonoBehaviour
 {
@@ -14,12 +16,14 @@ public class SaveManager : MonoBehaviour
             public string PlayerName { get; set; }
             public int PlayerLevel { get; set; }    
             public int PlayerXP { get; set; }
+            
+            public int PlayerScore { get; set; }
         }
 
         public class CurrencyInfo
         {
-            public int PlayerGold { get; set; }
-            public int PlayerDiamond { get; set; }
+            public float PlayerLUNC { get; set; }
+            public float PlayerFRG { get; set; }
         }
 
         public class CharacterInfo
@@ -58,8 +62,11 @@ public class SaveManager : MonoBehaviour
     public PlayerData playerData;
 
     public string username { get; set; }
+    public int score { get; set; }
 
     public bool isLogin;
+
+    public AccountForm accountForm;
 
     private void Awake()
     {
@@ -72,7 +79,6 @@ public class SaveManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
         playerData = new PlayerData();
     }
 
@@ -82,8 +88,9 @@ public class SaveManager : MonoBehaviour
 
         playerData.playerInformation.PlayerLevel = 1;
         playerData.playerInformation.PlayerXP = 0;
-        playerData.currencyInfo.PlayerGold = 300;
-        playerData.currencyInfo.PlayerDiamond = 10;
+        playerData.currencyInfo.PlayerLUNC = 0f;
+        playerData.currencyInfo.PlayerFRG = 0f;
+        playerData.playerInformation.PlayerScore = 0;
 
         playerData.characterInfo.SelectedCharacter = Character.Sucipto;
 
@@ -103,10 +110,12 @@ public class SaveManager : MonoBehaviour
         // Save playerData values
         playerData.playerInformation.PlayerLevel = LevelManager.Instance.currentLevel;
         playerData.playerInformation.PlayerXP = LevelManager.Instance.CurrentXP;
+        playerData.playerInformation.PlayerScore = score;
+        
 
         // Currency Manager
-        playerData.currencyInfo.PlayerGold = CurrencyManager.Instance.CurrentGold;
-        playerData.currencyInfo.PlayerDiamond = CurrencyManager.Instance.CurrentDiamond;
+        playerData.currencyInfo.PlayerLUNC = CurrencyManager.Instance.CurrentLUNC;
+        playerData.currencyInfo.PlayerFRG = CurrencyManager.Instance.CurrentFRG;
 
         // Character Manager
         playerData.characterInfo.SelectedCharacter = CharacterManager.Instance.selectedCharacter;
@@ -135,13 +144,16 @@ public class SaveManager : MonoBehaviour
 
     private void SetUpDataLoad()
     {
+        //LeaderboardGameSystem.Instance.RefreshData();
+
         // Load player data values
         LevelManager.Instance.currentLevel = playerData.playerInformation.PlayerLevel;
         LevelManager.Instance.CurrentXP = playerData.playerInformation.PlayerXP;
+        score = playerData.playerInformation.PlayerScore;
 
         // Load currency data
-        CurrencyManager.Instance.CurrentGold = playerData.currencyInfo.PlayerGold;
-        CurrencyManager.Instance.CurrentDiamond = playerData.currencyInfo.PlayerDiamond;
+        //CurrencyManager.Instance.CurrentLUNC = PlayerPrefs.GetInt("Coin");
+        //CurrencyManager.Instance.CurrentFRG = PlayerPrefs.GetInt("Coin")/100;
 
         // Load selected character data
         CharacterManager.Instance.selectedCharacter = playerData.characterInfo.SelectedCharacter;
@@ -170,9 +182,28 @@ public class SaveManager : MonoBehaviour
 
     }
 
-    public bool Verify()
+    public bool Verify(string Username, string Password, string Email, bool isLogin)
     {
-        if (Load())
+
+
+        if (isLogin) {
+            string jsonData = "{\"email\": \"" + Email + "\",\"password\": \"" + Password + "\", \"device\": \"laptop\"}";
+            print(jsonData);
+            AccountForm.Instance.SignInP(jsonData);
+            StartCoroutine(waitLoginScene());
+            return true;
+        }
+        else
+        {
+            string jsonData = "{\"email\": \"" + Email + "\",\"password\": \"" + Password + "\",\"username\": \"" + Username + "\", \"device\": \"laptop\"}";
+            print(jsonData);
+            AccountForm.Instance.SignUpP(jsonData);
+            StartCoroutine(waitSignupScene(Username));
+            return true;
+        }
+
+
+        /*if (Load())
         {
             SetUpDataLoad();
             Debug.Log("Save Data Loaded");
@@ -186,7 +217,25 @@ public class SaveManager : MonoBehaviour
             Save();
             isLogin = true;
             return false;
+        }*/
+    }
+
+    IEnumerator waitLoginScene()
+    {
+        while (!AccountForm.Instance.isLogin)
+        {
+            yield return null;
         }
+        SetUpDataLoad();
+    }
+
+    IEnumerator waitSignupScene(string user)
+    {
+        while (!AccountForm.Instance.isLogin)
+        {
+            yield return null;
+        }
+        InitializeNewPlayer(user);
     }
 
     private bool Load()
@@ -231,6 +280,7 @@ public class SaveManager : MonoBehaviour
 
     private void OnApplicationQuit()
     {
+        LeaderboardGameSystem.Instance.SetCoin((int)playerData.currencyInfo.PlayerLUNC);
         Save();
     }
 }
