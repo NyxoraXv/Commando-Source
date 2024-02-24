@@ -7,12 +7,12 @@ public class PopUpInstantiate : MonoBehaviour
 
     public enum CurrencyType
     {
-        Gold,
-        Diamond
+        FRG,
+        LUNC
     }
 
-    public Sprite goldPrefab;
-    public Sprite diamondPrefab;
+    public Sprite frgPrefab;
+    public Sprite luncPrefab;
     private Sprite selectedSprite;
 
     public Image Icon;
@@ -25,12 +25,12 @@ public class PopUpInstantiate : MonoBehaviour
     {
         switch (Type)
         {
-            case CurrencyType.Gold:
-                selectedSprite = goldPrefab;
+            case CurrencyType.FRG:
+                selectedSprite = frgPrefab;
                 InstantiateCurrencyPrefab(Type, Amount);
                 break;
-            case CurrencyType.Diamond:
-                selectedSprite = diamondPrefab;
+            case CurrencyType.LUNC:
+                selectedSprite = luncPrefab;
                 InstantiateCurrencyPrefab(Type, Amount);
                 break;
         }

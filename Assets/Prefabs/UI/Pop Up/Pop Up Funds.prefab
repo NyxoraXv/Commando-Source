@@ -64,8 +64,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c80163ba8faa81439f1fe14c4318f1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goldPrefab: {fileID: 21300000, guid: bee854e09823fab44a75822e51fc6f07, type: 3}
-  diamondPrefab: {fileID: 21300000, guid: bde1aac443ff20e48b9cd3057057d35d, type: 3}
+  frgPrefab: {fileID: 21300000, guid: b435f28838ea20149b5821b316027838, type: 3}
+  luncPrefab: {fileID: 21300000, guid: 45e5c5c0c1f910443a91d2d0cc1578fc, type: 3}
   Icon: {fileID: 3415219267879409843}
   amountDisplay: {fileID: 2006614307497901613}
 --- !u!114 &2762808281459535737

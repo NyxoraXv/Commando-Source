@@ -60,19 +60,6 @@ public class CurrencyManager : MonoBehaviour
 
     public bool spendFRG(float Amount)
     {
-        if (CurrentLUNC >= Amount)
-        {
-            CurrentLUNC -= Amount;
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public bool spendLUNC(float Amount)
-    {
         if (CurrentFRG >= Amount)
         {
             CurrentFRG -= Amount;
@@ -84,14 +71,27 @@ public class CurrencyManager : MonoBehaviour
         }
     }
 
+    public bool spendLUNC(float Amount)
+    {
+        if (CurrentLUNC >= Amount)
+        {
+            CurrentLUNC -= Amount;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public void addFRG(float Amount)
     {
-        CurrentLUNC += Amount;
+        CurrentFRG += Amount;
     }
 
     public void addLUNC(float Amount)
     {
-        CurrentFRG += Amount;
+        CurrentLUNC += Amount;
     }
 
     public void insufficientFund(float Amount, Transform transform, PopUpInstantiate.CurrencyType type)

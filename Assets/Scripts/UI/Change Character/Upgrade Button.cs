@@ -36,7 +36,7 @@ public class UpgradeButton : MonoBehaviour
         {
             CurrencyManager.Instance.insufficientFund(CurrencyManager.Instance.CurrentFRG - FRGToSpend,
                                                     GameObject.FindWithTag("Main Menu Parent").transform,
-                                                    PopUpInstantiate.CurrencyType.Gold);
+                                                    PopUpInstantiate.CurrencyType.LUNC);
 
             Debug.LogWarning("Character Upgrade Fail");
         }

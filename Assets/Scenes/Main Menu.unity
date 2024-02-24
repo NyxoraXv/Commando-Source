@@ -783,16 +783,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1666444551}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9db29bc812c85240b91efe6a15bc569, type: 3}
+  m_Script: {fileID: 11500000, guid: 6d5cabcfca217174fa80437903047947, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rankColumnPrefab: {fileID: 0}
-  scrollViewContent: {fileID: 0}
-  rankNumberText: {fileID: 0}
-  playerNameText: {fileID: 0}
-  scoreText: {fileID: 0}
-  playerNameTextPersonal: {fileID: 0}
-  scoreTextPersonal: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

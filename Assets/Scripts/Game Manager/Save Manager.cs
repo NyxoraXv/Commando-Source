@@ -16,7 +16,7 @@ public class SaveManager : MonoBehaviour
             public string PlayerName { get; set; }
             public int PlayerLevel { get; set; }    
             public int PlayerXP { get; set; }
-            
+            public int PlayerLastLevel { get; set; }
             public int PlayerScore { get; set; }
         }
 
@@ -91,6 +91,7 @@ public class SaveManager : MonoBehaviour
         playerData.currencyInfo.PlayerLUNC = 0f;
         playerData.currencyInfo.PlayerFRG = 0f;
         playerData.playerInformation.PlayerScore = 0;
+        playerData.playerInformation.PlayerScore = 0;
 
         playerData.characterInfo.SelectedCharacter = Character.Sucipto;
 
@@ -105,6 +106,9 @@ public class SaveManager : MonoBehaviour
 
     private void SetUpDataSave()
     {
+        LeaderboardGameSystem.Instance.SetScore(playerData.playerInformation.PlayerScore);
+        LeaderboardGameSystem.Instance.SetCoin((int)playerData.currencyInfo.PlayerLUNC);
+
         playerData.playerInformation.PlayerName = username;
 
         // Save playerData values
@@ -141,19 +145,22 @@ public class SaveManager : MonoBehaviour
         //}
     }
 
-
+    private bool run;
     private void SetUpDataLoad()
-    {
-        //LeaderboardGameSystem.Instance.RefreshData();
+    { 
+        LeaderboardGameSystem.Instance.RefreshData();
+
+        //username = PlayerPrefs.GetString("Username");
+        //print(PlayerPrefs.GetInt("Coin"));
 
         // Load player data values
         LevelManager.Instance.currentLevel = playerData.playerInformation.PlayerLevel;
         LevelManager.Instance.CurrentXP = playerData.playerInformation.PlayerXP;
-        score = playerData.playerInformation.PlayerScore;
+        score = PlayerPrefs.GetInt("Score");
 
         // Load currency data
-        //CurrencyManager.Instance.CurrentLUNC = PlayerPrefs.GetInt("Coin");
-        //CurrencyManager.Instance.CurrentFRG = PlayerPrefs.GetInt("Coin")/100;
+        CurrencyManager.Instance.CurrentLUNC = PlayerPrefs.GetInt("Coin");
+        CurrencyManager.Instance.CurrentFRG = PlayerPrefs.GetInt("Coin")/100;
 
         // Load selected character data
         CharacterManager.Instance.selectedCharacter = playerData.characterInfo.SelectedCharacter;
@@ -195,7 +202,11 @@ public class SaveManager : MonoBehaviour
         }
         else
         {
-            string jsonData = "{\"email\": \"" + Email + "\",\"password\": \"" + Password + "\",\"username\": \"" + Username + "\", \"device\": \"laptop\"}";
+            string jsonData = "{\"email\": \"" + Email + "\",\"password\": \"" + Password + "\",\"username\": \"" + Username + "\", \"type\": \"54104f36-04d0-4b54-8d40-f8fb17fdb5cb\"}";
+
+
+
+
             print(jsonData);
             AccountForm.Instance.SignUpP(jsonData);
             StartCoroutine(waitSignupScene(Username));

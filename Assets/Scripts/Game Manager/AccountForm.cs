@@ -108,6 +108,7 @@ public class AccountForm : MonoBehaviour
             string walletData = request.downloadHandler.text;
             Debug.Log("Wallet data: " + walletData);
             Debug.Log("Sign up successful.");
+            isLogin = true;
             //CurrencyManager.Instance.CurrentLUNC = walletData
         }
         else

@@ -70,50 +70,23 @@ public class LeaderboardGameSystem : MonoBehaviour
     private string serverUrl = "https://dev-gtp.garudaverse.io";
     private ScoreData scoreDataCls;
     private Statistic coinDataCls;
-    [SerializeField] private TextMeshProUGUI myScore, myStars;
+    [SerializeField] private TextMeshProUGUI myScore/*, myStars*/;
     public static LeaderboardGameSystem Instance;
 
-    // public TextMeshProUGUI scoreText;
+    private static bool isLeaderboardDataProcessing = false;
+    private static bool isSetStarProcessing = false;
+    private static bool isSetScoreProcessing = false;
+    private static bool isSetCoinProcessing = false;
+    private static bool isGetStatisticProcessing = false;
 
     private void Start()
     {
-        // StartCoroutine(CheckInternetConnection());
-        if (myScore != null)
-        {
-            for (int i = 0; i < 20; i++)
-            {
-                Username[i].text = "";
-                ScorePoint[i].text = "";
-                // StarName[i].text = "";
-                StarPoint[i].text = "";
-            }
-
-            CheckStarScore();
-            // GetStatistic(BlockChainActions.accesWallet);
-            LeaderboardData();
-            // GetAllStars();
-            // GetAllScores();
-            RefreshData();
-        }
-
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
-
+        Instance = this;
     }
 
     public void CheckStarScore()
     {
         myScore.text = PlayerPrefs.GetInt("Score").ToString();
-
-        myStars.text = PlayerPrefs.GetInt("Star").ToString();
     }
 
     public void RefreshData()
@@ -127,14 +100,11 @@ public class LeaderboardGameSystem : MonoBehaviour
         System.Random random = new System.Random();
         StringBuilder kalimat = new StringBuilder();
 
-        // Set karakter yang diizinkan
         string karakter;
         if (areNumber)
             karakter = "0123456789";
-
         else
             karakter = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{}|;:,.<>?/";
-
 
         for (int i = 0; i < lengthWord; i++)
         {
@@ -150,7 +120,6 @@ public class LeaderboardGameSystem : MonoBehaviour
     {
         try
         {
-
             char[] coinData, startData;
             List<int> valueUnix = new List<int>();
             List<int> indexing = new List<int>();
@@ -160,7 +129,6 @@ public class LeaderboardGameSystem : MonoBehaviour
             int secondsSinceEpoch = (int)t.TotalSeconds;
             secondsSinceEpoch += secondsSinceEpoch;
 
-
             coinData = coin.ToString().ToCharArray();
             startData = (randomKey + secondsSinceEpoch.ToString()).ToCharArray();
             for (int i = coinData.Length; i > 0; i--)
@@ -168,30 +136,20 @@ public class LeaderboardGameSystem : MonoBehaviour
                 valueUnix.Add(int.Parse((startData[startData.Length - (i + 2)]).ToString()));
             }
 
-            // Logs(valueUnix);
-
             for (int j = 0; j < valueUnix.Count; j++)
             {
                 int index;
                 if (j != 0)
-                {
                     index = (valueUnix[j] + indexing[j - 1]) + 1;
-
-                }
-
                 else
-                {
                     index = valueUnix[j];
-                }
 
                 indexing.Add(index);
                 startData[index] = coinData[j];
             }
 
-
             string result = new string(startData);
             result = coinData.Length.ToString() + result;
-            // Logs(indexing);
             Console.WriteLine(result);
             return result;
         }
@@ -209,23 +167,21 @@ public class LeaderboardGameSystem : MonoBehaviour
 
     IEnumerator SetStarRequest(int star)
     {
+        if (isSetStarProcessing)
+        {
+            Debug.LogError("Recursive loop detected in SetStarRequest!");
+            yield break;
+        }
+
+        isSetStarProcessing = true;
+
         string url = serverUrl + "/v2/game/statistic/star";
         string starEncrypt = Encrypt(star);
-
-        // Buat objek JSON untuk dikirim
         string jsonData = "{\"star\":\"" + starEncrypt + "\"}";
-        // Debug.Log(jsonData);
-        // Debug.Log("JsonData = " + jsonData);
 
         UnityWebRequest request = UnityWebRequest.PostWwwForm(url, jsonData);
-
-        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
-
-        // request.method = UnityWebRequest.kHttpVerbPOST;
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
-        request.SetRequestHeader("Token", PlayerPrefs.GetString("AccessToken")); // Menggunakan AccessToken yang sudah ada
+        request.SetRequestHeader("Token", PlayerPrefs.GetString("AccessToken"));
 
         yield return request.SendWebRequest();
 
@@ -235,14 +191,14 @@ public class LeaderboardGameSystem : MonoBehaviour
         }
         else
         {
-            //kau atur lah error nya nanti gimana
             Debug.LogError("add star failed: " + request.error);
             string Star = request.downloadHandler.text;
             Debug.Log("Data Star: " + Star);
         }
+
+        isSetStarProcessing = false;
     }
 
-    // Fungsi untuk menambahkan skor (Score)
     public void SetScore(int score)
     {
         StartCoroutine(SetScoreRequest(score));
@@ -250,19 +206,21 @@ public class LeaderboardGameSystem : MonoBehaviour
 
     IEnumerator SetScoreRequest(int scorePlayer)
     {
+        if (isSetScoreProcessing)
+        {
+            Debug.LogError("Recursive loop detected in SetScoreRequest!");
+            yield break;
+        }
+
+        isSetScoreProcessing = true;
+
         string url = serverUrl + "/v2/game/statistic/score";
         string scoreEncrypt = Encrypt(scorePlayer);
+        string jsonData = "{\"score\":\"" + scoreEncrypt + "\"}";
 
-        // Buat objek JSON untuk dikirim
-        string jsonData = "{\"score\":\"" + scoreEncrypt + "\"}"; // Menggunakan variabel score yang Anda kirim sebagai parameter
         UnityWebRequest request = UnityWebRequest.PostWwwForm(url, jsonData);
-
-        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
-        // request.method = UnityWebRequest.kHttpVerbPOST;
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
-        request.SetRequestHeader("Token", PlayerPrefs.GetString("AccessToken")); // Menggunakan AccessToken yang sudah ada
+        request.SetRequestHeader("Token", PlayerPrefs.GetString("AccessToken"));
 
         yield return request.SendWebRequest();
 
@@ -272,64 +230,85 @@ public class LeaderboardGameSystem : MonoBehaviour
         }
         else
         {
-            // kau atur lah error handlingnya
             string Score = request.downloadHandler.text;
             Debug.Log("Data Score: " + Score);
             Debug.LogError("add score failed: " + request.error);
         }
-    }
 
+        isSetScoreProcessing = false;
+    }
 
     [SerializeField] private TextMeshProUGUI[] Username;
     [SerializeField] private TextMeshProUGUI[] ScorePoint;
     [SerializeField] private TextMeshProUGUI[] StarPoint;
 
-
     public void LeaderboardData()
     {
-        StartCoroutine(GetLeaderboardData());
+        if (!isLeaderboardDataProcessing) // Check if the coroutine is already running
+        {
+            StartCoroutine(GetLeaderboardData());
+        }
+        else
+        {
+            Debug.LogWarning("Leaderboard data is already being processed.");
+        }
     }
 
     IEnumerator GetLeaderboardData()
     {
-        string url = serverUrl + "/v2/game/statistics?order=desc&query=combined&limit=20&offset=0&short=null"; // Ganti dengan URL yang sesuai
+        if (isLeaderboardDataProcessing)
+        {
+            Debug.LogError("Recursive loop detected in GetLeaderboardData!");
+            yield break;
+        }
+
+        isLeaderboardDataProcessing = true;
+        Debug.Log("Starting GetLeaderboardData coroutine...");
+
+        string url = serverUrl + "/v2/game/statistics?order=desc&query=combined&limit=20&offset=0&short=null";
+        Debug.Log("Line 269");
+
         UnityWebRequest request = UnityWebRequest.Get(url);
-        request.SetRequestHeader("Token", PlayerPrefs.GetString("AccessToken")); // Menggunakan AccessToken yang sudah ada
+        Debug.Log("Line 272");
+        request.SetRequestHeader("Token", PlayerPrefs.GetString("AccessToken"));
+        Debug.Log("Line 274");
         request.downloadHandler = new DownloadHandlerBuffer();
+        Debug.Log("Line 275");
 
         yield return request.SendWebRequest();
+        Debug.Log("Line 279");
 
         if (request.result == UnityWebRequest.Result.Success)
         {
+            Debug.Log("Line 283");
             string scoreData = request.downloadHandler.text;
-
+            Debug.Log("Line 285");
             scoreDataCls = JsonUtility.FromJson<ScoreData>(scoreData);
-
-
-            for (int i = 0; i < 20; i++)
+            Debug.Log("Line 287");
+            for (int i = 0; i < 10; i++)
             {
+                Debug.Log("Line 289 - loop");
                 try
                 {
                     Username[i].text = scoreDataCls.data[i].username;
-
-                    StarPoint[i].text = scoreDataCls.data[i].star.ToString();
                     ScorePoint[i].text = scoreDataCls.data[i].score.ToString();
-
                 }
                 catch (IndexOutOfRangeException)
                 {
                     break;
                 }
             }
-
         }
         else
         {
-            // error pengambilan leaderboard
-            Debug.LogError("failed get leaderboard data: " + request.error);
+            Debug.Log("Line 303");
+            Debug.LogError("Failed to get leaderboard data: " + request.error);
         }
-    }
 
+        isLeaderboardDataProcessing = false;
+        Debug.Log("Line 209");
+        Debug.Log("GetLeaderboardData coroutine finished.");
+    }
 
     public void SetCoin(int coin)
     {
@@ -338,34 +317,34 @@ public class LeaderboardGameSystem : MonoBehaviour
 
     IEnumerator SetCoinRequest(int coin)
     {
+        if (isSetCoinProcessing)
+        {
+            Debug.LogError("Recursive loop detected in SetCoinRequest!");
+            yield break;
+        }
+
+        isSetCoinProcessing = true;
+
         string url = serverUrl + "/v2/game/statistic/coin";
         string coinEncrypt = Encrypt(coin);
+        string jsonData = "{\"coin\":\"" + coinEncrypt + "\"}";
 
-
-        // Buat objek JSON untuk dikirim
-        string jsonData = "{\"coin\":\"" + coinEncrypt + "\"}"; // Menggunakan variabel score yang Anda kirim sebagai parameter
         UnityWebRequest request = UnityWebRequest.PostWwwForm(url, jsonData);
-
-        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
-        // request.method = UnityWebRequest.kHttpVerbPOST;
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
-        request.SetRequestHeader("Token", PlayerPrefs.GetString("AccessToken")); // Menggunakan AccessToken yang sudah ada
+        request.SetRequestHeader("Token", PlayerPrefs.GetString("AccessToken"));
 
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.Success)
         {
             Debug.Log("add coin successfully!");
-            // string Score = request.downloadHandler.text;
-            // Debug.Log("Data Coin: " + Score);
         }
         else
         {
-            // kamu atur na error handlingnya
             Debug.LogError("failed to add coin: " + request.error);
         }
+
+        isSetCoinProcessing = false;
     }
 
     public void GetStatistic(string accesWallet)
@@ -379,34 +358,41 @@ public class LeaderboardGameSystem : MonoBehaviour
         StartCoroutine(GetStatisticRequest(accesWallet));
     }
 
-
     IEnumerator GetStatisticRequest(string access)
     {
-        string url = serverUrl + "/v2/game/statistic"; // Ganti dengan URL yang sesuai
+        if (isGetStatisticProcessing)
+        {
+            Debug.LogError("Recursive loop detected in GetStatisticRequest!");
+            yield break;
+        }
+
+        isGetStatisticProcessing = true;
+
+        string url = serverUrl + "/v2/game/statistic";
         UnityWebRequest request = UnityWebRequest.Get(url);
-        request.SetRequestHeader("Token", access); // Token otorisasi
+        request.SetRequestHeader("Token", access);
         request.downloadHandler = new DownloadHandlerBuffer();
 
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.Success)
         {
-            // Debug.Log("Rewuest =" + request.downloadHandler.text);
-            string coinData = request.downloadHandler.text; ;
+            string coinData = request.downloadHandler.text;
             coinDataCls = JsonUtility.FromJson<Statistic>(coinData);
 
             PlayerPrefs.SetInt("Score", coinDataCls.data.score);
-            PlayerPrefs.SetInt("Star", coinDataCls.data.star);
             PlayerPrefs.SetInt("Coin", coinDataCls.data.coin);
+            PlayerPrefs.SetString("Username", coinDataCls.data.username);
 
+            SaveManager.Instance.username = coinDataCls.data.username;
+            
         }
         else
         {
-            // kau buat apalah ini error handling mu
             Debug.LogError("failed to get statistic data: " + request.error);
         }
 
-
+        isGetStatisticProcessing = false;
     }
 
 }

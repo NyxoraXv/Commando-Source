@@ -45,6 +45,9 @@ public class MissionManager : MonoBehaviour
 
         [Header("Mission Status")]
         public bool Completed;
+
+        [Header("Mission Int")]
+        public int Level;
     }
 
     public new List<missionData> MissionInformation;
@@ -57,4 +60,10 @@ public class MissionManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
+
+    private void checkMissionCompleted()
+    {
+        
+    }
+
 }

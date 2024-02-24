@@ -12,10 +12,11 @@ public class GetLoginCredential : MonoBehaviour
 
 
     // Edit this whatever you like!
-    public void setCredential()
+    public void setCredential(bool isLogin)
     {
         SaveManager.Instance.isLogin = true;
-        SaveManager.Instance.Verify(nameText.text, passwordText.text, emailText.text, true);
+        SaveManager.Instance.username = emailText.text;
+        SaveManager.Instance.Verify(nameText.text, passwordText.text, emailText.text, isLogin);
         StartCoroutine(waitScene());
         
 
