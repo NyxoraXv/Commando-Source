@@ -261,31 +261,7 @@ public class GameManager : MonoBehaviour
 
         current.isGameOver = true;
 
-        current.currentMission = (Missions) SceneManager.GetActiveScene().buildIndex;
-        // Update json score
-        if (current.currentMission == Missions.Mission1 && current.score > GetMission1Points())
-        {
-            SetMission1Points(current.score);
-            SaveManagerPlayer.SetRecords(new Records(current.score, GetMission2Points(), GetMission3Points()));
-        }
-        else if (current.currentMission == Missions.Mission2 && current.score > GetMission2Points())
-        {
-            SetMission2Points(current.score);
-            SaveManagerPlayer.SetRecords(new Records(GetMission1Points(), current.score, GetMission3Points()));
-        }
-        else if (current.currentMission == Missions.Mission3Boss && current.score > GetMission3Points())
-        {
-            SetMission3Points(current.score);
-            SaveManagerPlayer.SetRecords(new Records(GetMission1Points(), GetMission2Points(), current.score));
-        }
-
-        if (current.currentMission >= Missions.Mission3Boss)
-        {
-            current.currentMission = Missions.Home;
-        } else
-        {
-            current.currentMission++;
-        }
+        MissionManager.Instance.checkMissionCompleted();
 
         current.StartCoroutine(current.WaitNextMission());
     }

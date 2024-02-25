@@ -167,13 +167,6 @@ public class LeaderboardGameSystem : MonoBehaviour
 
     IEnumerator SetStarRequest(int star)
     {
-        if (isSetStarProcessing)
-        {
-            Debug.LogError("Recursive loop detected in SetStarRequest!");
-            yield break;
-        }
-
-        isSetStarProcessing = true;
 
         string url = serverUrl + "/v2/game/statistic/star";
         string starEncrypt = Encrypt(star);
@@ -196,7 +189,6 @@ public class LeaderboardGameSystem : MonoBehaviour
             Debug.Log("Data Star: " + Star);
         }
 
-        isSetStarProcessing = false;
     }
 
     public void SetScore(int score)
@@ -206,14 +198,6 @@ public class LeaderboardGameSystem : MonoBehaviour
 
     IEnumerator SetScoreRequest(int scorePlayer)
     {
-        if (isSetScoreProcessing)
-        {
-            Debug.LogError("Recursive loop detected in SetScoreRequest!");
-            yield break;
-        }
-
-        isSetScoreProcessing = true;
-
         string url = serverUrl + "/v2/game/statistic/score";
         string scoreEncrypt = Encrypt(scorePlayer);
         string jsonData = "{\"score\":\"" + scoreEncrypt + "\"}";
@@ -234,8 +218,6 @@ public class LeaderboardGameSystem : MonoBehaviour
             Debug.Log("Data Score: " + Score);
             Debug.LogError("add score failed: " + request.error);
         }
-
-        isSetScoreProcessing = false;
     }
 
     [SerializeField] private TextMeshProUGUI[] Username;
@@ -256,38 +238,22 @@ public class LeaderboardGameSystem : MonoBehaviour
 
     IEnumerator GetLeaderboardData()
     {
-        if (isLeaderboardDataProcessing)
-        {
-            Debug.LogError("Recursive loop detected in GetLeaderboardData!");
-            yield break;
-        }
-
-        isLeaderboardDataProcessing = true;
         Debug.Log("Starting GetLeaderboardData coroutine...");
 
         string url = serverUrl + "/v2/game/statistics?order=desc&query=combined&limit=20&offset=0&short=null";
-        Debug.Log("Line 269");
 
         UnityWebRequest request = UnityWebRequest.Get(url);
-        Debug.Log("Line 272");
         request.SetRequestHeader("Token", PlayerPrefs.GetString("AccessToken"));
-        Debug.Log("Line 274");
         request.downloadHandler = new DownloadHandlerBuffer();
-        Debug.Log("Line 275");
 
         yield return request.SendWebRequest();
-        Debug.Log("Line 279");
 
         if (request.result == UnityWebRequest.Result.Success)
         {
-            Debug.Log("Line 283");
             string scoreData = request.downloadHandler.text;
-            Debug.Log("Line 285");
             scoreDataCls = JsonUtility.FromJson<ScoreData>(scoreData);
-            Debug.Log("Line 287");
             for (int i = 0; i < 10; i++)
             {
-                Debug.Log("Line 289 - loop");
                 try
                 {
                     Username[i].text = scoreDataCls.data[i].username;
@@ -304,9 +270,6 @@ public class LeaderboardGameSystem : MonoBehaviour
             Debug.Log("Line 303");
             Debug.LogError("Failed to get leaderboard data: " + request.error);
         }
-
-        isLeaderboardDataProcessing = false;
-        Debug.Log("Line 209");
         Debug.Log("GetLeaderboardData coroutine finished.");
     }
 
@@ -317,14 +280,6 @@ public class LeaderboardGameSystem : MonoBehaviour
 
     IEnumerator SetCoinRequest(int coin)
     {
-        if (isSetCoinProcessing)
-        {
-            Debug.LogError("Recursive loop detected in SetCoinRequest!");
-            yield break;
-        }
-
-        isSetCoinProcessing = true;
-
         string url = serverUrl + "/v2/game/statistic/coin";
         string coinEncrypt = Encrypt(coin);
         string jsonData = "{\"coin\":\"" + coinEncrypt + "\"}";
@@ -344,7 +299,6 @@ public class LeaderboardGameSystem : MonoBehaviour
             Debug.LogError("failed to add coin: " + request.error);
         }
 
-        isSetCoinProcessing = false;
     }
 
     public void GetStatistic(string accesWallet)
@@ -360,15 +314,8 @@ public class LeaderboardGameSystem : MonoBehaviour
 
     IEnumerator GetStatisticRequest(string access)
     {
-        if (isGetStatisticProcessing)
-        {
-            Debug.LogError("Recursive loop detected in GetStatisticRequest!");
-            yield break;
-        }
-
-        isGetStatisticProcessing = true;
-
-        string url = serverUrl + "/v2/game/statistic";
+        Debug.Log("Getting Statistic Request"); 
+        string url = serverUrl + "/v2/game/statistic"; 
         UnityWebRequest request = UnityWebRequest.Get(url);
         request.SetRequestHeader("Token", access);
         request.downloadHandler = new DownloadHandlerBuffer();
@@ -383,6 +330,9 @@ public class LeaderboardGameSystem : MonoBehaviour
             PlayerPrefs.SetInt("Score", coinDataCls.data.score);
             PlayerPrefs.SetInt("Coin", coinDataCls.data.coin);
             PlayerPrefs.SetString("Username", coinDataCls.data.username);
+            Debug.Log("Coin = " + coinDataCls.data.coin + "Score = " + coinDataCls.data.score);
+
+            print(coinDataCls.data.score+ coinDataCls.data.coin+ coinDataCls.data.username);
 
             SaveManager.Instance.username = coinDataCls.data.username;
             
@@ -391,8 +341,6 @@ public class LeaderboardGameSystem : MonoBehaviour
         {
             Debug.LogError("failed to get statistic data: " + request.error);
         }
-
-        isGetStatisticProcessing = false;
     }
 
 }

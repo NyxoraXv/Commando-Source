@@ -45,18 +45,18 @@ public class PinHighlighter : MonoBehaviour
 
         for (int i = 0; i < childImages.Length; i++)
         {
-            float whiteIncrement = 255f / childImages.Length; // Total white increase from 0 to 255.
-            Color currentColor = new Color(255, 255, 255); // Start from white for each image.
+            //float whiteIncrement = 255f / childImages.Length; // Total white increase from 0 to 255.
+            //Color currentColor = new Color(255, 255, 255); // Start from white for each image.
 
-            // Animate the scale change for the second image.
+            //Animate the scale change for the second image.
             if (i == 1)
             {
                 childImages[i].transform.DOScale(3f, 0.5f).From(2f).SetEase(Ease.InOutCubic);
             }
 
             // Animate the color transition from white to more white for each image.
-            childImages[i].DOColor(new Color(currentColor.r - (i * whiteIncrement / 255f), currentColor.g - (i * whiteIncrement / 255f), currentColor.b - (i * whiteIncrement / 255f), 1), 1f)
-                .SetEase(Ease.Linear); // You can change the ease type as needed.
+            //childImages[i].DOColor(new Color(currentColor.r - (i * whiteIncrement / 255f), currentColor.g - (i * whiteIncrement / 255f), currentColor.b - (i * whiteIncrement / 255f), 1), 1f)
+            //    .SetEase(Ease.Linear); // You can change the ease type as needed.
         }
     }
 

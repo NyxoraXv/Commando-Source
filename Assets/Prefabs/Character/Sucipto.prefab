@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7361782805168507399
 Transform:
   m_ObjectHideFlags: 0
@@ -78,3 +78,4 @@ MonoBehaviour:
     Weapon: {fileID: 9100000, guid: 1f4ba5ce332537641a5b683c7f845951, type: 2}
     HandPivotIdle: {x: -0.151, y: 0.396, z: 0}
     HandPivotRun: {x: 0, y: 0.312, z: 0}
+    NFT_ID: 0

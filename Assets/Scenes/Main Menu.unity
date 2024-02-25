@@ -439,6 +439,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
+      propertyPath: MissionInformation.Array.data[1].Level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      propertyPath: MissionInformation.Array.data[2].Level
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
       propertyPath: MissionInformation.Array.data[0].XPReward
       value: 150
       objectReference: {fileID: 0}
@@ -460,7 +470,7 @@ PrefabInstance:
     - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
       propertyPath: MissionInformation.Array.data[0].Difficulty
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
@@ -470,12 +480,12 @@ PrefabInstance:
     - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
       propertyPath: MissionInformation.Array.data[1].Difficulty
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
       propertyPath: MissionInformation.Array.data[2].Difficulty
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
@@ -540,7 +550,7 @@ PrefabInstance:
     - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
       propertyPath: MissionInformation.Array.data[0].Objectives.Array.data[1]
-      value: Get The Orb
+      value: Defeat The Boss
       objectReference: {fileID: 0}
     - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
@@ -555,12 +565,12 @@ PrefabInstance:
     - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
       propertyPath: MissionInformation.Array.data[2].Objectives.Array.data[0]
-      value: ???
+      value: Kill All Enemies
       objectReference: {fileID: 0}
     - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
       propertyPath: MissionInformation.Array.data[2].Objectives.Array.data[1]
-      value: ???
+      value: Defeat The Boss
       objectReference: {fileID: 0}
     - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
@@ -600,7 +610,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3309609548692264067, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1666444559}
+      addedObject: {fileID: 1666444567}
   m_SourcePrefab: {fileID: 100100000, guid: 47af4844d7c9fdb498941bf9d6c926f2, type: 3}
 --- !u!1 &268086818
 GameObject:
@@ -774,7 +784,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 235179108}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1666444559
+--- !u!114 &1666444567
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -783,9 +793,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1666444551}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d5cabcfca217174fa80437903047947, type: 3}
+  m_Script: {fileID: 11500000, guid: 5d9a718b5e88acd42bdd406519d61184, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PopUp: {fileID: 6646830355339349330, guid: 315d3d488a6966844bf0815a47cec948, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

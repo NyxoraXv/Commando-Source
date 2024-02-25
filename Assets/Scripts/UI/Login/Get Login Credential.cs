@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GetLoginCredential : MonoBehaviour
 {
-    public TMPro.TMP_InputField nameText;
+    //public TMPro.TMP_InputField nameText;
     public TMPro.TMP_InputField emailText;
     public TMPro.TMP_InputField passwordText;
     public GameObject Login;
@@ -16,7 +16,7 @@ public class GetLoginCredential : MonoBehaviour
     {
         SaveManager.Instance.isLogin = true;
         SaveManager.Instance.username = emailText.text;
-        SaveManager.Instance.Verify(nameText.text, passwordText.text, emailText.text, isLogin);
+        SaveManager.Instance.Verify("test", passwordText.text, emailText.text, isLogin);
         StartCoroutine(waitScene());
         
 

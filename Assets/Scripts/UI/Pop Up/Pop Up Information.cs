@@ -1,25 +1,37 @@
 using UnityEngine;
 using DG.Tweening;
 using TMPro;
+using System.Collections;
 
 public class PopUpInformation : MonoBehaviour
 {
     public RectTransform container, borderLeft, borderRight;
     public TextMeshProUGUI textMeshPro;
-
-    private CanvasGroup canvasGroup;
+    public CanvasGroup canvasGroup;
     private bool isTweening = false;
 
-    private void Start()
+    void Start()
     {
-        canvasGroup = GetComponent<CanvasGroup>();
+        GameObject mainCanvas = GameObject.FindGameObjectWithTag("MainCanvas");
+        if (mainCanvas != null)
+        {
+            transform.SetParent(mainCanvas.transform, false);
+        }
+        else
+        {
+            Debug.LogError("MainCanvas not found! Make sure you have a GameObject with the 'MainCanvas' tag in your scene.");
+        }
     }
 
-    public void TriggerPopUpInformation()
+    public void triggerPopup(string text)
+    {
+        TriggerPopUpInformation(text);
+    }
+
+    public void TriggerPopUpInformation(string text)
     {
         if (isTweening)
         {
-            // Avoid triggering the pop-up while it's still animating
             return;
         }
 
@@ -38,6 +50,7 @@ public class PopUpInformation : MonoBehaviour
         initialColor.a = 0f;
         textMeshPro.color = initialColor;
         textMeshPro.DOColor(new Color(initialColor.r, initialColor.g, initialColor.b, 1f), 1f).SetEase(Ease.InOutCubic);
+        textMeshPro.text = text;
 
         canvasGroup.alpha = 0f;
         canvasGroup.DOFade(0.75f, 1f).SetEase(Ease.InOutCubic).OnComplete(() =>
@@ -46,6 +59,8 @@ public class PopUpInformation : MonoBehaviour
             {
                 // Reset to default values when the animation is complete
                 ResetToDefault();
+                // Destroy the GameObject after animations are complete
+                StartCoroutine(DestroyAfterAnimations());
             });
         });
 
@@ -61,5 +76,11 @@ public class PopUpInformation : MonoBehaviour
         canvasGroup.alpha = 0f;
 
         isTweening = false;
+    }
+
+    private IEnumerator DestroyAfterAnimations()
+    {
+        yield return new WaitUntil(() => !isTweening); // Wait until all animations are finished
+        Destroy(gameObject);
     }
 }

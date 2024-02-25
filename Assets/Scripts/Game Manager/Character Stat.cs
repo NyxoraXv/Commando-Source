@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Animations;
+using System;
 
 public class CharacterInformation : MonoBehaviour
 {
@@ -40,6 +41,9 @@ public class CharacterInformation : MonoBehaviour
         public RuntimeAnimatorController Weapon;
         public Vector3 HandPivotIdle;
         public Vector3 HandPivotRun;
+
+        [Header("NFT ID")]
+        public string NFT_ID;
 
     }
 

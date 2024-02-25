@@ -117,15 +117,15 @@ public class AccountForm : MonoBehaviour
             Debug.LogError("Sign up failed: " + request.error);
             if (request.error == "Cannot resolve destination host")
             {
-                // error ketika internet mati
+                PopUpInformationhandler.Instance.pop("Network Error");
             }
             else if (request.error == "HTTP/1.1 409 Conflict")
             {
-                // error jika email telah dibuat
+                PopUpInformationhandler.Instance.pop("Username/Password/Email already used");
             }
             else
             {
-                // error selain semua di atas
+                PopUpInformationhandler.Instance.pop("Unknown Error");
             }
         }
     }
@@ -159,15 +159,15 @@ public class AccountForm : MonoBehaviour
             Debug.LogError("Sign in failed: " + request.error);
             if (request.error == "Cannot resolve destination host")
             {
-                // ketika error internet
+                PopUpInformationhandler.Instance.pop("Network Error");
             }
             else if (request.error == "HTTP/1.1 401 Unauthorized" || request.error == "HTTP/1.1 404 Not Found")
             {
-                // ketika salah input password atau salah input email
+                PopUpInformationhandler.Instance.pop("Username/Password/Email wrong");
             }
             else
             {
-                // error selain yang di atas
+                PopUpInformationhandler.Instance.pop("Unknown Error");
             }
         }
 

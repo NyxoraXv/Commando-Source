@@ -21,7 +21,7 @@ public class CharacterManager : MonoBehaviour
     [SerializeField]
     public Character selectedCharacter;
 
-    [SerializeField] private Dictionary<Character, GameObject> characterObjects = new Dictionary<Character, GameObject>();
+    [SerializeField] public Dictionary<Character, GameObject> characterObjects = new Dictionary<Character, GameObject>();
 
     // Dictionary to store owned characters and their levels
     public Dictionary<Character, int> ownedCharacters = new Dictionary<Character, int>();

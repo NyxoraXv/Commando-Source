@@ -66,8 +66,6 @@ public class SaveManager : MonoBehaviour
 
     public bool isLogin;
 
-    public AccountForm accountForm;
-
     private void Awake()
     {
         if (Instance == null)
@@ -92,6 +90,7 @@ public class SaveManager : MonoBehaviour
         playerData.currencyInfo.PlayerFRG = 0f;
         playerData.playerInformation.PlayerScore = 0;
         playerData.playerInformation.PlayerScore = 0;
+        playerData.playerInformation.PlayerLastLevel = 0;
 
         playerData.characterInfo.SelectedCharacter = Character.Sucipto;
 
@@ -162,6 +161,8 @@ public class SaveManager : MonoBehaviour
         CurrencyManager.Instance.CurrentLUNC = PlayerPrefs.GetInt("Coin");
         CurrencyManager.Instance.CurrentFRG = PlayerPrefs.GetInt("Coin")/100;
 
+        playerData.characterInfo.OwnedCharacters.Add(Character.Sucipto, 1);
+
         // Load selected character data
         CharacterManager.Instance.selectedCharacter = playerData.characterInfo.SelectedCharacter;
         foreach (var kvp in playerData.characterInfo.OwnedCharacters)
@@ -191,25 +192,21 @@ public class SaveManager : MonoBehaviour
 
     public bool Verify(string Username, string Password, string Email, bool isLogin)
     {
-
-
         if (isLogin) {
             string jsonData = "{\"email\": \"" + Email + "\",\"password\": \"" + Password + "\", \"device\": \"laptop\"}";
             print(jsonData);
             AccountForm.Instance.SignInP(jsonData);
             StartCoroutine(waitLoginScene());
+            SetUpDataLoad();
             return true;
         }
         else
         {
             string jsonData = "{\"email\": \"" + Email + "\",\"password\": \"" + Password + "\",\"username\": \"" + Username + "\", \"type\": \"54104f36-04d0-4b54-8d40-f8fb17fdb5cb\"}";
-
-
-
-
             print(jsonData);
             AccountForm.Instance.SignUpP(jsonData);
             StartCoroutine(waitSignupScene(Username));
+            InitializeNewPlayer(Username);
             return true;
         }
 
@@ -279,7 +276,6 @@ public class SaveManager : MonoBehaviour
     {
         Debug.Log("Save" + username);
 
-        // Populate playerData with the data you want to save
         SetUpDataSave();
 
         string savePath = Path.Combine(Application.persistentDataPath, $"{username}player_data.json");

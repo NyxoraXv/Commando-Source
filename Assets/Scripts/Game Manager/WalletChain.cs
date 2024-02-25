@@ -1,14 +1,48 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
+
+[System.Serializable]
+public class NFTData
+{
+    public string owner;
+    public string token_id;
+    public string ask_price;
+    public string ask_denom;
+    public string name;
+    public string image;
+    public string video;
+    public string rarity;
+    public string boost;
+    public string level;
+    public string collection;
+    public string mystery_pack;
+}
 
 
+[System.Serializable]
+public class NFTResponse
+{
+    public bool status;
+    public int total;
+    public List<NFTData> data;
+}
 
 public class WalletChain : MonoBehaviour
 {
     [HideInInspector] public static bool isConnectedWallet { get; private set; } = false;
     private string Url = "https://dev-gtp.garudaverse.io/v2";
+    public static WalletChain Instance;
+    public Image walletIcon;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     public void GetWalletP()
     {
@@ -119,9 +153,10 @@ public class WalletChain : MonoBehaviour
 
             if (myDatawallet.data.address_wallet != "" && myDatawallet.data.request_disconnect == false || myDatawallet.data.is_connected == true && myDatawallet.data.request_disconnect == false)
             {
-                Debug.Log("Sukses login");
+                Debug.Log("Sukses Connect");
                 isConnectedWallet = true;
-
+                walletIcon.color = Color.white;
+                StartCoroutine(getNFT());
                 //=====================================jika connect wallet berhasil na=======================
                 //================================================================================================
             }
@@ -177,5 +212,100 @@ public class WalletChain : MonoBehaviour
 
         }
     }
+
+    IEnumerator getNFT()
+    {
+        string addressWallet = PlayerPrefs.GetString("AddressWallet");
+
+        string requestBody = "{\"contractAddress\":\"terra1j7h8v7sdppru5gl67y05h2jvh5xa0g9rmylfs8vf7xaa8l8anwxqmh0aew\",\"walletAddress\":\"" + addressWallet + "\"}";
+
+        UnityWebRequest request = new UnityWebRequest("https://api.garudaverse.io/check-list-nft", "POST");
+
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(requestBody);
+
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            string jsonResponse = request.downloadHandler.text;
+            HandleResponse(jsonResponse);
+        }
+        else
+        {
+            Debug.LogError("Error: " + request.error);
+        }
+    }
+
+    public int[] convertCharacterID(string numbersString)
+    {
+        string[] numberStrings = numbersString.Split(',');
+        int[] numbersArray = new int[numberStrings.Length];
+
+        for (int i = 0; i < numberStrings.Length; i++)
+        {
+            if (int.TryParse(numberStrings[i], out int parsedNumber))
+            {
+                numbersArray[i] = parsedNumber;
+            }
+            else
+            {
+                Debug.LogWarning($"Unable to parse '{numberStrings[i]}' as an integer.");
+                numbersArray[i] = 0; // For example, set to 0
+            }
+        }
+
+        return numbersArray;
+    }
+
+    public void HandleResponse(string jsonResponse)
+    {
+        NFTResponse response = JsonUtility.FromJson<NFTResponse>(jsonResponse);
+
+        if (response.status)
+        {
+            foreach (KeyValuePair<Character, GameObject> kvp in CharacterManager.Instance.characterObjects)
+            {
+                int[] arrayID = convertCharacterID(kvp.Value.GetComponent<CharacterInformation>().Character.NFT_ID);
+                List<int> arrayIDList = arrayID.ToList(); // Convert array to List<int>
+
+                foreach (NFTData nftData in response.data)
+                {
+                    int tokenId;
+                    if (int.TryParse(nftData.token_id, out tokenId)) // Attempt to parse token_id to int
+                    {
+                        Debug.Log(tokenId);
+                        if (arrayIDList.Contains(tokenId) || arrayIDList.SequenceEqual(new List<int> { 0 }))
+                        {
+                            Debug.Log(kvp.Key);
+                            CharacterManager.Instance.AddOwnedCharacter(kvp.Key);
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Unable to parse token_id: {nftData.token_id}");
+                    }
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("Error: Response status is false");
+        }
+    }
+
+    private void Start()
+    {
+        if (isConnectedWallet && walletIcon != null)
+        {
+            walletIcon.color = Color.white;
+        }
+    }
+
 
 }

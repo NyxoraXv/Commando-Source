@@ -7,6 +7,7 @@ public class MissionInformationInitiator : MonoBehaviour
 {
     private MissionManager missionManager;
     private string CurrentLevel = "";
+    private int onLoaded = 0;
 
     [SerializeField] private TMPro.TextMeshProUGUI[] ObjectivesPrefab; // Prefab for the mission UI element
     [SerializeField] private TMPro.TextMeshProUGUI MissionTittle;
@@ -19,11 +20,11 @@ public class MissionInformationInitiator : MonoBehaviour
         missionManager = MissionManager.Instance;
     }
 
-    public void OnClick(string missionNameToFind)
+    public void OnClick(int Level)
     {
         if (missionManager != null)
         {
-            MissionManager.missionData missionData = missionManager.MissionInformation.Find(m => m.MissionName == missionNameToFind);
+            MissionManager.missionData missionData = missionManager.MissionInformation.Find(m => m.Level == Level);
 
             if (missionData != null)
             {
@@ -86,7 +87,7 @@ public class MissionInformationInitiator : MonoBehaviour
             }
             else
             {
-                Debug.LogError($"Mission with name '{missionNameToFind}' not found.");
+                Debug.LogError($"Mission with level '{Level}' not found.");
             }
         }
         else
@@ -94,12 +95,10 @@ public class MissionInformationInitiator : MonoBehaviour
             Debug.LogError("MissionManager instance is not found.");
         }
 
-
-
-
     }
     public void LoadTargetScene()
     {
         SceneManager.LoadScene(CurrentLevel);
+        missionManager.onLoaded = onLoaded;
     }
 }
