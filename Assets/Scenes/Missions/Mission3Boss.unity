@@ -1754,6 +1754,16 @@ PrefabInstance:
       propertyPath: center
       value: 
       objectReference: {fileID: 839099181}
+    - target: {fileID: 7798452772417471665, guid: 3f45bebd05c5c7f41aaf07caf19e657a,
+        type: 3}
+      propertyPath: sunClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 6e13af543b91df648ad86219dda55282, type: 3}
+    - target: {fileID: 7798452772417471665, guid: 3f45bebd05c5c7f41aaf07caf19e657a,
+        type: 3}
+      propertyPath: thunderClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 8ef7718d8e1984e4cbea41bc4ce984c4, type: 3}
     - target: {fileID: 7798452772417471668, guid: 3f45bebd05c5c7f41aaf07caf19e657a,
         type: 3}
       propertyPath: m_RootOrder

@@ -152,7 +152,7 @@ public class AccountForm : MonoBehaviour
             SaveAccessData(walletData);
             accesWallet = GetData(1);
 
-            // jika signin berhasil masukkan perintah disini
+            LeaderboardGameSystem.Instance.RefreshData();
         }
         else
         {

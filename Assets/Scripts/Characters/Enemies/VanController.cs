@@ -99,8 +99,8 @@ public class VanController : MonoBehaviour
 
     private IEnumerator Die()
     {
-        AudioManager.PlayMetalSlugDestroy1();
-        GameManager.AddRewardAll(100, 0.05f, 5f, 50);
+        AudioManager.PlayDestroy1();
+        GameManager.AddRewardAll(100, 0.05f, 5f, 100);
         animator.SetBool("isDying", true);
         if (rb)
             rb.isKinematic = true;

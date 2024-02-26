@@ -15,7 +15,7 @@ public class TowerCrabHouse : MonoBehaviour
     void OnDead(float damage)
     {
         CameraManager.AfterCrabTower();
-        AudioManager.PlayMetalSlugDestroy2();
+        AudioManager.PlayDestroy2();
         bgBoat.sprite = null;
     }
 }

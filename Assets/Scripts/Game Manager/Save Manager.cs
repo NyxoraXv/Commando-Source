@@ -103,91 +103,11 @@ public class SaveManager : MonoBehaviour
         Save();
     }
 
-    private void SetUpDataSave()
-    {
-        LeaderboardGameSystem.Instance.SetScore(playerData.playerInformation.PlayerScore);
-        LeaderboardGameSystem.Instance.SetCoin((int)playerData.currencyInfo.PlayerLUNC);
-
-        playerData.playerInformation.PlayerName = username;
-
-        // Save playerData values
-        playerData.playerInformation.PlayerLevel = LevelManager.Instance.currentLevel;
-        playerData.playerInformation.PlayerXP = LevelManager.Instance.CurrentXP;
-        playerData.playerInformation.PlayerScore = score;
-        
-
-        // Currency Manager
-        playerData.currencyInfo.PlayerLUNC = CurrencyManager.Instance.CurrentLUNC;
-        playerData.currencyInfo.PlayerFRG = CurrencyManager.Instance.CurrentFRG;
-
-        // Character Manager
-        playerData.characterInfo.SelectedCharacter = CharacterManager.Instance.selectedCharacter;
-
-        // Save owned characters and their levels
-        playerData.characterInfo.OwnedCharacters.Clear(); // Clear the existing data
-
-        // Iterate through the owned characters in CharacterManager and add them to playerData
-        foreach (var kvp in CharacterManager.Instance.ownedCharacters)
-        {
-            playerData.characterInfo.OwnedCharacters.Add(kvp.Key, kvp.Value);
-        }
-
-        Debug.Log("Set up data save" + username);
-
-        //playerData.weaponInfo.selectedWeapon = WeaponManager.Instance.selectedWeapon;
-        //playerData.weaponInfo.ownedWeapons.Clear(); // Clear the existing data
-
-        // Iterate through the owned weapons in WeaponManager and add them to playerData
-        //foreach (var weapon in WeaponManager.Instance.ownedWeapons)
-        //{
-        //    playerData.weaponInfo.ownedWeapons.Add(weapon);
-        //}
-    }
-
     private bool run;
     private void SetUpDataLoad()
     { 
         LeaderboardGameSystem.Instance.RefreshData();
-
-        //username = PlayerPrefs.GetString("Username");
-        //print(PlayerPrefs.GetInt("Coin"));
-
-        // Load player data values
-        LevelManager.Instance.currentLevel = playerData.playerInformation.PlayerLevel;
-        LevelManager.Instance.CurrentXP = playerData.playerInformation.PlayerXP;
-        score = PlayerPrefs.GetInt("Score");
-
-        // Load currency data
-        CurrencyManager.Instance.CurrentLUNC = PlayerPrefs.GetInt("Coin");
-        CurrencyManager.Instance.CurrentFRG = PlayerPrefs.GetInt("Coin")/100;
-
-        playerData.characterInfo.OwnedCharacters.Add(Character.Sucipto, 1);
-
-        // Load selected character data
-        CharacterManager.Instance.selectedCharacter = playerData.characterInfo.SelectedCharacter;
-        foreach (var kvp in playerData.characterInfo.OwnedCharacters)
-        {
-            Character character = kvp.Key; // Access the character enum directly
-            int characterLevel = kvp.Value; // Access the level
-
-            // Add the owned character to the CharacterManager
-            CharacterManager.Instance.AddOwnedCharacterWithLevel(character, characterLevel);
-        }
-
-
-        Debug.Log("Set up data load" + username);
-
-        // Inside the SetUpDataLoad method
-        // Weapon Manager (assuming you have a WeaponManager)
-        //WeaponManager.Instance.selectedWeapon = playerData.weaponInfo.selectedWeapon;
-        //WeaponManager.Instance.ownedWeapons.Clear(); // Clear the existing data
-
-        // Iterate through the owned weapons in playerData and add them to WeaponManager
-        //foreach (var weapon in playerData.weaponInfo.ownedWeapons)
-        //{
-        //    WeaponManager.Instance.AddOwnedWeapon(weapon);
-        //}
-
+        CurrencyManager.Instance.CurrentFRG = PlayerPrefs.GetInt("Coin");
     }
 
     public bool Verify(string Username, string Password, string Email, bool isLogin)
@@ -274,20 +194,17 @@ public class SaveManager : MonoBehaviour
 
     public void Save()
     {
-        Debug.Log("Save" + username);
+        Debug.Log("Save");
+        LeaderboardGameSystem.Instance.SetCoin(int.Parse((CurrencyManager.Instance.CurrentFRG * 1000).ToString()));
+        Debug.Log(int.Parse((CurrencyManager.Instance.CurrentFRG * 1000).ToString()));
+        LeaderboardGameSystem.Instance.SetScore(playerData.playerInformation.PlayerScore);
+        Debug.Log(playerData.playerInformation.PlayerScore);
 
-        SetUpDataSave();
-
-        string savePath = Path.Combine(Application.persistentDataPath, $"{username}player_data.json");
-        string json = JsonConvert.SerializeObject(playerData); // Serialize using JsonConvert
-        File.WriteAllText(savePath, json);
-        Debug.Log("Saved player data to: " + savePath);
     }
 
 
     private void OnApplicationQuit()
     {
-        LeaderboardGameSystem.Instance.SetCoin((int)playerData.currencyInfo.PlayerLUNC);
         Save();
     }
 }

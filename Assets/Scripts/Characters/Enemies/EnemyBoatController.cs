@@ -38,17 +38,17 @@ public class EnemyBoatController : MonoBehaviour
         else if (health.GetHealth() >= 750)
         {
             front.SetActive(true);
-            AudioManager.PlayMetalSlugDestroy3();
+            AudioManager.PlayDestroy3();
         }
         else if (health.GetHealth() >= 500)
         {
             center.SetActive(true);
-            AudioManager.PlayMetalSlugDestroy1();
+            AudioManager.PlayDestroy1();
         }
         else if (health.GetHealth() >= 250)
         {
             back.SetActive(true);
-            AudioManager.PlayMetalSlugDestroy1();
+            AudioManager.PlayDestroy1();
         }
         else if (!health.IsAlive())
         {
@@ -58,7 +58,7 @@ public class EnemyBoatController : MonoBehaviour
 
             explosion.SetActive(true);
             explosion.GetComponent<Animator>().SetBool("isDying", true);
-            AudioManager.PlayMetalSlugDestroy2();
+            AudioManager.PlayDestroy2();
         }
     }
 
@@ -77,7 +77,7 @@ public class EnemyBoatController : MonoBehaviour
     private IEnumerator Die()
     {
         sr.sprite = sinked;
-
+        GameManager.AddRewardAll(100, 0.05f, 5f, 100);
         GetComponent<PolygonCollider2D>().enabled = false;
 
         if (rb)

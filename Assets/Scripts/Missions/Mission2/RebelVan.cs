@@ -100,6 +100,7 @@ public class RebelVan : MonoBehaviour
     private IEnumerator Die()
     {
         animator.SetBool("isExploding", true);
+        GameManager.AddRewardAll(100, 0.05f, 5f, 100);
         if (rb)
             rb.isKinematic = true;
         if (GetComponent<BoxCollider2D>())

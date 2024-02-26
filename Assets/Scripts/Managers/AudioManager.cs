@@ -313,7 +313,7 @@ public class AudioManager : MonoBehaviour
         current.playerSource.Play();
     }
 
-    public static void PlayMetalSlugDestroy1()
+    public static void PlayDestroy1()
     {
         if (current == null)
             return;
@@ -321,7 +321,7 @@ public class AudioManager : MonoBehaviour
         current.effectSource.Play();
     }
 
-    public static void PlayMetalSlugDestroy2()
+    public static void PlayDestroy2()
     {
         if (current == null)
             return;
@@ -329,7 +329,7 @@ public class AudioManager : MonoBehaviour
         current.effectSource.Play();
     }
 
-    public static void PlayMetalSlugDestroy3()
+    public static void PlayDestroy3()
     {
         if (current == null)
             return;

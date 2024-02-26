@@ -179,7 +179,7 @@ public class Boss3Controller : MonoBehaviour
         StopCoroutine(Fire1());
         StopCoroutine(Fire2Wait());
         GameManager.PlayerWin();
-        AudioManager.PlayMetalSlugDestroy2();
+        AudioManager.PlayDestroy2();
         GetComponent<Animator>().SetBool("isDying", true);
         StopBossCoroutines();
     }

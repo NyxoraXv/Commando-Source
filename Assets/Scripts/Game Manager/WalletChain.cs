@@ -51,7 +51,6 @@ public class WalletChain : MonoBehaviour
 
     }
 
-
     public IEnumerator LoopGetWallet()
     {
         Invoke("TimeOut", 300);
@@ -82,7 +81,7 @@ public class WalletChain : MonoBehaviour
 
                 if (myDatawallet.data.address_wallet != "" && myDatawallet.data.request_disconnect == false || myDatawallet.data.is_connected == true && myDatawallet.data.request_disconnect == false)
                 {
-                    Debug.Log("Sukses login");
+                    PopUpInformationhandler.Instance.pop("Wallet Connected");
                     isConnectedWallet = true;
 
                     // ---------------------------jika sudah sukses untuk connect wallet---------------------------
@@ -92,7 +91,7 @@ public class WalletChain : MonoBehaviour
                 else
                 {
                     isConnectedWallet = false;
-                    Debug.Log("IsConnected wallet gagal");
+                    PopUpInformationhandler.Instance.pop("An Error Occured");
                 }
             }
             else

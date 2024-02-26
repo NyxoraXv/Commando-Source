@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System.Xml.Linq;
+using UnityEditor;
 
 [Serializable]
 public class ScoreData
@@ -69,7 +70,7 @@ public class LeaderboardGameSystem : MonoBehaviour
 {
     private string serverUrl = "https://dev-gtp.garudaverse.io";
     private ScoreData scoreDataCls;
-    private Statistic coinDataCls;
+    private Statistic userDataClass;
     [SerializeField] private TextMeshProUGUI myScore/*, myStars*/;
     public static LeaderboardGameSystem Instance;
 
@@ -84,6 +85,10 @@ public class LeaderboardGameSystem : MonoBehaviour
         Instance = this;
     }
 
+    private void OnEnable()
+    {
+        SaveManager.Instance.Save();
+    }
     public void CheckStarScore()
     {
         myScore.text = PlayerPrefs.GetInt("Score").ToString();
@@ -306,11 +311,13 @@ public class LeaderboardGameSystem : MonoBehaviour
         if (Application.internetReachability == NetworkReachability.NotReachable)
         {
             Debug.Log("lost connection please check your internet");
+            PopUpInformationhandler.Instance.pop("lost connection please check your internet");
             return;
         }
 
         StartCoroutine(GetStatisticRequest(accesWallet));
     }
+
 
     IEnumerator GetStatisticRequest(string access)
     {
@@ -319,22 +326,21 @@ public class LeaderboardGameSystem : MonoBehaviour
         UnityWebRequest request = UnityWebRequest.Get(url);
         request.SetRequestHeader("Token", access);
         request.downloadHandler = new DownloadHandlerBuffer();
+        Debug.Log(access + "aces");
 
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.Success)
         {
             string coinData = request.downloadHandler.text;
-            coinDataCls = JsonUtility.FromJson<Statistic>(coinData);
+            userDataClass = JsonUtility.FromJson<Statistic>(coinData);
 
-            PlayerPrefs.SetInt("Score", coinDataCls.data.score);
-            PlayerPrefs.SetInt("Coin", coinDataCls.data.coin);
-            PlayerPrefs.SetString("Username", coinDataCls.data.username);
-            Debug.Log("Coin = " + coinDataCls.data.coin + "Score = " + coinDataCls.data.score);
-
-            print(coinDataCls.data.score+ coinDataCls.data.coin+ coinDataCls.data.username);
-
-            SaveManager.Instance.username = coinDataCls.data.username;
+            PlayerPrefs.SetInt("Score", userDataClass.data.score);
+            PlayerPrefs.SetInt("Coin", userDataClass.data.coin);
+            PlayerPrefs.SetString("Username", userDataClass.data.username);
+            Debug.Log("Coin = " + userDataClass.data.coin + "Score = " + userDataClass.data.score);
+            SaveManager.Instance.username = userDataClass.data.username;
+            StartCoroutine(GetAchievementRequest(access));
             
         }
         else
@@ -342,5 +348,29 @@ public class LeaderboardGameSystem : MonoBehaviour
             Debug.LogError("failed to get statistic data: " + request.error);
         }
     }
+    IEnumerator GetAchievementRequest(string access)
+    {
+        Debug.Log("Getting Achievement Request"); 
+        string url = serverUrl + "/v2/game/achievements"; 
+        UnityWebRequest request = UnityWebRequest.Get(url);
+        request.SetRequestHeader("Token", access);
+        request.downloadHandler = new DownloadHandlerBuffer();
 
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            string achievementData = request.downloadHandler.text;
+            userDataClass = JsonUtility.FromJson<Statistic>(achievementData);
+
+            PlayerPrefs.SetInt("Last Level", userDataClass.data.last_level);
+            Debug.Log("Last Level = " + userDataClass.data.last_level);
+            SaveManager.Instance.playerData.playerInformation.PlayerLastLevel = userDataClass.data.last_level;
+            
+        }
+        else
+        {
+            Debug.LogError("failed to get statistic data: " + request.error);
+        }
+    }
 }
