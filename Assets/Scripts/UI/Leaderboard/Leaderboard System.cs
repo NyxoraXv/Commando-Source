@@ -15,7 +15,7 @@ public class RankSystem : MonoBehaviour
     public TextMeshProUGUI scoreTextPersonal;
     private void OnEnable()
     {
-        score = SaveManager.Instance.score;
+        score = SaveManager.Instance.playerData.playerInformation.PlayerScore;
         name = SaveManager.Instance.playerData.playerInformation.PlayerName;
         UpdateRankUI();
     }

@@ -3,18 +3,13 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
+using DG.Tweening;
 
 public class PauseController : MonoBehaviour
 {
     public GameObject canvas;
-
-    [Header("Settings")]
-    public TextMeshProUGUI bgmText;
-    public TextMeshProUGUI sfxText;
-    public TextMeshProUGUI bgmTextCounter;
-    public TextMeshProUGUI sfxTextCounter;
-    public TextMeshProUGUI godModeText;
-
+    public Image Overlay;
     private void Start()
     {
     }
@@ -30,8 +25,8 @@ public class PauseController : MonoBehaviour
 
     public void Open()
     {
-        RefreshAudioText();
         showMenu();
+        //Overlay.DOFade(0.4f, 0.5f).From(0f);
     }
 
     public void Exit()
@@ -44,60 +39,15 @@ public class PauseController : MonoBehaviour
         canvas.SetActive(false);
         Time.timeScale = 1;
     }
-
-    public void SetBgmCounterPressed()
-    {
-        //Click color
-        bgmText.color = new Color32(255, 141, 0, 255);
-        sfxText.color = new Color32(255, 255, 255, 255);
-
-        float cnt = GameManager.GetBgmAudio();
-        cnt += .1f;
-        if (cnt >= 1.1f)
-            cnt = 0f;
-        GameManager.SetBgmAudio(cnt, true);
-
-        AudioManager.RefreshAudioVolume();
-        RefreshAudioText();
-    }
-
     public void ToggleGodMode()
     {
-        if (GameManager.ToggleGodMode())
-            godModeText.SetText("GOD MODE ON");
-        else
-            godModeText.SetText("GOD MODE OFF");
+        GameManager.ToggleGodMode();
+
     }
 
-    public void SetSfxCounterPressed()
+    public void Restart()
     {
-        //Click color
-        bgmText.color = new Color32(255, 255, 255, 255);
-        sfxText.color = new Color32(255, 141, 0, 255);
-
-        float cnt = GameManager.GetSfxAudio();
-        cnt += .1f;
-        if (cnt >= 1.1f)
-            cnt = 0f;
-        GameManager.SetSfxAudio(cnt, true);
-
-        AudioManager.RefreshAudioVolume();
-        RefreshAudioText();
-    }
-
-    void RefreshAudioText()
-    {
-        float bgmCnt = GameManager.GetBgmAudio();
-        if (bgmCnt < 0.1f)
-            bgmTextCounter.SetText("OFF");
-        else
-            bgmTextCounter.SetText(Math.Round(bgmCnt * 10).ToString());
-
-        float sfxCnt = GameManager.GetSfxAudio();
-        if (sfxCnt < 0.1f)
-            sfxTextCounter.SetText("OFF");
-        else
-            sfxTextCounter.SetText(Math.Round(sfxCnt * 10).ToString());
+        GameManager.GameReset();
     }
 
     void showMenu()

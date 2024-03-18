@@ -6,47 +6,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System;
 
-[Serializable]
-public class WalletData
-{
-    public WalletDetails data;
-    public object errors;
-    public string message;
-    public int code;
-}
-[Serializable]
-public class WalletAdress
-{
-    public WalletAdressDetails data;
-    public object errors;
-    public string message;
-    public int code;
-}
-
-[Serializable]
-public class WalletDetails
-{
-    public string access_token;
-    public string refresh_token;
-}
-[Serializable]
-public class WalletAdressDetails
-{
-    public string id;
-    public string user_id;
-    public string address_wallet;
-    public string balance;
-    public string user_agent;
-    public bool is_connected;
-    public bool request_disconnect;
-    public string UpdatedAt;
-    public string CreatedAt;
-    public string DeletedAt;
-    public int score;
-    public int star;
-    public int coin;
-    public int last_level;
-}
 
 
 
@@ -54,17 +13,19 @@ public class AccountForm : MonoBehaviour
 {
     // [SerializeField] private LoginForm loginForm;
     // [SerializeField] private WalletChain walletChain;
-    [HideInInspector] public const string BASEURL = "https://dev-gtp.garudaverse.io/v2";
+    [HideInInspector] public const string BASEURL = "https://lunc-zombie.garudaverse.io/v2";
 
     private WalletDetails walletDetails;
     public static string accesWallet;
     public static AccountForm Instance;
     public bool isLogin = false;
+    public bool isSignup = false;
 
-    private void Awake()
-    {
-        accesWallet = GetData(1);
-    }
+    //private void Awake()
+    //{
+    //    accesWallet = GetData(1);
+    //}
+
     private void Start()
     {
         //walletChain.DisconnectP();
@@ -90,7 +51,7 @@ public class AccountForm : MonoBehaviour
     {
         Debug.Log("SignUp");
         string url = BASEURL + "/account/signup";
-
+        LoadingAnimation.Instance.toggleLoading();
 
         // Menyiapkan permintaan POST
         UnityWebRequest request = UnityWebRequest.PostWwwForm(url, jsonData);
@@ -108,12 +69,14 @@ public class AccountForm : MonoBehaviour
             string walletData = request.downloadHandler.text;
             Debug.Log("Wallet data: " + walletData);
             Debug.Log("Sign up successful.");
-            isLogin = true;
+            isSignup = true;
+            PopUpInformationhandler.Instance.pop("Signed Up");
             //CurrencyManager.Instance.CurrentLUNC = walletData
+            LoadingAnimation.Instance.stopLoading();
         }
         else
         {
-
+            isSignup = false;
             Debug.LogError("Sign up failed: " + request.error);
             if (request.error == "Cannot resolve destination host")
             {
@@ -127,6 +90,7 @@ public class AccountForm : MonoBehaviour
             {
                 PopUpInformationhandler.Instance.pop("Unknown Error");
             }
+            LoadingAnimation.Instance.stopLoading();
         }
     }
     public void SignInP(string json)
@@ -136,6 +100,7 @@ public class AccountForm : MonoBehaviour
     IEnumerator SignIn(string jsonData)
     {
         string url = BASEURL + "/account/signin";
+        LoadingAnimation.Instance.toggleLoading();
         UnityWebRequest request = UnityWebRequest.PostWwwForm(url, jsonData);
         byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
         request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
@@ -146,13 +111,13 @@ public class AccountForm : MonoBehaviour
         if (request.result == UnityWebRequest.Result.Success)
         {
             string walletData = request.downloadHandler.text;
+            PopUpInformationhandler.Instance.pop("Logged In");
             Debug.Log("Wallet data: " + walletData);
             Debug.Log("Sign in successful.");
             isLogin = true;
             SaveAccessData(walletData);
             accesWallet = GetData(1);
-
-            LeaderboardGameSystem.Instance.RefreshData();
+            LoadingAnimation.Instance.stopLoading();
         }
         else
         {
@@ -169,6 +134,7 @@ public class AccountForm : MonoBehaviour
             {
                 PopUpInformationhandler.Instance.pop("Unknown Error");
             }
+            LoadingAnimation.Instance.stopLoading();
         }
 
 
@@ -185,6 +151,7 @@ public class AccountForm : MonoBehaviour
     IEnumerator RefreshToken()
     {
         string url = BASEURL + "/account/refresh";
+        LoadingAnimation.Instance.toggleLoading();
         string refreshToken = GetData(2);
         refreshToken = refreshToken.Split(" ")[1];
         Debug.Log(refreshToken);
@@ -203,11 +170,12 @@ public class AccountForm : MonoBehaviour
             Debug.Log("wallet data" + walletData);
             Debug.Log(request.result);
             SaveAccessData(walletData);
+            LoadingAnimation.Instance.stopLoading();
         }
         else
         {
             Debug.LogError("Token refresh failed: " + request.error);
-
+            LoadingAnimation.Instance.stopLoading();
         }
 
     }
@@ -217,8 +185,8 @@ public class AccountForm : MonoBehaviour
     private void SaveAccessData(string jsonData)
     {
         WalletData myData = JsonUtility.FromJson<WalletData>(jsonData);
-        PlayerPrefs.SetString("AccessToken", myData.data.access_token);
-        PlayerPrefs.SetString("RefreshToken", myData.data.refresh_token);
+        SaveManager.Instance.playerData.playerInformation.accessToken =  myData.data.access_token;
+        SaveManager.Instance.playerData.playerInformation.refreshToken =  myData.data.refresh_token;
     }
 
 
@@ -233,9 +201,9 @@ public class AccountForm : MonoBehaviour
             switch (type)
             {
                 case 1:
-                    return PlayerPrefs.GetString("AccessToken", "");
+                    return SaveManager.Instance.playerData.playerInformation.accessToken;
                 case 2:
-                    return PlayerPrefs.GetString("RefreshToken", "");
+                    return SaveManager.Instance.playerData.playerInformation.refreshToken;
                 default:
                     return null;
             }

@@ -31,11 +31,10 @@ public class MobileManager : MonoBehaviour
 
     private void Start()
     {
-#if UNITY_STANDALONE
-        // Remove this condition or set forceOnStandalone to true
-        forceOnStandalone = true; 
-        Debug.Log("Standalone mode: Disabling buttons and joystick.");
-        DisableMobileControls();
+#if UNITY_STANDALONE || UNITY_EDITOR
+        // If running on PC or in the editor, disable the MobileManager GameObject
+        Debug.Log("Running on PC. Disabling MobileManager GameObject.");
+        gameObject.SetActive(false);
 #endif
     }
 

@@ -139,9 +139,9 @@ public class CharacterManager : MonoBehaviour
     {
         if (!ownedCharacters.ContainsKey(character))
         {
-            ownedCharacters.Add(character, 1);
+            ownedCharacters.Add(character, 0);
             SaveManager.Instance.Save();
-            Debug.Log("Character Added");
+            Debug.Log("Character Added" + character);
         }
     }
 
@@ -168,4 +168,19 @@ public class CharacterManager : MonoBehaviour
         }
         return 0; // Return 0 if the character is not found in ownedCharacters
     }
+    public void ClearOwnedCharacters()
+    {
+        Debug.Log("Clearing owned characters...");
+
+        foreach (var character in ownedCharacters.Keys)
+        {
+            Debug.Log("Cleared: " + character.ToString());
+        }
+
+        ownedCharacters.Clear();
+
+        Debug.Log("Owned characters cleared.");
+    }
+
+
 }

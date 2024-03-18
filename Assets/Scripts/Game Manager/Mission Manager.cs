@@ -22,7 +22,7 @@ public enum RewardType
 public class MissionManager : MonoBehaviour
 {
     public static MissionManager Instance;
-    public int onLoaded;
+    public int onLoaded = 0;
 
     [System.Serializable]
     public class RewardData
@@ -62,9 +62,5 @@ public class MissionManager : MonoBehaviour
         }
     }
 
-    public void checkMissionCompleted()
-    {
-        SaveManager.Instance.playerData.playerInformation.PlayerLastLevel = onLoaded;
-    }
 
 }

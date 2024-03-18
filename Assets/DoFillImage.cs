@@ -7,27 +7,33 @@ public class ImageFillAmountTween : MonoBehaviour
     public float targetFillAmount = 1f;
     public float duration = 1f;
 
-    private Image image;
+    public Image[] image;
+    public Image overlay;
     
     void OnEnable()
     {
-        image = GetComponent<Image>();
-
-        // Start the fillAmount tween
         TweenFillAmount();
+        TweenOverlay();
     }
 
     void TweenFillAmount()
     {
-        // Use DOTween to animate the fillAmount property with InOutCubic ease
-        image.DOFillAmount(targetFillAmount, duration)
-            .From(0f)
-            .SetEase(Ease.InOutCubic)
-            .OnComplete(OnTweenComplete); // Optional: Add a callback for completion
-    }
+        foreach (var item in image)
+        {
+            item.DOFillAmount(targetFillAmount, duration)
+    .From(0f)
+    .SetEase(Ease.InOutCubic)
+    .OnComplete(OnTweenComplete);
+        }
 
+    }
     void OnTweenComplete()
     {
         Debug.Log("Tween completed!");
+    }
+
+    void TweenOverlay()
+    {
+        overlay.DOFade(0.4f, 0.5f).From(0f);
     }
 }

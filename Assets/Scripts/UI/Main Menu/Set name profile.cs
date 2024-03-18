@@ -8,7 +8,18 @@ public class Setnameprofile : MonoBehaviour
 
     private void OnEnable()
     {
+        StartCoroutine(waitUsername());
+    }
+
+    IEnumerator waitUsername()
+    {
         text = GetComponent<TMPro.TextMeshProUGUI>();
-        text.text = SaveManager.Instance.username;
+
+        while (string.IsNullOrEmpty(SaveManager.Instance.playerData.playerInformation.PlayerName))
+        {
+            yield return null;
+        }
+
+        text.text = SaveManager.Instance.playerData.playerInformation.PlayerName;
     }
 }

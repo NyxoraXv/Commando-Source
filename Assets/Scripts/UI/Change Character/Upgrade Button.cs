@@ -34,14 +34,14 @@ public class UpgradeButton : MonoBehaviour
         }
         else
         {
-            CurrencyManager.Instance.insufficientFund(CurrencyManager.Instance.CurrentFRG - FRGToSpend,
+            CurrencyManager.Instance.insufficientFund(SaveManager.Instance.playerData.currencyInfo.PlayerFRG - FRGToSpend,
                                                     GameObject.FindWithTag("Main Menu Parent").transform,
                                                     PopUpInstantiate.CurrencyType.LUNC);
 
             Debug.LogWarning("Character Upgrade Fail");
         }
 
-        price.text = ("Upgrade Cost: " + FRGToSpend);
+        price.text = ("Boost Cost: " + FRGToSpend);
         changeCharacterManager.RefreshUIWithoutParameters();
     }
 }

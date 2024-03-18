@@ -5,12 +5,12 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using SpriteShadersUltimate;
 
 public class UIManager : MonoBehaviour
 {
     static UIManager current;
-
-    public Image gameOver;
+    public GameObject gameOver;
     public GameObject restartButton;
     public GameObject restartWin;
     public GameObject homeButton;
@@ -24,15 +24,18 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI bombs;
     public TextMeshProUGUI ammoText;
     public TextMeshProUGUI coinRevive;
-    public Image winUI;
+    public GameObject winUI;
     public TextMeshProUGUI winPointsText;
     public GameObject MobileCanvas;
     public GameObject Currency;
+    public GameObject CurrentCurrency;
     public GameObject backButton;
     public GameObject buyButton;
     public GameObject shopUI;
     public GameObject RateOfFireUI;
     public Image RateOfFireSlide;
+    public Image healthBorder;
+    public  CurrentCurrencyDisplay currentCurrencyDisplay;
 
     public Image characterAvatar;
 
@@ -46,7 +49,7 @@ public class UIManager : MonoBehaviour
 
         characterAvatar.sprite = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.FullAvatar;
 
-        current.gameOver.gameObject.SetActive(false);
+        current.gameOver.SetActive(false);
         current.restartButton.gameObject.SetActive(false);
         current.homeButton.gameObject.SetActive(false);
         current.continueButton.gameObject.SetActive(false);
@@ -58,14 +61,6 @@ public class UIManager : MonoBehaviour
         current.backButton.gameObject.SetActive(false);
         current.buyButton.gameObject.SetActive(false);
         current.shopUI.gameObject.SetActive(false);
-
-        SetInitialAlpha(current.gameOver.GetComponent<Image>(), 0f);
-        SetInitialAlpha(current.homeButton.GetComponent<Image>(), 0f);
-        SetInitialAlpha(current.restartButton.GetComponent<Image>(), 0f);
-        SetInitialAlpha(current.continueButton.GetComponent<Image>(), 0f);
-        SetInitialAlpha(current.winUI.GetComponent<Image>(), 0f);
-        SetInitialAlpha(current.homeWin.GetComponent<Image>(), 0f);
-        SetInitialAlpha(current.restartWin.GetComponent<Image>(), 0f);
 
 
         UpdateScoreUI();
@@ -112,7 +107,7 @@ public class UIManager : MonoBehaviour
 
 
         // Set initial alpha to 0f
-        CanvasGroup canvasGroup = current.Currency.GetComponent<CanvasGroup>();
+        CanvasGroup canvasGroup = current.CurrentCurrency.GetComponent<CanvasGroup>();
         if (canvasGroup == null)
         {
             canvasGroup = current.Currency.AddComponent<CanvasGroup>();
@@ -212,10 +207,6 @@ public class UIManager : MonoBehaviour
     if (isGameOver)
     {
         current.gameOver.gameObject.SetActive(true);
-        Vector3 targetScale = current.gameOver.transform.localScale * 1f;
-        current.gameOver.transform.DOScale(targetScale, 0.5f).SetEase(Ease.OutBack);
-
-        FadeImage(current.gameOver, 0f, 1f, 0.5f);
     }
 }
 
@@ -251,7 +242,6 @@ public class UIManager : MonoBehaviour
             return;
 
         current.homeButton.gameObject.SetActive(true);
-        FadeImage(current.homeButton.GetComponent<Image>(), 0f, 1f, 0.5f);
     }
 
     public static void Restart()
@@ -260,7 +250,6 @@ public class UIManager : MonoBehaviour
             return;
 
         current.restartButton.gameObject.SetActive(true);
-        FadeImage(current.restartButton.GetComponent<Image>(), 0f, 1f, 0.5f);
     }
 
     public static void Continue()
@@ -269,7 +258,6 @@ public class UIManager : MonoBehaviour
             return;
         
         current.continueButton.gameObject.SetActive(true);
-        FadeImage(current.continueButton.GetComponent<Image>(), 0f, 1f, 0.5f);
         
     }
 
@@ -285,7 +273,7 @@ public class UIManager : MonoBehaviour
 
     public static void Revive()
     {
-        if (CurrencyManager.Instance.spendFRG(10)) { GameManager.GetPlayer().GetComponent<MainPlayer>().Revive(); }
+        if (CurrencyManager.Instance.spendFRG(1)) { GameManager.GetPlayer().GetComponent<MainPlayer>().Revive(); }
         
         DisplayCurrency();
     }
@@ -308,6 +296,11 @@ public class UIManager : MonoBehaviour
         DisplayCurrency();
     }
 
+    public static void refreshCurrency()
+    {
+        current.currentCurrencyDisplay.refresh();
+    }
+
     public static void DisableReviveUI()
     {
         current.continueButton.gameObject.SetActive(false);
@@ -323,35 +316,33 @@ public class UIManager : MonoBehaviour
 
         float fillAmount = health / maxHealth;
         current.healthBar.DOFillAmount(fillAmount, 0.5f);
+        /*current.healthBorder.DOColor(Color.Lerp(Color.white, Color.red, 1 - fillAmount), 0.5f)
+            .OnComplete(() =>
+            {
+                current.healthBorder.DOColor(Color.white, 0.5f);
+            });*/
     }
 
     public static void DisplayWinUI()
     {
         if (current == null)
             return;
-
+        Debug.Log("Line 332");
         current.winUI.gameObject.SetActive(true);
+        Debug.Log("Line 334");
         current.winPointsText.SetText(GameManager.GetScore().ToString());
+        Debug.Log("Line 336");
         current.winPointsText.gameObject.SetActive(true);
+        Debug.Log("Line 338");
         current.homeWin.gameObject.SetActive(true);
+        Debug.Log("Line 340");
         current.restartWin.gameObject.SetActive(true);
-
-        FadeImage(current.winUI.GetComponent<Image>(), 0f, 1f, 0.5f);
-        FadeImage(current.homeWin.GetComponent<Image>(), 0f, 1f, 0.5f);
-        FadeImage(current.restartWin.GetComponent<Image>(), 0f, 1f, 0.5f);
-        FadeImage(current.winPointsText.GetComponent<Image>(), 0f, 1f, 0.5f);
-    }
-
-    private static void FadeImage(Image image, float startAlpha, float endAlpha, float duration)
-    {
-        image.DOFade(endAlpha, duration)
-            .From(startAlpha)
-            .SetEase(Ease.Linear);
+        Debug.Log("Line 342");
     }
 
     public void BuyAmmo()
     {
-        if (CurrencyManager.Instance.spendFRG(100))
+        if (CurrencyManager.Instance.spendFRG(1f))
         {
             GameManager.addAmmo(150);
         }

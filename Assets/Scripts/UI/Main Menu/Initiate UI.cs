@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class InitiateUI : MonoBehaviour
 {
     public GameObject Login, MainMenu, currency;
+    public VolumeControl volumeControl;
 
     void Start()
     {
@@ -32,5 +33,6 @@ public class InitiateUI : MonoBehaviour
             Login.SetActive(false);
             currency.SetActive(true);
         }
+        volumeControl.SetAllSavedVolumes();
     }
 }

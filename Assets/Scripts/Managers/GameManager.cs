@@ -31,6 +31,8 @@ public class GameManager : MonoBehaviour
     float mission1Points = 0f;
     float mission2Points = 0f;
     float mission3Points = 0f;
+    private float frg;
+    private float lunc;
 
     [Header("Layers")]
     public LayerMask enemyLayer;
@@ -48,6 +50,7 @@ public class GameManager : MonoBehaviour
         LoadSettings();
         LoadRecords();
         SaveRecords();
+        //PlayerWin();
     }
 
     void Update()
@@ -58,6 +61,15 @@ public class GameManager : MonoBehaviour
         //Update the total game time and tell the UI Manager to update
         totalGameTime += Time.deltaTime;
         // UIManager.UpdateTimeUI(totalGameTime); // todo implement or delete
+    }
+
+    public static float getFRG()
+    {
+        return current.frg;
+    }
+
+    public static float getLUNC() {
+        return current.lunc;
     }
 
     private void SaveSettings()
@@ -137,9 +149,10 @@ public class GameManager : MonoBehaviour
             return;
 
         current.score += amountScore;
-        UIManager.DisplayCurrency();
+        //UIManager.DisplayCurrency();
         UIManager.UpdateScoreUI();
         AddReward(FRG, LUNC, xp);
+        UIManager.refreshCurrency();
     }
 
     public static int GetScore()
@@ -154,8 +167,11 @@ public class GameManager : MonoBehaviour
 
     public static void AddReward(float FRG = 0F, float LUNC = 0f, int XP = 0)
     {
-        CurrencyManager.Instance.addFRG(FRG);
-        CurrencyManager.Instance.addLUNC(LUNC);
+        if (SaveManager.Instance.isLogin)
+        {
+            current.lunc += LUNC;
+            current.frg += FRG;
+        }
         LevelManager.Instance.addXP(XP);
     }
 
@@ -219,16 +235,13 @@ public class GameManager : MonoBehaviour
 
     public static void PlayerDied(string causeOfDeath)
 {
-    // If there is no current Game Manager, exit
     if (current == null)
         return;
 
-    // The game is now over
     current.isGameOver = true;
 
     if (causeOfDeath == "Water Dead")
     {
-        // If the player died due to "Water Dead," display game over text, home, and restart
         UIManager.DisplayGameOverText();
         UIManager.Home();
         UIManager.Restart();
@@ -248,6 +261,7 @@ public class GameManager : MonoBehaviour
 
     public static void PlayerWin()
     {
+        Debug.Log("Player Win");
         //If there is no current Game Manager, exit
         if (current == null)
             return;
@@ -255,14 +269,14 @@ public class GameManager : MonoBehaviour
         UIManager.DisplayWinUI();
         AudioManager.PlayLevelCompleteAudio();
         AudioManager.PlayGameOverAudio();
-
-        SaveManager.Instance.score = current.score;
-        SaveManager.Instance.Save();
-
+        if (MissionManager.Instance.onLoaded <= SaveManager.Instance.playerData.playerInformation.PlayerLastLevel) {
+            SaveManager.Instance.setLastLevel(MissionManager.Instance.onLoaded + 1);
+            SaveManager.Instance.playerData.playerInformation.PlayerScore = SaveManager.Instance.playerData.playerInformation.PlayerScore+current.score;
+            CurrencyManager.Instance.addFRG(current.frg);
+            CurrencyManager.Instance.addLUNC(current.lunc);
+            SaveManager.Instance.Save();
+        }
         current.isGameOver = true;
-
-        MissionManager.Instance.checkMissionCompleted();
-
         current.StartCoroutine(current.WaitNextMission());
     }
 
@@ -487,6 +501,7 @@ public class GameManager : MonoBehaviour
         if (!current)
             return;
         LoadHome();
+        SaveManager.Instance.Save();
     }
 
     public static void LoadHome()

@@ -1,18 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterLockCheck : MonoBehaviour
 {
     private void OnEnable()
     {
-        Character card = this.GetComponentInParent<EnumCard>().Character;
+        // Find the child GameObject named "Lock"
+        GameObject lockObject = transform.Find("Lock").gameObject;
 
-        if (SaveManager.Instance.playerData.characterInfo.OwnedCharacters.TryGetValue(card, out int index))
+        // Check character ownership and set the active state of the "Lock" GameObject accordingly
+        Character card = this.GetComponent<EnumCard>().Character;
+
+        if (CharacterManager.Instance.ownedCharacters.TryGetValue(card, out int index))
         {
-            gameObject.SetActive(false);
+            lockObject.SetActive(false); // Deactivate "Lock" GameObject if character is owned
         }
-
-
+        else
+        {
+            lockObject.SetActive(true); // Activate "Lock" GameObject if character is not owned
+        }
     }
 }

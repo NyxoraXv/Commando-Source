@@ -47,29 +47,29 @@ MonoBehaviour:
   Character:
     CharacterName: 7
     Levels:
-    - Damage: 25
-      HP: 500
-      Agility: 2.5
-      UpgradeCost: 0.75
-    - Damage: 40
-      HP: 700
-      Agility: 2.8
-      UpgradeCost: 1
-    - Damage: 70
-      HP: 700
-      Agility: 3.2
-      UpgradeCost: 1.5
-    - Damage: 80
-      HP: 800
-      Agility: 3.4
-      UpgradeCost: 2.25
-    - Damage: 100
-      HP: 1000
-      Agility: 4
-      UpgradeCost: 5
+    - Damage: 300
+      HP: 3000
+      Agility: 3.5
+      UpgradeCost: 2
+    - Damage: 325
+      HP: 3200
+      Agility: 3.55
+      UpgradeCost: 2.1
+    - Damage: 350
+      HP: 3400
+      Agility: 3.6
+      UpgradeCost: 2.3
+    - Damage: 364
+      HP: 3600
+      Agility: 3.65
+      UpgradeCost: 2.5
+    - Damage: 400
+      HP: 4000
+      Agility: 3.8
+      UpgradeCost: 4
     MaxLevel: 5
-    FullAvatar: {fileID: 21300000, guid: de7cd25a572164144919bb7f02122f67, type: 3}
-    MaskedAvatar: {fileID: 21300000, guid: de7cd25a572164144919bb7f02122f67, type: 3}
+    FullAvatar: {fileID: 21300000, guid: 64cd55fdbf13a2c43981338befd94e2f, type: 3}
+    MaskedAvatar: {fileID: 21300000, guid: 81cc5a0182a83f24a845a22361cec754, type: 3}
     CroppedAvatar: {fileID: 0}
     Price: 1
     PlayerController: {fileID: 22100000, guid: 62070588c33d2a942abce4abc510b34c, type: 2}

@@ -5,6 +5,8 @@ using UnityEngine.Animations;
 
 public class MainPlayer : MonoBehaviour
 {
+    [SerializeField] private bool win;
+
     private Rigidbody2D rb;
     private Animator animator;
     public Animator bottomAnimator;
@@ -257,6 +259,10 @@ public class MainPlayer : MonoBehaviour
             {
                 DeactivateHeavyMachineGun();
             }
+        }
+        if (win)
+        {
+            GameManager.PlayerWin();
         }
     }
 
@@ -527,20 +533,42 @@ public class MainPlayer : MonoBehaviour
 
     private void ThrowGrenade()
     {
-        if (Input.GetAxis("grenade") == 1 || MobileManager.GetButtonGrenade())
+        if (isMobile)
         {
-            if (Time.time - lastGrenadeThrowTime >= grenadeCooldown)
+            
+            if (MobileManager.GetButtonGrenade())
             {
-                if (GameManager.GetBombs() > 0)
+                if (Time.time - lastGrenadeThrowTime >= grenadeCooldown)
                 {
-                    bottomAnimator.SetTrigger("IsThrowing");
-                    GameManager.RemoveBomb();
-                    Instantiate(grenadePrefab, aimPoint.position, aimPoint.rotation);
-                    lastGrenadeThrowTime = Time.time;
+                    if (GameManager.GetBombs() > 0)
+                    {
+                        bottomAnimator.SetTrigger("IsThrowing");
+                        GameManager.RemoveBomb();
+                        Instantiate(grenadePrefab, aimPoint.position, aimPoint.rotation);
+                        lastGrenadeThrowTime = Time.time;
 
+                    }
                 }
             }
         }
+        else
+        {
+            if (Input.GetAxis("grenade") == 1)
+            {
+                if (Time.time - lastGrenadeThrowTime >= grenadeCooldown)
+                {
+                    if (GameManager.GetBombs() > 0)
+                    {
+                        bottomAnimator.SetTrigger("IsThrowing");
+                        GameManager.RemoveBomb();
+                        Instantiate(grenadePrefab, aimPoint.position, aimPoint.rotation);
+                        lastGrenadeThrowTime = Time.time;
+
+                    }
+                }
+            }
+        }
+
     }
 
 

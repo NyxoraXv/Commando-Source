@@ -1,27 +1,71 @@
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
+
 public class VolumeControl : MonoBehaviour
 {
-    public AudioMixer audioMixer;
-    public string exposedParameter;
+    public AudioMixer audioMixerMainMenu;
+    public AudioMixer audioMixerInGame;
+    public Slider overallVolumeSliderMainMenu;
+    public Slider musicVolumeSliderMainMenu;
+    public Slider sfxVolumeSliderMainMenu;
+    public Slider overallVolumeSliderInGame;
+    public string overallVolumeParameterMainMenu = "OverallVolume";
+    public string musicVolumeParameterMainMenu = "MusicVolume";
+    public string sfxVolumeParameterMainMenu = "SFXVolume";
+    public string overallVolumeParameterInGame = "OverallVolume";
+
     private void Start()
     {
-        if (audioMixer)
+        SetAllSavedVolumes();
+    }
+
+    public void SetAllSavedVolumes()
+    {
+        SetSavedVolume(audioMixerMainMenu, overallVolumeParameterMainMenu, overallVolumeSliderMainMenu);
+        SetSavedVolume(audioMixerMainMenu, musicVolumeParameterMainMenu, musicVolumeSliderMainMenu);
+        SetSavedVolume(audioMixerMainMenu, sfxVolumeParameterMainMenu, sfxVolumeSliderMainMenu);
+        SetSavedVolume(audioMixerInGame, overallVolumeParameterInGame, overallVolumeSliderInGame);
+    }
+
+    private void SetSavedVolume(AudioMixer audioMixer, string parameter, Slider slider)
+    {
+        if (audioMixer && slider)
         {
-            float savedVolume = PlayerPrefs.GetFloat("SavedVolume", 1.0f);
-            audioMixer.SetFloat(exposedParameter, Mathf.Log10(savedVolume) * 20);
-            gameObject.GetComponentInChildren<Slider>().value = savedVolume;
+            float savedVolume = PlayerPrefs.GetFloat("SavedVolume_" + parameter, 1.0f);
+            audioMixer.SetFloat(parameter, Mathf.Log10(savedVolume) * 20);
+            slider.value = savedVolume;
         }
     }
-    public void SetVolume(float volume)
+
+    public void SetOverallVolumeMainMenu(float volume)
     {
-        float normalizedVolume = Mathf.Clamp01(volume / gameObject.GetComponentInChildren<Slider>().maxValue);
+        SetVolume(volume, audioMixerMainMenu, overallVolumeParameterMainMenu);
+    }
+
+    public void SetMusicVolumeMainMenu(float volume)
+    {
+        SetVolume(volume, audioMixerMainMenu, musicVolumeParameterMainMenu);
+    }
+
+    public void SetSFXVolume(float volume)
+    {
+        SetVolume(volume, audioMixerMainMenu, sfxVolumeParameterMainMenu);
+    }
+
+    public void SetOverallVolumeInGame(float volume)
+    {
+        SetVolume(volume, audioMixerInGame, overallVolumeParameterInGame);
+    }
+
+    private void SetVolume(float volume, AudioMixer audioMixer, string parameter)
+    {
         if (audioMixer)
         {
+            float normalizedVolume = Mathf.Clamp01(volume / overallVolumeSliderMainMenu.maxValue);
             float volumeLevel = (normalizedVolume == 0) ? -80 : Mathf.Log10(normalizedVolume) * 20;
-            audioMixer.SetFloat(exposedParameter, volumeLevel);
-            PlayerPrefs.SetFloat("SavedVolume", normalizedVolume);
+            audioMixer.SetFloat(parameter, volumeLevel);
+            PlayerPrefs.SetFloat("SavedVolume_" + parameter, normalizedVolume);
         }
     }
 }

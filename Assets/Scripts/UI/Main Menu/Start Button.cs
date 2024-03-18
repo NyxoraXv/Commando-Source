@@ -25,6 +25,8 @@ public class StartButton : MonoBehaviour
 
     public void onClick()
     {
+        SaveManager.Instance.getAchievement();
+
         if (mainCanvasGroup != null)
         {
             mainCanvasGroup.DOFade(0f, 0.5f).From(1f).OnComplete(() =>

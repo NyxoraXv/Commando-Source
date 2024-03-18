@@ -7,7 +7,6 @@ using System;
 public class CurrencyManager : MonoBehaviour
 {
     public static CurrencyManager Instance;
-    public float CurrentLUNC, CurrentFRG;
     public GameObject insufficientFundObject;
 
     private void Awake()
@@ -44,8 +43,8 @@ public class CurrencyManager : MonoBehaviour
                 if (GoldDisplay != null && DiamondDisplay != null)
                 {
                     // Update the text values
-                    GoldDisplay.text = CurrentLUNC.ToString();
-                    DiamondDisplay.text = CurrentFRG.ToString();
+                    GoldDisplay.text = SaveManager.Instance.playerData.currencyInfo.PlayerLUNC.ToString();
+                    DiamondDisplay.text = SaveManager.Instance.playerData.currencyInfo.PlayerFRG.ToString();
                 }
             }
         }
@@ -60,9 +59,10 @@ public class CurrencyManager : MonoBehaviour
 
     public bool spendFRG(float Amount)
     {
-        if (CurrentFRG >= Amount)
+        if (SaveManager.Instance.playerData.currencyInfo.PlayerFRG >= Amount)
         {
-            CurrentFRG -= Amount;
+            SaveManager.Instance.playerData.currencyInfo.PlayerFRG -= Amount;
+            //SaveManager.Instance.Save();
             return true;
         }
         else
@@ -73,9 +73,10 @@ public class CurrencyManager : MonoBehaviour
 
     public bool spendLUNC(float Amount)
     {
-        if (CurrentLUNC >= Amount)
+        if (SaveManager.Instance.playerData.currencyInfo.PlayerLUNC >= Amount)
         {
-            CurrentLUNC -= Amount;
+            SaveManager.Instance.playerData.currencyInfo.PlayerLUNC -= Amount;
+            //SaveManager.Instance.Save();
             return true;
         }
         else
@@ -86,12 +87,21 @@ public class CurrencyManager : MonoBehaviour
 
     public void addFRG(float Amount)
     {
-        CurrentFRG += Amount;
+        if(SaveManager.Instance.playerData.playerInformation.isWalletConnected)
+        {
+            SaveManager.Instance.playerData.currencyInfo.PlayerFRG += Amount;
+            //SaveManager.Instance.Save();
+        }
+
     }
 
     public void addLUNC(float Amount)
     {
-        CurrentLUNC += Amount;
+        if (SaveManager.Instance.playerData.playerInformation.isWalletConnected)
+        {
+            SaveManager.Instance.playerData.currencyInfo.PlayerLUNC += Amount;
+            //SaveManager.Instance.Save();
+        }
     }
 
     public void insufficientFund(float Amount, Transform transform, PopUpInstantiate.CurrencyType type)

@@ -15,7 +15,9 @@ AudioMixerController:
   m_SuspendThreshold: -80
   m_EnableSuspend: 1
   m_UpdateMode: 0
-  m_ExposedParameters: []
+  m_ExposedParameters:
+  - guid: 6271f169a2c451f46bf218b332cd66f5
+    name: MasterGameMixer
   m_AudioMixerGroupViews:
   - guids:
     - 6a26253b208be2a4483bf285b1eaf36d
@@ -44,6 +46,7 @@ AudioMixerGroupController:
   - {fileID: 243000552685421218}
   m_Volume: 6271f169a2c451f46bf218b332cd66f5
   m_Pitch: 3b29f7c309c0c764a9663dd73ed6b905
+  m_Send: 00000000000000000000000000000000
   m_Effects:
   - {fileID: 24400004}
   m_UserColorIndex: 0
@@ -87,6 +90,7 @@ AudioMixerGroupController:
   m_Children: []
   m_Volume: 89bb7f1bf94a80a4d98aa954ae7a97e2
   m_Pitch: 6354c02177e98be45844123ecd2201e1
+  m_Send: 00000000000000000000000000000000
   m_Effects:
   - {fileID: 244263997359187052}
   m_UserColorIndex: 0
@@ -105,6 +109,7 @@ AudioMixerGroupController:
   m_Children: []
   m_Volume: e1799c61fd67e1f47be69310f20ef132
   m_Pitch: d7bff97baa7b181419ce29b298ecb0e8
+  m_Send: 00000000000000000000000000000000
   m_Effects:
   - {fileID: 244183380318123996}
   m_UserColorIndex: 0
@@ -123,6 +128,7 @@ AudioMixerGroupController:
   m_Children: []
   m_Volume: c185ef3a3aee8174984d685c7e882bdb
   m_Pitch: 09ed082c5f181cc48933a4afa6e53709
+  m_Send: 00000000000000000000000000000000
   m_Effects:
   - {fileID: 244765858164979394}
   m_UserColorIndex: 0
@@ -141,6 +147,7 @@ AudioMixerGroupController:
   m_Children: []
   m_Volume: 53a930b5f42782f439a40d62a3379cca
   m_Pitch: 7bb0257b1b55e8c498b75183c9240ef2
+  m_Send: 00000000000000000000000000000000
   m_Effects:
   - {fileID: 244862233435331754}
   m_UserColorIndex: 0
@@ -159,6 +166,7 @@ AudioMixerGroupController:
   m_Children: []
   m_Volume: 79530951c62e15d4abed96e24f42d49b
   m_Pitch: a331dbd302146c7469451be3e52c722e
+  m_Send: 00000000000000000000000000000000
   m_Effects:
   - {fileID: 244463781294407226}
   m_UserColorIndex: 0

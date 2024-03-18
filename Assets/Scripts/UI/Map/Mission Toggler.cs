@@ -7,7 +7,6 @@ public class MissionInformationInitiator : MonoBehaviour
 {
     private MissionManager missionManager;
     private string CurrentLevel = "";
-    private int onLoaded = 0;
 
     [SerializeField] private TMPro.TextMeshProUGUI[] ObjectivesPrefab; // Prefab for the mission UI element
     [SerializeField] private TMPro.TextMeshProUGUI MissionTittle;
@@ -22,6 +21,7 @@ public class MissionInformationInitiator : MonoBehaviour
 
     public void OnClick(int Level)
     {
+        missionManager.onLoaded = Level;
         if (missionManager != null)
         {
             MissionManager.missionData missionData = missionManager.MissionInformation.Find(m => m.Level == Level);
@@ -99,6 +99,5 @@ public class MissionInformationInitiator : MonoBehaviour
     public void LoadTargetScene()
     {
         SceneManager.LoadScene(CurrentLevel);
-        missionManager.onLoaded = onLoaded;
     }
 }
