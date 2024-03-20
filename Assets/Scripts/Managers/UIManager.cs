@@ -275,6 +275,7 @@ public class UIManager : MonoBehaviour
     {
         if (CurrencyManager.Instance.spendFRG(1)) { GameManager.GetPlayer().GetComponent<MainPlayer>().Revive(); }
         
+        GameManager.Revive();
         DisplayCurrency();
     }
 

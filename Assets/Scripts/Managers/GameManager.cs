@@ -269,7 +269,12 @@ public class GameManager : MonoBehaviour
         UIManager.DisplayWinUI();
         AudioManager.PlayLevelCompleteAudio();
         AudioManager.PlayGameOverAudio();
-        if (MissionManager.Instance.onLoaded <= SaveManager.Instance.playerData.playerInformation.PlayerLastLevel) {
+
+        Debug.Log(MissionManager.Instance.onLoaded);
+        Debug.Log(SaveManager.Instance.playerData.playerInformation.PlayerLastLevel);
+        Debug.Log(MissionManager.Instance.onLoaded >= SaveManager.Instance.playerData.playerInformation.PlayerLastLevel);
+        
+        if (MissionManager.Instance.onLoaded >= SaveManager.Instance.playerData.playerInformation.PlayerLastLevel) {
             SaveManager.Instance.playerData.playerInformation.PlayerLastLevel = MissionManager.Instance.onLoaded+1;
             SaveManager.Instance.playerData.playerInformation.PlayerScore = SaveManager.Instance.playerData.playerInformation.PlayerScore+current.score;
             CurrencyManager.Instance.addFRG(current.frg);
@@ -548,5 +553,10 @@ public class GameManager : MonoBehaviour
             GameReset();
 
         SceneManager.LoadScene(id);
+    }
+
+    public static void Revive()
+    {
+        current.isGameOver = false;
     }
 }
