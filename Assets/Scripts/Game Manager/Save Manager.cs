@@ -197,12 +197,12 @@ public class SaveManager : MonoBehaviour
 
     public void Save()
     {
-        Debug.Log("Save");
         SetCoin((int)(playerData.currencyInfo.PlayerFRG * 100f));
-        Debug.Log((int)(SaveManager.Instance.playerData.currencyInfo.PlayerFRG * 1f));
         SetScore();
-        Debug.Log("score = " + playerData.playerInformation.PlayerScore);
         setLastLevel();
+        //Debug.Log((int)(SaveManager.Instance.playerData.currencyInfo.PlayerFRG * 1f));
+        //Debug.Log("score = " + playerData.playerInformation.PlayerScore);
+        //Debug.Log("Save");
     }
 
     private void OnApplicationQuit()
