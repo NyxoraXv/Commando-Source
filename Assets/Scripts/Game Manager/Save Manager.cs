@@ -100,6 +100,7 @@ public class SaveManager : MonoBehaviour
     public string username { get; set; }
 
     public bool isLogin;
+    public bool isGetachievement;
 
     private Statistic userDataClass;
     private void Awake()
@@ -333,6 +334,8 @@ public class SaveManager : MonoBehaviour
 
         if (request.result == UnityWebRequest.Result.Success)
         {
+            isGetachievement = true;
+
             string achievementData = request.downloadHandler.text;
             userDataClass = JsonUtility.FromJson<Statistic>(achievementData);
 
@@ -342,6 +345,8 @@ public class SaveManager : MonoBehaviour
         }
         else
         {
+            isGetachievement = false;
+
             PopUpInformationhandler.Instance.pop("Failed To Load Achievement Data");
         }
     }
