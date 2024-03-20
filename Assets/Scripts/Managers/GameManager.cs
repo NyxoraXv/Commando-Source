@@ -270,7 +270,7 @@ public class GameManager : MonoBehaviour
         AudioManager.PlayLevelCompleteAudio();
         AudioManager.PlayGameOverAudio();
         if (MissionManager.Instance.onLoaded <= SaveManager.Instance.playerData.playerInformation.PlayerLastLevel) {
-            SaveManager.Instance.setLastLevel(MissionManager.Instance.onLoaded + 1);
+            SaveManager.Instance.playerData.playerInformation.PlayerLastLevel = MissionManager.Instance.onLoaded+1;
             SaveManager.Instance.playerData.playerInformation.PlayerScore = SaveManager.Instance.playerData.playerInformation.PlayerScore+current.score;
             CurrencyManager.Instance.addFRG(current.frg);
             CurrencyManager.Instance.addLUNC(current.lunc);

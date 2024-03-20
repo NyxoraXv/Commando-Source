@@ -202,6 +202,7 @@ public class SaveManager : MonoBehaviour
         Debug.Log((int)(SaveManager.Instance.playerData.currencyInfo.PlayerFRG * 1f));
         SetScore();
         Debug.Log("score = " + playerData.playerInformation.PlayerScore);
+        setLastLevel();
     }
 
     private void OnApplicationQuit()
@@ -275,18 +276,18 @@ public class SaveManager : MonoBehaviour
         }
     }
 
-    public void setLastLevel(int lastLevel) 
+    public void setLastLevel() 
     {
-        StartCoroutine(setLastLevelRequest(lastLevel));
+        StartCoroutine(setLastLevelRequest());
     }
 
-    IEnumerator setLastLevelRequest(int lastLevel)
+    IEnumerator setLastLevelRequest()
     {
-        Debug.Log("Setting level: " + lastLevel);
+        Debug.Log("Setting level: " + playerData.playerInformation.PlayerLastLevel);
         string url = serverUrl + "/v2/game/achievement/";
 
         // Update the JSON data to include the last_level as an integer value
-        string jsonData = "{\"last_level\":" + lastLevel + ",\"health\":2,\"revive\":3}";
+        string jsonData = "{\"last_level\":" + playerData.playerInformation.PlayerLastLevel + ",\"health\":2,\"revive\":3}";
 
         UnityWebRequest request = UnityWebRequest.PostWwwForm(url, "POST");
         byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
