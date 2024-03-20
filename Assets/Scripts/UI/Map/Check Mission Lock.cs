@@ -9,6 +9,7 @@ public class CheckMissionLock : MonoBehaviour
     public Image layer;
     void Start()
     {
+        SaveManager.Instance.getAchievement();
         if (SaveManager.Instance.playerData.playerInformation.PlayerLastLevel < level) { gameObject.SetActive(false); }
         for (int i = 0; i < level; i++)
         {

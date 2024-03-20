@@ -25,7 +25,6 @@ public class StartButton : MonoBehaviour
 
     public void onClick()
     {
-        SaveManager.Instance.getAchievement();
 
         if (mainCanvasGroup != null)
         {
