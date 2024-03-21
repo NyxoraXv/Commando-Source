@@ -101,6 +101,9 @@ public class SaveManager : MonoBehaviour
 
     public bool isLogin;
 
+    public bool isGetAchievement = false;
+    public bool isSetAchievement = false;
+
     private Statistic userDataClass;
     private void Awake()
     {
@@ -227,7 +230,6 @@ public class SaveManager : MonoBehaviour
         else
         {
             StartCoroutine(GetStatisticRequest());
-            StartCoroutine(GetAchievementRequest());
         }
     }
 
@@ -301,13 +303,16 @@ public class SaveManager : MonoBehaviour
         if (request.result == UnityWebRequest.Result.Success)
         {
             Debug.Log("Progress Saved!");
+            isSetAchievement = true;
             //PopUpInformationhandler.Instance.pop("Progress Saved!");
         }
         else
         {
+            isSetAchievement = true;
             Debug.LogError("Failed to save progress: " + request.error);
             if (request.downloadHandler != null)
             {
+                isSetAchievement = true;
                 Debug.LogError("Response: " + request.downloadHandler.text);
             }
             //PopUpInformationhandler.Instance.pop("Failed to save progress");
@@ -338,12 +343,15 @@ public class SaveManager : MonoBehaviour
 
             playerData.playerInformation.PlayerLastLevel = userDataClass.data.last_level;
             Debug.Log("Last Level = " + userDataClass.data.last_level);
+            isGetAchievement = true;
 
         }
         else
         {
             PopUpInformationhandler.Instance.pop("Failed To Load Achievement Data");
         }
+
+        
     }
 
     public void SetScore()

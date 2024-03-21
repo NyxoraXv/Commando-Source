@@ -28,15 +28,24 @@ public class StartButton : MonoBehaviour
 
         if (mainCanvasGroup != null)
         {
-            mainCanvasGroup.DOFade(0f, 0.5f).From(1f).OnComplete(() =>
-            {
-                Destroy(mainCanvasGroup.gameObject);
-                Instantiate(HologramMap);
-            });
+            mainCanvasGroup.DOFade(0f, 0.5f).From(1f);
+            SaveManager.Instance.getAchievement();
+            StartCoroutine(WaitForGetAchievement());
         }
         else
         {
             Debug.LogError("CanvasGroup is not set. Make sure you assign the 'MainCanvas' GameObject in the Inspector.");
         }
+    }
+
+    IEnumerator WaitForGetAchievement()
+    {
+        while(!SaveManager.Instance.isGetAchievement)
+        {
+            yield return null;
+        }
+        Destroy(mainCanvasGroup.gameObject);
+        Instantiate(HologramMap); 
+
     }
 }
