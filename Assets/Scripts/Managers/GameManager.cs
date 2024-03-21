@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     public enum Missions { Home = 0, Mission1, Mission2, Mission3, Mission3Boss }
 
     float totalGameTime;                        //Length of the total game time
-    bool isGameOver;                            //Is the game currently over?
+    public bool isGameOver;                            //Is the game currently over?
     int score = 0;
     int initialBombs = 10;
     int bombs;
@@ -269,7 +269,7 @@ public class GameManager : MonoBehaviour
         UIManager.DisplayWinUI();
         AudioManager.PlayLevelCompleteAudio();
         AudioManager.PlayGameOverAudio();
-        if (MissionManager.Instance.onLoaded <= SaveManager.Instance.playerData.playerInformation.PlayerLastLevel) {
+        if (MissionManager.Instance.onLoaded >= SaveManager.Instance.playerData.playerInformation.PlayerLastLevel) {
             SaveManager.Instance.playerData.playerInformation.PlayerLastLevel = MissionManager.Instance.onLoaded+1;
             SaveManager.Instance.playerData.playerInformation.PlayerScore = SaveManager.Instance.playerData.playerInformation.PlayerScore+current.score;
             CurrencyManager.Instance.addFRG(current.frg);
@@ -277,7 +277,6 @@ public class GameManager : MonoBehaviour
             SaveManager.Instance.Save();
         }
         current.isGameOver = true;
-        current.StartCoroutine(current.WaitNextMission());
     }
 
     public static LayerMask GetBuildingLayer()
@@ -508,8 +507,19 @@ public class GameManager : MonoBehaviour
     {
         if(current == null)
         return;
+        
+        current.StartCoroutine(current.GoToHome());
+    }
+
+    IEnumerator GoToHome()
+    {
+        if(!SaveManager.Instance.isSetAchievement)
+        {
+            yield return new WaitForSeconds(0.2f);
+        }
 
         Debug.Log("Home button pressed!");
+        SaveManager.Instance.isSetAchievement = false;
         LoadScene((int)Missions.Home);
     }
 
@@ -530,12 +540,6 @@ public class GameManager : MonoBehaviour
         return tag == "Player" || tag == "Walkable" || tag == "Marco Boat" || tag == "Bridge";
     }
 
-    private IEnumerator WaitHome()
-    {
-        yield return new WaitForSeconds(1f);
-        LoadHome();
-    }
-
     private IEnumerator WaitNextMission()
     {
         yield return new WaitForSeconds(10f);
@@ -548,5 +552,10 @@ public class GameManager : MonoBehaviour
             GameReset();
 
         SceneManager.LoadScene(id);
+    }
+
+    public static void Revive()
+    {
+        current.isGameOver = false;
     }
 }
