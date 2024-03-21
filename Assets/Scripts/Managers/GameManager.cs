@@ -299,9 +299,9 @@ public class GameManager : MonoBehaviour
     {
         if (current == null)
             return null;
-        if (player.GetComponent<PlayerController>()) // return itself
+        if (player.GetComponent<MainPlayer>()) // return itself
             return player;
-        else if (player.transform.parent.gameObject.GetComponent<PlayerController>()) // return parent
+        else if (player.transform.parent.gameObject.GetComponent<MainPlayer>()) // return parent
             return player.transform.parent.gameObject;
         return GameObject.FindGameObjectWithTag("Player"); // return uncached finded by tag
     }

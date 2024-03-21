@@ -343,7 +343,7 @@ public class SaveManager : MonoBehaviour
 
             playerData.playerInformation.PlayerLastLevel = userDataClass.data.last_level;
             Debug.Log("Last Level = " + userDataClass.data.last_level);
-            
+            isGetAchievement = true;
 
         }
         else
