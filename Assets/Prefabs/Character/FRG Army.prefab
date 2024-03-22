@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3521382923466883720
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7361782805168507399}
+  - component: {fileID: 8795136070211642473}
+  m_Layer: 0
+  m_Name: FRG Army
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7361782805168507399
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3521382923466883720}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8795136070211642473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3521382923466883720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 195989177958f884b9d317fdc02e0a1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Character:
+    CharacterName: 4
+    Levels:
+    - Damage: 25
+      HP: 500
+      Agility: 2.5
+      UpgradeCost: 0.3
+    - Damage: 27
+      HP: 525
+      Agility: 2.55
+      UpgradeCost: 0.4
+    - Damage: 29
+      HP: 550
+      Agility: 2.6
+      UpgradeCost: 0.5
+    - Damage: 31
+      HP: 575
+      Agility: 2.65
+      UpgradeCost: 0.6
+    - Damage: 34
+      HP: 600
+      Agility: 2.7
+      UpgradeCost: 0.7
+    MaxLevel: 5
+    FullAvatar: {fileID: 21300000, guid: 1fcf4aa3e9574d04f83f8de4d24f3eb1, type: 3}
+    MaskedAvatar: {fileID: 21300000, guid: a487268508a5c8141a2cf7fbd0e39f8c, type: 3}
+    CroppedAvatar: {fileID: 0}
+    Price: 1
+    PlayerController: {fileID: 22100000, guid: cc230275cb7296c4bbbfa56926e8ba4b, type: 2}
+    PlayerPreviewController: {fileID: 22100000, guid: b8fa6c5c93d24584f9923ddfffb29eb9,
+      type: 2}
+    Weapon: {fileID: 22100000, guid: f4aaa86e01ed8444f8162905f37b574d, type: 2}
+    HandPivotIdle: {x: -0.165, y: 0.263, z: 0}
+    HandPivotRun: {x: 0.016, y: 0.19, z: 0}
+    NFT_ID: 5,11,17,19,23,26,33,44,46,47,49,51,55,59,64,65,70,75,82,86,87,88,89,90,91,92,96,110,111,113,115,121,122,124,130,131,140,144,149,152,153,155,157,158,166,167,181,187,198,204,206,208,211,213,215,217,223,224,227,228,229,233,234,235,238,245,247,253,256,259,265,272,293,295,296,297,298,306,307,308,310,311,312,313,317,318,321,322,323,326,331,335,336,346,355,359,364,369,374,376,382,387,388,393,395,400,401,404,407,410,411,416,420,421,424,434,440,443,446,441,448,449,462,468,469,470,474,475,477,480,481,485,487,493,504,506,507,508,512,518,520,524,528,532,537,550,562,565,561,576,578,579,581,592,593,601,602,604,606,612,613,614,616,620,637,640,646,648,652,654,667,673,676,678,681,685,689,693,696,697,701,707,712,713,720,721,722,723,725,726,733,735,740,742,745

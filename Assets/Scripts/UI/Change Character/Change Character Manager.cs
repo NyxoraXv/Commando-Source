@@ -13,6 +13,9 @@ public class ChangeCharacterManager : MonoBehaviour
     [Header("Image")]
     public Image Avatar;
 
+    [Header("Animator")]
+    private Animator animator;
+
     [Header("Highlighter")]
     public GameObject Highlighter;
 
@@ -33,7 +36,7 @@ public class ChangeCharacterManager : MonoBehaviour
 
     private void Awake()
     {
-        
+        animator = Avatar.gameObject.GetComponent<Animator>();
     }
 
     public void onClick(GameObject card)
@@ -108,21 +111,20 @@ public class ChangeCharacterManager : MonoBehaviour
         }
 
         // Set the parent of the Highlighter to the same parent as the selected card
-        Highlighter.transform.SetParent(selectedCard.gameObject.transform);
+        Transform parentTransform = selectedCard.gameObject.transform;
+        Highlighter.transform.SetParent(parentTransform);
 
-        Highlighter.transform.localPosition = new Vector3(
-            0,
-            Container.transform.localPosition.y - 469,
-            0
-        );
+        // Adjust the local position of the highlighter GameObject
+        Highlighter.transform.localPosition = new Vector3(0f, -110f, 0f); // Adjust the values as needed
 
         Tween HighlightWidthAnimation = Highlighter.GetComponent<RectTransform>()
-        .DOSizeDelta(new Vector2(138f, Highlighter.GetComponent<RectTransform>().sizeDelta.y), 0.5f)
-        .From(new Vector2(0f, 3f))
-        .SetEase(Ease.InOutCubic);
+            .DOSizeDelta(new Vector2(138f, Highlighter.GetComponent<RectTransform>().sizeDelta.y), 0.5f)
+            .From(new Vector2(0f, 3f))
+            .SetEase(Ease.InOutCubic);
 
         HighlightWidthAnimation.Play();
     }
+
 
 
     private void UpdateText(CharacterInformation characterInformation)
@@ -153,12 +155,12 @@ public class ChangeCharacterManager : MonoBehaviour
         // Tween the color
         Avatar.DOColor(new Color(1f, 1f, 1f, 1f), 0.5f);
 
-        Avatar.sprite = Character.FullAvatar;
+        animator.runtimeAnimatorController = characterInformation.Character.PlayerPreviewController;
 
         // Append the local position tween
-        Avatar.GetComponent<RectTransform>().transform.DOLocalMoveX(-542f, 1f)
+        Avatar.GetComponent<RectTransform>().transform.DOLocalMoveX(-476f, 1f)
              .SetEase(Ease.InOutCubic)
-             .From(-591f);
+             .From(-718f);
     }
 
     public bool isEquipped()
@@ -172,7 +174,7 @@ public class ChangeCharacterManager : MonoBehaviour
         return isEquipped;
     }
 
-    public int CalculateUpgradeCost()
+    public float CalculateUpgradeCost()
     {
         GameObject CharacterPrefab = CharacterManager.Instance.GetCharacterPrefab(selectedCard.Character);
         CharacterInformation characterInformation = CharacterPrefab.GetComponent<CharacterInformation>();

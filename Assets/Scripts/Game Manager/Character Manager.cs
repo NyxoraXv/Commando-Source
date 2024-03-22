@@ -1,13 +1,17 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum Character
 {
     Sucipto,
     Habibi,
     Levia,
-    Nurul
+    Nurul,
+    Guan,
+    Nana,
+    Dylan,
+    Unknown
 }
 
 public class CharacterManager : MonoBehaviour
@@ -15,9 +19,9 @@ public class CharacterManager : MonoBehaviour
     public static CharacterManager Instance;
 
     [SerializeField]
-    public Character selectedCharacter = Character.Sucipto;
+    public Character selectedCharacter;
 
-    [SerializeField] private Dictionary<Character, GameObject> characterObjects = new Dictionary<Character, GameObject>();
+    [SerializeField] public Dictionary<Character, GameObject> characterObjects = new Dictionary<Character, GameObject>();
 
     // Dictionary to store owned characters and their levels
     public Dictionary<Character, int> ownedCharacters = new Dictionary<Character, int>();
@@ -25,13 +29,35 @@ public class CharacterManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        SetupSingleton();
     }
 
-    [SerializeField] private GameObject sucipto, habibi, nurul, levia;
-
-    private void Start()
+    private void SetupSingleton()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // This method will be called whenever a new scene is loaded
         InitializeCharacterDictionary();
         SwitchCharacter(selectedCharacter);
     }
@@ -42,6 +68,17 @@ public class CharacterManager : MonoBehaviour
         characterObjects[Character.Habibi] = habibi;
         characterObjects[Character.Levia] = levia;
         characterObjects[Character.Nurul] = nurul;
+        characterObjects[Character.Guan] = frg;
+        characterObjects[Character.Nana] = levi;
+        characterObjects[Character.Dylan] = bigboy;
+        characterObjects[Character.Unknown] = modelx;
+    }
+
+    [SerializeField] private GameObject sucipto, habibi, nurul, levia, frg, levi, bigboy, modelx;
+
+    private void Start()
+    {
+        // You can perform any scene-independent initialization here if needed
     }
 
     public GameObject GetCharacterPrefab(Character character)
@@ -57,10 +94,13 @@ public class CharacterManager : MonoBehaviour
             selectedCharacter = newCharacter;
             character.SetActive(true);
 
-            CharacterInformation charData = GetCharacterPrefab(newCharacter).GetComponent<CharacterInformation>();
+            CharacterInformation charData = GetCharacterPrefab(newCharacter)?.GetComponent<CharacterInformation>();
 
             // Access the character data as needed, for example:
-            var imageComponent = charData.Character.MaskedAvatar;
+            if (charData != null)
+            {
+                var imageComponent = charData.Character.MaskedAvatar;
+            }
         }
         else
         {
@@ -94,17 +134,28 @@ public class CharacterManager : MonoBehaviour
         return false; // Default case if character not found in ownedCharacters
     }
 
-
     // Method to add an owned character with a specified level
-    public void AddOwnedCharacter(Character character, int level)
+    public void AddOwnedCharacter(Character character)
+    {
+        if (!ownedCharacters.ContainsKey(character))
+        {
+            ownedCharacters.Add(character, 0);
+            SaveManager.Instance.Save();
+            Debug.Log("Character Added" + character);
+        }
+    }
+
+    public void AddOwnedCharacterWithLevel(Character character, int level)
     {
         if (!ownedCharacters.ContainsKey(character))
         {
             ownedCharacters.Add(character, level);
+            Debug.Log("Character Added");
         }
         else
         {
             ownedCharacters[character] = level;
+            Debug.Log("idk");
         }
     }
 
@@ -117,4 +168,19 @@ public class CharacterManager : MonoBehaviour
         }
         return 0; // Return 0 if the character is not found in ownedCharacters
     }
+    public void ClearOwnedCharacters()
+    {
+        Debug.Log("Clearing owned characters...");
+
+        foreach (var character in ownedCharacters.Keys)
+        {
+            Debug.Log("Cleared: " + character.ToString());
+        }
+
+        ownedCharacters.Clear();
+
+        Debug.Log("Owned characters cleared.");
+    }
+
+
 }

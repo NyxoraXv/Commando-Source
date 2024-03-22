@@ -1,0 +1,13 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Preview Levia
+  m_Controller: {fileID: 9100000, guid: d3fbac5714394b046abaa7a499a3c439, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 591ba71c84a0ccf44965cc510203b76a, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: b9a6e212634af8b4c8dd192edcc199eb, type: 2}

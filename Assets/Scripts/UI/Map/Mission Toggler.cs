@@ -1,10 +1,12 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MissionInformationInitiator : MonoBehaviour
 {
     private MissionManager missionManager;
+    private string CurrentLevel = "";
 
     [SerializeField] private TMPro.TextMeshProUGUI[] ObjectivesPrefab; // Prefab for the mission UI element
     [SerializeField] private TMPro.TextMeshProUGUI MissionTittle;
@@ -17,11 +19,12 @@ public class MissionInformationInitiator : MonoBehaviour
         missionManager = MissionManager.Instance;
     }
 
-    public void OnClick(string missionNameToFind)
+    public void OnClick(int Level)
     {
+        missionManager.onLoaded = Level;
         if (missionManager != null)
         {
-            MissionManager.missionData missionData = missionManager.MissionInformation.Find(m => m.MissionName == missionNameToFind);
+            MissionManager.missionData missionData = missionManager.MissionInformation.Find(m => m.Level == Level);
 
             if (missionData != null)
             {
@@ -32,6 +35,7 @@ public class MissionInformationInitiator : MonoBehaviour
                 if (missionObjectives.Count == ObjectivesPrefab.Length)
                 {
                     MissionTittle.text = missionData.MissionName;
+                    CurrentLevel = missionData.MissionName;
                     for (int i = 0; i < missionObjectives.Count; i++)
                     {
                         ObjectivesPrefab[i].text = missionObjectives[i];
@@ -83,12 +87,17 @@ public class MissionInformationInitiator : MonoBehaviour
             }
             else
             {
-                Debug.LogError($"Mission with name '{missionNameToFind}' not found.");
+                Debug.LogError($"Mission with level '{Level}' not found.");
             }
         }
         else
         {
             Debug.LogError("MissionManager instance is not found.");
         }
+
+    }
+    public void LoadTargetScene()
+    {
+        SceneManager.LoadScene(CurrentLevel);
     }
 }

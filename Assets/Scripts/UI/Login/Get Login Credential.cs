@@ -4,22 +4,53 @@ using UnityEngine;
 
 public class GetLoginCredential : MonoBehaviour
 {
-    private TMPro.TextMeshProUGUI nameText;
+    public TMPro.TMP_InputField nameText;
+    public TMPro.TMP_InputField emailText;
+    public TMPro.TMP_InputField passwordText;
+    public GameObject Login, LoginContainer, signUp;
+    public GameObject mainMenu;
 
 
     // Edit this whatever you like!
-    public void setCredential()
-    {
-        nameText = GetComponent<TMPro.TextMeshProUGUI>();
 
-        try
+
+
+    public void setCredential(bool isLogin)
+    {
+        if(isLogin)
         {
-            SaveManager.Instance.username = nameText.text;
-            SaveManager.Instance.Verify();
+            SaveManager.Instance.isLogin = true;
+            SaveManager.Instance.Verify(nameText.text, passwordText.text, emailText.text, isLogin);
+            StartCoroutine(waitSceneLogin());
         }
-        catch
+        else
         {
-            Debug.LogError("Credential Error");
+            SaveManager.Instance.Verify(nameText.text, passwordText.text, emailText.text, isLogin);
+            StartCoroutine(waitSceneSignup());
         }
+        
+
     }
+
+    IEnumerator waitSceneSignup()
+    {
+        while (!AccountForm.Instance.isSignup)
+        {
+            yield return null;
+        }
+        LoginContainer.SetActive(true);
+        signUp.SetActive(false);
+    }
+
+    IEnumerator waitSceneLogin()
+    {
+        while (!AccountForm.Instance.isLogin)
+        {
+            yield return null;
+        }
+        mainMenu.SetActive(true);
+        Login.SetActive(false);
+    }
+
+
 }

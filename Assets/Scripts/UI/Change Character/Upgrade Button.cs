@@ -5,7 +5,7 @@ using UnityEngine;
 public class UpgradeButton : MonoBehaviour
 {
     private ChangeCharacterManager changeCharacterManager;
-    private int goldToSpend;
+    private float FRGToSpend;
     public TMPro.TextMeshProUGUI price;
 
     public void onClick()
@@ -16,28 +16,32 @@ public class UpgradeButton : MonoBehaviour
         var characterManager = CharacterManager.Instance;
         Debug.Log("characterManager initialized");
 
-        var saveManager = SaveManager.Instance;
+        var SaveManager = global::SaveManager.Instance;
         Debug.Log("saveManager initialized");
 
-        CharacterInformation characterInformation = characterManager.GetCharacterPrefab(saveManager.playerData.characterInfo.SelectedCharacter).GetComponent<CharacterInformation>();
+        CharacterInformation characterInformation = characterManager.GetCharacterPrefab(SaveManager.playerData.characterInfo.SelectedCharacter).GetComponent<CharacterInformation>();
         Debug.Log("characterInformation initialized");
 
         
 
-        goldToSpend = changeCharacterManager.CalculateUpgradeCost();
-        Debug.Log("goldToSpend calculated : " + goldToSpend);
+        FRGToSpend = changeCharacterManager.CalculateUpgradeCost();
+        Debug.Log("goldToSpend calculated : " + FRGToSpend);
 
-        if (CurrencyManager.Instance.spendGold(goldToSpend))
+        if (CurrencyManager.Instance.spendFRG(FRGToSpend))
         {
             CharacterManager.Instance.UpgradeCharacter(changeCharacterManager.selectedCard.Character);
             Debug.Log("Character Upgraded");
         }
         else
         {
+            CurrencyManager.Instance.insufficientFund(SaveManager.Instance.playerData.currencyInfo.PlayerFRG - FRGToSpend,
+                                                    GameObject.FindWithTag("Main Menu Parent").transform,
+                                                    PopUpInstantiate.CurrencyType.LUNC);
+
             Debug.LogWarning("Character Upgrade Fail");
         }
 
-        price.text = ("Upgrade Cost: " + goldToSpend);
+        price.text = ("Boost Cost: " + FRGToSpend);
         changeCharacterManager.RefreshUIWithoutParameters();
     }
 }

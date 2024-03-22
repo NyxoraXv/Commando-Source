@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class InitiateUI : MonoBehaviour
 {
-    public GameObject Login, MainMenu;
+    public GameObject Login, MainMenu, currency;
+    public VolumeControl volumeControl;
 
     void Start()
     {
@@ -26,11 +27,12 @@ public class InitiateUI : MonoBehaviour
             Debug.LogError("Main Camera or Canvas component not found. Make sure the 'Main Camera' tag is assigned to the appropriate GameObject.");
         }
 
-        if(SaveManager.Instance.isLogin == true)
+        if (SaveManager.Instance.isLogin)
         {
-            Login.SetActive(false);
             MainMenu.SetActive(true);
-            
+            Login.SetActive(false);
+            currency.SetActive(true);
         }
+        volumeControl.SetAllSavedVolumes();
     }
 }

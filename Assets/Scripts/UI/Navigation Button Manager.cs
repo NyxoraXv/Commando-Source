@@ -70,6 +70,29 @@ public class NavigationButtonManager : MonoBehaviour
     public float marketRotateDuration = 1.0f;
     public Ease marketParallaxEase = Ease.InOutCubic;
 
+    void Start()
+    {
+        // Create a new sequence
+        Sequence rotationSequence = DOTween.Sequence();
+
+        // Create the first rotation animation and append it to the sequence
+        try { 
+        rotationSequence.Append(parallax.transform.DORotate(new Vector3(0, 0, 360), 1200f, RotateMode.LocalAxisAdd) 
+            .SetEase(Ease.Linear));
+
+        // Create the second rotation animation and append it to the sequence
+        rotationSequence.Append(parallax.transform.DORotate(new Vector3(0, 0, 180), 1200f, RotateMode.LocalAxisAdd)
+            .SetEase(Ease.Linear));
+        }
+        catch
+        {
+            Debug.Log("There's an error in the animation");
+        }
+
+        // You can continue to append more rotations as needed
+        rotationSequence.SetLoops(-1, LoopType.Incremental); // Infinite looping
+    }
+
     public void ToChangeCharacter()
     {
         parallax.doParallax(changeCharacterScaleEnd,

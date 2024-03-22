@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7361782805168507399
 Transform:
   m_ObjectHideFlags: 0
@@ -47,27 +47,35 @@ MonoBehaviour:
   Character:
     CharacterName: 0
     Levels:
-    - Damage: 10
-      HP: 100
-      Agility: 5
-      UpgradeCost: 250
-    - Damage: 12
-      HP: 125
-      Agility: 6
-      UpgradeCost: 500
-    - Damage: 15
-      HP: 150
-      Agility: 8
-      UpgradeCost: 1000
-    - Damage: 18
-      HP: 200
-      Agility: 10
-      UpgradeCost: 2000
     - Damage: 20
-      HP: 225
-      Agility: 12
-      UpgradeCost: 3500
+      HP: 300
+      Agility: 2
+      UpgradeCost: 0.25
+    - Damage: 22
+      HP: 325
+      Agility: 2.1
+      UpgradeCost: 0.3
+    - Damage: 24
+      HP: 350
+      Agility: 2.2
+      UpgradeCost: 0.35
+    - Damage: 26
+      HP: 375
+      Agility: 2.3
+      UpgradeCost: 0.4
+    - Damage: 30
+      HP: 400
+      Agility: 2.4
+      UpgradeCost: 0.5
     MaxLevel: 5
-    FullAvatar: {fileID: 21300000, guid: a3fec59306d4c1a4db3f2300501452b6, type: 3}
-    MaskedAvatar: {fileID: 21300000, guid: 07438549819300b4ca729f080df9d412, type: 3}
+    FullAvatar: {fileID: 21300000, guid: c40c3a83e21b5304fa7f3e7dac4ced72, type: 3}
+    MaskedAvatar: {fileID: 21300000, guid: 5604f17471aa3924fbcc62f017405668, type: 3}
     CroppedAvatar: {fileID: 0}
+    Price: 1
+    PlayerController: {fileID: 9100000, guid: 2d46ab9957320654ea581cad9f7e90b4, type: 2}
+    PlayerPreviewController: {fileID: 9100000, guid: d3fbac5714394b046abaa7a499a3c439,
+      type: 2}
+    Weapon: {fileID: 9100000, guid: 1f4ba5ce332537641a5b683c7f845951, type: 2}
+    HandPivotIdle: {x: -0.151, y: 0.396, z: 0}
+    HandPivotRun: {x: 0, y: 0.312, z: 0}
+    NFT_ID: 0

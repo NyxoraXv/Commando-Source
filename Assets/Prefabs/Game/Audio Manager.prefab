@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4140604981274143550
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4140604981274143544}
+  - component: {fileID: 4140604981274143545}
+  m_Layer: 0
+  m_Name: Audio Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4140604981274143544
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4140604981274143550}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.8055719, y: 0.05947599, z: 0.0087890625}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4140604981274143545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4140604981274143550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44759d95780c0384cb8231ee12e7347b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicClip: {fileID: 8300000, guid: 66ca46255e9ea4048870a0993ffa288e, type: 3}
+  gameOverClip: {fileID: 8300000, guid: 10a18411f6e29a849bf6b15ae1a2f547, type: 3}
+  bossClip: {fileID: 8300000, guid: 454044ee4bea62c409ffc21cadc81350, type: 3}
+  marcoDeathClip: {fileID: 0}
+  normalShotClip: {fileID: 8300000, guid: df0d2e64eea4a244fa0ba0a4a081337f, type: 3}
+  heavyMachineShotClip: {fileID: 8300000, guid: df0d2e64eea4a244fa0ba0a4a081337f,
+    type: 3}
+  shotHitClip: {fileID: 8300000, guid: 4af6290fa3d40b547ac4d9c932d64a95, type: 3}
+  grenadeHitClip: {fileID: 8300000, guid: a38a756489e439b4caffb168f9a8a0e6, type: 3}
+  meleeHitClip: {fileID: 8300000, guid: 4af6290fa3d40b547ac4d9c932d64a95, type: 3}
+  meleeTakeClip: {fileID: 8300000, guid: eab3630d1af2af54cb35b5f5a15c1471, type: 3}
+  collectibleGrabClip: {fileID: 8300000, guid: 170e1a1d623bd3b498b965ba1fb19ce4, type: 3}
+  grenadeGrabClip: {fileID: 8300000, guid: 170e1a1d623bd3b498b965ba1fb19ce4, type: 3}
+  metalSlugDestroy1: {fileID: 8300000, guid: 8ef7718d8e1984e4cbea41bc4ce984c4, type: 3}
+  metalSlugDestroy2: {fileID: 8300000, guid: 8ef7718d8e1984e4cbea41bc4ce984c4, type: 3}
+  metalSlugDestroy3: {fileID: 8300000, guid: 8ef7718d8e1984e4cbea41bc4ce984c4, type: 3}
+  levelStart: {fileID: 8300000, guid: ac02c9e7d95c96241af16a5a65160014, type: 3}
+  levelComplete: {fileID: 8300000, guid: 6e13af543b91df648ad86219dda55282, type: 3}
+  heavyMachineGunGrab: {fileID: 8300000, guid: 170e1a1d623bd3b498b965ba1fb19ce4, type: 3}
+  okayClip: {fileID: 0}
+  charSelect: {fileID: 8300000, guid: 62879fd334b8ed74faf99edbb5364a15, type: 3}
+  marco: {fileID: 8300000, guid: 523d2eb004435604d935649b279f9dc7, type: 3}
+  menuSound: {fileID: 8300000, guid: ed9ebcf8b8161c5468dcb2d690107b0e, type: 3}
+  preselect: {fileID: 8300000, guid: c25b080bf029cc44183c425417455dae, type: 3}
+  select: {fileID: 8300000, guid: 587f56e4b924e16408c0ede33ab5ed2a, type: 3}
+  musicGroup: {fileID: 243248386772865564, guid: e890f615dbd1d714eb257944c4ba3fe6,
+    type: 2}
+  effectGroup: {fileID: 243798907181180866, guid: e890f615dbd1d714eb257944c4ba3fe6,
+    type: 2}
+  enemyGroup: {fileID: 243000552685421218, guid: e890f615dbd1d714eb257944c4ba3fe6,
+    type: 2}
+  playerGroup: {fileID: 243097448865197354, guid: e890f615dbd1d714eb257944c4ba3fe6,
+    type: 2}
+  voiceGroup: {fileID: 243428904522450454, guid: e890f615dbd1d714eb257944c4ba3fe6,
+    type: 2}

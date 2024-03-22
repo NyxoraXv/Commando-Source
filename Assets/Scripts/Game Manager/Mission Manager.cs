@@ -19,10 +19,10 @@ public enum RewardType
     Item
 }
 
-[ExecuteInEditMode]
 public class MissionManager : MonoBehaviour
 {
     public static MissionManager Instance;
+    public int onLoaded = 0;
 
     [System.Serializable]
     public class RewardData
@@ -46,9 +46,12 @@ public class MissionManager : MonoBehaviour
 
         [Header("Mission Status")]
         public bool Completed;
+
+        [Header("Mission Int")]
+        public int Level;
     }
 
-    public new List<missionData> MissionInformation;
+    public List<missionData> MissionInformation;
 
     private void Awake()
     {
@@ -58,4 +61,6 @@ public class MissionManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
+
+
 }

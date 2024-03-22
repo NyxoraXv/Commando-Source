@@ -12,9 +12,7 @@ public class MyAnimator : MonoBehaviour
         if (Avatar != null)
         {
             Vector3 AvatarinitialPosition = Avatar.transform.localPosition;
-            AvatarinitialPosition.x = -200f;
-            Avatar.transform.localPosition = AvatarinitialPosition;
-            Avatar.transform.DOLocalMoveX(-118f, 2f).SetEase(Ease.OutCubic);
+            Avatar.transform.DOLocalMoveX(-15f, 2f).SetEase(Ease.OutCubic).From(AvatarinitialPosition);
         }
         
         if(navbar != null)

@@ -1,12 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Initiate : MonoBehaviour
+public class initiate : MonoBehaviour
 {
-    public GameObject MainCanvas;
-    private void Awake()
+    public GameObject MainMenu;
+
+    private void Start()
     {
-        Instantiate(MainCanvas);
+        Instantiate(MainMenu);
     }
 }

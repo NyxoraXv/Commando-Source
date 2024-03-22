@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Animations;
+using System;
 
 public class CharacterInformation : MonoBehaviour
 {
@@ -16,8 +18,8 @@ public class CharacterInformation : MonoBehaviour
         {
             public int Damage;
             public int HP;
-            public int Agility;
-            public int UpgradeCost;
+            public float Agility;
+            public float UpgradeCost;
         }
 
         public List<LevelData> Levels = new List<LevelData>();
@@ -29,9 +31,23 @@ public class CharacterInformation : MonoBehaviour
         public Sprite FullAvatar;
         public Sprite MaskedAvatar;
         public Sprite CroppedAvatar;
+
+        [Header("Price")]
+        public int Price;
+
+        [Header("Character Player")]
+        public RuntimeAnimatorController PlayerController;
+        public RuntimeAnimatorController PlayerPreviewController;
+        public RuntimeAnimatorController Weapon;
+        public Vector3 HandPivotIdle;
+        public Vector3 HandPivotRun;
+
+        [Header("NFT ID")]
+        public string NFT_ID;
+
     }
 
-    public new CharacterData Character;
+    public CharacterData Character;
 
     private void Start()
     {
