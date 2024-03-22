@@ -47,7 +47,7 @@ public class CharacterInformation : MonoBehaviour
 
     }
 
-    public new CharacterData Character;
+    public CharacterData Character;
 
     private void Start()
     {

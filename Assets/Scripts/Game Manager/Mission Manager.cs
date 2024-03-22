@@ -51,7 +51,7 @@ public class MissionManager : MonoBehaviour
         public int Level;
     }
 
-    public new List<missionData> MissionInformation;
+    public List<missionData> MissionInformation;
 
     private void Awake()
     {

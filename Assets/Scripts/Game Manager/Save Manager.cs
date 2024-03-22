@@ -286,7 +286,7 @@ public class SaveManager : MonoBehaviour
     IEnumerator setLastLevelRequest()
     {
         Debug.Log("Setting level: " + playerData.playerInformation.PlayerLastLevel);
-        string url = serverUrl + "/v2/game/achievement/";
+        string url = serverUrl + "/v2/game/achievement";
 
         // Update the JSON data to include the last_level as an integer value
         string jsonData = "{\"last_level\":" + playerData.playerInformation.PlayerLastLevel + ",\"health\":2,\"revive\":3}";
