@@ -489,11 +489,19 @@ public class GameManager : MonoBehaviour
         ReloadCurrentScene();
     }
 
-    private static void ReloadCurrentScene()
+    private static void ReloadCurrentScene()    
     {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+
+        HeliSpawner heliSpawner = FindObjectOfType<HeliSpawner>();
+        if (heliSpawner != null)
+        {
+            DontDestroyOnLoad(heliSpawner.gameObject);
+        }
+        
         SceneManager.LoadScene(currentSceneIndex);
     }
+
 
     public static void PauseExit()
     {

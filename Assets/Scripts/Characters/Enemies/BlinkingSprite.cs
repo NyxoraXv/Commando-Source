@@ -51,6 +51,10 @@ public class BlinkingSprite : MonoBehaviour
         isRunning = true;
         while (CanBlink())
         {
+            if (spriteRenderer != null)
+            {
+            Debug.Log("Bug??");
+            }
             spriteRenderer.color = Color.red;
             yield return new WaitForSeconds(delayTime);
             spriteRenderer.color = Color.white;

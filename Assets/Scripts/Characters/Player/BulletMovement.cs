@@ -30,7 +30,7 @@ public class BulletMovement : MonoBehaviour
     private void Init()
     {
         
-        Debug.Log(damageShot);
+        //Debug.Log(damageShot);
         expireTime = lifeTime;
         Vector3 bulletDirection = transform.right;
         rb = GetComponent<Rigidbody2D>();

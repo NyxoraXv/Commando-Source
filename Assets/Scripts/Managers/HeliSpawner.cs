@@ -70,16 +70,26 @@ public class HeliSpawner : MonoBehaviour
     }
 
     private IEnumerator WaitHeli(bool first)
-    {
-        yield return new WaitForSeconds(secondsWait);
-        GameObject heli = Instantiate(heliPrefab, transform.position, transform.rotation, transform);
-        heli.GetComponent<HeliController>().RegisterSpawner(this);
-        heliList.Add(heli);
-        SetMainHeliShooter();
-    }
+{
+    yield return new WaitForSeconds(secondsWait);
+    GameObject heli = Instantiate(heliPrefab, transform.position, transform.rotation, transform);
+    heli.GetComponent<HeliController>().RegisterSpawner(this);
+    heliList.Add(heli);
+    
+    SetFire(heli);
+}
+
 
     void SetFire(GameObject heli)
+{
+    if (heli != null)
     {
-        heli.GetComponent<HeliController>().SetFire(true);
+        HeliController heliController = heli.GetComponent<HeliController>();
+        if (heliController != null)
+        {
+            heliController.SetFire(true);
+        }
     }
+}
+
 }

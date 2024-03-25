@@ -6700,7 +6700,7 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 5588549574676007384}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.00000047683716, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0.000061035156}
   m_SizeDelta: {x: 20, y: 20}
@@ -21710,7 +21710,7 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 7616493081889966341}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.52544594}
+  m_AnchorMin: {x: 0, y: 0.5254459}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0.000061035156, y: 0}
   m_SizeDelta: {x: 20, y: 20}
@@ -22656,8 +22656,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4958757883687477904}
   m_HandleRect: {fileID: 5169520473854732072}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.47455406
+  m_Value: 0.9999999
+  m_Size: 0.47455403
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -28077,7 +28077,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 3314084737123878252}
   m_Direction: 0
   m_Value: 1
-  m_Size: 0.9999995
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -32711,7 +32711,7 @@ PrefabInstance:
     - target: {fileID: 4381986025128606860, guid: 080fd5d9b64240a4a9df1402f3ab9581,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5490685519097545473, guid: 080fd5d9b64240a4a9df1402f3ab9581,
         type: 3}

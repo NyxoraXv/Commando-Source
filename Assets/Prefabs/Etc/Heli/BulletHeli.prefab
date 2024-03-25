@@ -101,7 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletForce: 2
   lifeTime: 5
-  damageShot: 15
+  damageShot: 5
   launcher: 1
   explosionPrefab: {fileID: 100006, guid: 8a4aceaf2957c044480166b429f4c7d0, type: 3}
 --- !u!50 &3344899479662048602
