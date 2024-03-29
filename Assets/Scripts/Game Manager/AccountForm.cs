@@ -13,9 +13,6 @@ public class AccountForm : MonoBehaviour
 {
     // [SerializeField] private LoginForm loginForm;
     // [SerializeField] private WalletChain walletChain;
-    [HideInInspector] public const string BASEURL = "https://lunc-zombie.garudaverse.io/v2";
-
-    private WalletDetails walletDetails;
     public static string accesWallet;
     public static AccountForm Instance;
     public bool isLogin = false;
@@ -50,7 +47,7 @@ public class AccountForm : MonoBehaviour
     IEnumerator SignUp(string jsonData)
     {
         Debug.Log("SignUp");
-        string url = BASEURL + "/account/signup";
+        string url = SaveManager.Instance.serverUrl + "/api/users";
         LoadingAnimation.Instance.toggleLoading();
 
         // Menyiapkan permintaan POST
@@ -66,12 +63,11 @@ public class AccountForm : MonoBehaviour
         // Memeriksa hasil permintaan dan melakukan tindakan berdasarkan hasilnya
         if (request.result == UnityWebRequest.Result.Success)
         {
-            string walletData = request.downloadHandler.text;
-            Debug.Log("Wallet data: " + walletData);
+            string accountData = request.downloadHandler.text;
+            Debug.Log("Account Data: " + accountData);
             Debug.Log("Sign up successful.");
             isSignup = true;
             PopUpInformationhandler.Instance.pop("Signed Up");
-            //CurrencyManager.Instance.CurrentLUNC = walletData
             LoadingAnimation.Instance.stopLoading();
         }
         else
@@ -99,7 +95,7 @@ public class AccountForm : MonoBehaviour
     }
     IEnumerator SignIn(string jsonData)
     {
-        string url = BASEURL + "/account/signin";
+        string url = SaveManager.Instance.serverUrl + "/api/users/_login";
         LoadingAnimation.Instance.toggleLoading();
         UnityWebRequest request = UnityWebRequest.PostWwwForm(url, jsonData);
         byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
@@ -110,13 +106,12 @@ public class AccountForm : MonoBehaviour
 
         if (request.result == UnityWebRequest.Result.Success)
         {
-            string walletData = request.downloadHandler.text;
+            string accountData = request.downloadHandler.text;
             PopUpInformationhandler.Instance.pop("Logged In");
-            Debug.Log("Wallet data: " + walletData);
+            Debug.Log("Account data: " + accountData);
             Debug.Log("Sign in successful.");
             isLogin = true;
-            SaveAccessData(walletData);
-            accesWallet = GetData(1);
+            SaveAccessData(accountData);
             LoadingAnimation.Instance.stopLoading();
         }
         else
@@ -142,17 +137,16 @@ public class AccountForm : MonoBehaviour
 
     //////////////    token harus di refresh karena bisa kadaluarsa, fungsi token untuk akses api
 
-    public void RefreshTokenP()
+    /*public void RefreshTokenP()
     {
         StartCoroutine(RefreshToken());
     }
 
-
     IEnumerator RefreshToken()
     {
-        string url = BASEURL + "/account/refresh";
+        string url = SaveManager.Instance.serverUrl + "/account/refresh";
         LoadingAnimation.Instance.toggleLoading();
-        string refreshToken = GetData(2);
+        string refreshToken = SaveManager.Instance.playerData.authResponse.RefreshToken;
         refreshToken = refreshToken.Split(" ")[1];
         Debug.Log(refreshToken);
         string jsonData = "{\"refreshToken\": \"" + refreshToken + "\"}";
@@ -178,43 +172,13 @@ public class AccountForm : MonoBehaviour
             LoadingAnimation.Instance.stopLoading();
         }
 
-    }
+    }*/
 
 
 
     private void SaveAccessData(string jsonData)
     {
-        WalletData myData = JsonUtility.FromJson<WalletData>(jsonData);
-        SaveManager.Instance.playerData.playerInformation.accessToken =  myData.data.access_token;
-        SaveManager.Instance.playerData.playerInformation.refreshToken =  myData.data.refresh_token;
+        SaveManager.Instance.playerData.authResponse = JsonUtility.FromJson<UserAuthResponse>(jsonData);
     }
-
-
-    public string GetData(short type)
-    {
-        // type 1 = return data.accestoken
-        // type 2 = return data.refreshtoken
-
-        try
-        {
-
-            switch (type)
-            {
-                case 1:
-                    return SaveManager.Instance.playerData.playerInformation.accessToken;
-                case 2:
-                    return SaveManager.Instance.playerData.playerInformation.refreshToken;
-                default:
-                    return null;
-            }
-        }
-        catch (Exception e)
-        {
-            Debug.LogError("Gagal membaca data: " + e.Message);
-        }
-        return null;
-
-    }
-
 
 }

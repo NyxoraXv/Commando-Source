@@ -6,7 +6,7 @@ public class WalletDisconnectButton : MonoBehaviour
 {
     private void OnEnable()
     {
-        if (SaveManager.Instance.playerData.playerInformation.isWalletConnected)
+        if (SaveManager.Instance.isWalletConnected)
         {
             this.gameObject.SetActive(true);
         }else { this.gameObject.SetActive(false); }

@@ -8,11 +8,11 @@ public class CurrencyDisplayInit : MonoBehaviour
     
     void Start()
     {
-        GameObject Diamond = GameObject.FindWithTag("Diamond");
-        GameObject Gold = GameObject.FindWithTag("Gold");
+        GameObject FRG = GameObject.FindWithTag("Diamond");
+        GameObject LUNC = GameObject.FindWithTag("Gold");
 
-        Diamond.GetComponent<TMPro.TextMeshProUGUI>().text = SaveManager.Instance.playerData.currencyInfo.PlayerFRG.ToString();
-        Gold.GetComponent<TMPro.TextMeshProUGUI>().text = SaveManager.Instance.playerData.currencyInfo.PlayerLUNC.ToString();
+        FRG.GetComponent<TMPro.TextMeshProUGUI>().text = SaveManager.Instance.playerData.statistic.Frg.ToString();
+        LUNC.GetComponent<TMPro.TextMeshProUGUI>().text = SaveManager.Instance.playerData.statistic.Lunc.ToString();
 
         gameObject.SetActive(true);
     }

@@ -36,15 +36,15 @@ public class CurrencyManager : MonoBehaviour
             if (goldObject != null && diamondObject != null)
             {
                 // Get the TextMeshProUGUI components from the found objects
-                TextMeshProUGUI GoldDisplay = goldObject.GetComponent<TextMeshProUGUI>();
-                TextMeshProUGUI DiamondDisplay = diamondObject.GetComponent<TextMeshProUGUI>();
+                TextMeshProUGUI LuncDisplay = goldObject.GetComponent<TextMeshProUGUI>();
+                TextMeshProUGUI FRGDisplay = diamondObject.GetComponent<TextMeshProUGUI>();
 
                 // Check if the components are null before updating text values
-                if (GoldDisplay != null && DiamondDisplay != null)
+                if (LuncDisplay != null && FRGDisplay != null)
                 {
                     // Update the text values
-                    GoldDisplay.text = SaveManager.Instance.playerData.currencyInfo.PlayerLUNC.ToString();
-                    DiamondDisplay.text = SaveManager.Instance.playerData.currencyInfo.PlayerFRG.ToString();
+                    LuncDisplay.text = SaveManager.Instance.playerData.statistic.Lunc.ToString();
+                    FRGDisplay.text = SaveManager.Instance.playerData.statistic.Frg.ToString();
                 }
             }
         }
@@ -59,9 +59,9 @@ public class CurrencyManager : MonoBehaviour
 
     public bool spendFRG(float Amount)
     {
-        if (SaveManager.Instance.playerData.currencyInfo.PlayerFRG >= Amount)
+        if (SaveManager.Instance.playerData.statistic.Frg >= Amount)
         {
-            SaveManager.Instance.playerData.currencyInfo.PlayerFRG -= Amount;
+            SaveManager.Instance.playerData.statistic.Frg -= Amount;
             //SaveManager.Instance.Save();
             return true;
         }
@@ -73,9 +73,9 @@ public class CurrencyManager : MonoBehaviour
 
     public bool spendLUNC(float Amount)
     {
-        if (SaveManager.Instance.playerData.currencyInfo.PlayerLUNC >= Amount)
+        if (SaveManager.Instance.playerData.statistic.Lunc >= Amount)
         {
-            SaveManager.Instance.playerData.currencyInfo.PlayerLUNC -= Amount;
+            SaveManager.Instance.playerData.statistic.Lunc -= Amount;
             //SaveManager.Instance.Save();
             return true;
         }
@@ -87,9 +87,9 @@ public class CurrencyManager : MonoBehaviour
 
     public void addFRG(float Amount)
     {
-        if(SaveManager.Instance.playerData.playerInformation.isWalletConnected)
+        if(SaveManager.Instance.isWalletConnected)
         {
-            SaveManager.Instance.playerData.currencyInfo.PlayerFRG += Amount;
+            SaveManager.Instance.playerData.statistic.Frg += Amount;
             //SaveManager.Instance.Save();
         }
 
@@ -97,9 +97,9 @@ public class CurrencyManager : MonoBehaviour
 
     public void addLUNC(float Amount)
     {
-        if (SaveManager.Instance.playerData.playerInformation.isWalletConnected)
+        if (SaveManager.Instance.isWalletConnected)
         {
-            SaveManager.Instance.playerData.currencyInfo.PlayerLUNC += Amount;
+            SaveManager.Instance.playerData.statistic.Lunc += Amount;
             //SaveManager.Instance.Save();
         }
     }

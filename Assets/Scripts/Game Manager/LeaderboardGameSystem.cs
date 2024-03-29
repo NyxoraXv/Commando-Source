@@ -5,39 +5,9 @@ using TMPro;
 using System;
 using UnityEngine.UI;
 
-[Serializable]
-public class ScoreData
-{
-    public RankData[] data;
-    public object errors;
-    public string message;
-    public int code;
-}
-
-[Serializable]
-public class RankData
-{
-    public string username;
-    public int coin;
-    public int star;
-    public int score;
-    public string address_wallet;
-    public int rank;
-}
-
-[Serializable]
-public class GameDetail
-{
-    public string id;
-    public string user_id;
-    public int token;
-    public string game_type_id;
-}
-
 public class LeaderboardGameSystem : MonoBehaviour
 {
-    private string serverUrl = "https://lunc-zombie.garudaverse.io";
-    private ScoreData scoreDataCls;
+    private LeaderboardData leaderboardData;
     [SerializeField] private TextMeshProUGUI myScore;
     [SerializeField] private TextMeshProUGUI myName;
     [SerializeField] private Transform leaderboardParent;
@@ -51,8 +21,8 @@ public class LeaderboardGameSystem : MonoBehaviour
     private void OnEnable()
     {
         LeaderboardData();
-        myScore.text = SaveManager.Instance.playerData.playerInformation.PlayerScore.ToString();
-        myName.text = SaveManager.Instance.playerData.playerInformation.PlayerName;
+        myScore.text = SaveManager.Instance.playerData.statistic.Score.ToString();
+        myName.text = SaveManager.Instance.playerData.userData.Username;
     }
 
     public void RefreshData()
@@ -69,10 +39,10 @@ public class LeaderboardGameSystem : MonoBehaviour
     {
         Debug.Log("Starting GetLeaderboardData coroutine...");
         LoadingAnimation.Instance.toggleLoading();
-        string url = serverUrl + "/v2/game/statistics?order=desc&query=combined&limit=50&offset=0&short=null";
+        string url = SaveManager.Instance.serverUrl + "/v2/game/statistics?order=desc&query=combined&limit=50&offset=0&short=null";
 
         UnityWebRequest request = UnityWebRequest.Get(url);
-        request.SetRequestHeader("Token", SaveManager.Instance.playerData.playerInformation.accessToken);
+        request.SetRequestHeader("Token", SaveManager.Instance.playerData.authResponse.AccessToken);
         request.certificateHandler = new CertificateWhore();
         request.downloadHandler = new DownloadHandlerBuffer();
 
@@ -82,9 +52,9 @@ public class LeaderboardGameSystem : MonoBehaviour
 
 
             string scoreData = request.downloadHandler.text;
-            scoreDataCls = JsonUtility.FromJson<ScoreData>(scoreData);
+            leaderboardData = JsonUtility.FromJson<LeaderboardData>(scoreData);
 
-            Array.Sort(scoreDataCls.data, (x, y) => y.score.CompareTo(x.score));
+            Array.Sort(leaderboardData.data, (x, y) => y.Score.CompareTo(x.Score));
 
             foreach (Transform child in leaderboardParent)
             {
@@ -93,15 +63,15 @@ public class LeaderboardGameSystem : MonoBehaviour
 
             Vector3 currentPosition = new Vector3(startingPosX, startingPosY, 0f);
 
-            for (int i = 0; i < scoreDataCls.data.Length && i < maxEntries; i++)
+            for (int i = 0; i < leaderboardData.data.Length && i < maxEntries; i++)
             {
                 GameObject entry = Instantiate(leaderboardEntryPrefab, leaderboardParent);
                 entry.transform.SetParent(leaderboardParent, false);
                 entry.transform.position = currentPosition;
 
                 TextMeshProUGUI[] texts = entry.GetComponentsInChildren<TextMeshProUGUI>();
-                texts[0].text = scoreDataCls.data[i].username;
-                texts[1].text = scoreDataCls.data[i].score.ToString();
+                texts[0].text = leaderboardData.data[i].Username;
+                texts[1].text = leaderboardData.data[i].Score.ToString();
                 texts[2].text = (i + 1).ToString(); // Assuming the third text is for the rank number
                 if (i == 0) // Gold for top rank
                 {

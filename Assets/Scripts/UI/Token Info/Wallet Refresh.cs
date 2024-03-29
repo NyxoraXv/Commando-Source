@@ -6,7 +6,7 @@ public class WalletRefresh : MonoBehaviour
 {
     private void OnEnable()
     {
-        if (SaveManager.Instance.playerData.playerInformation.isWalletConnected)
+        if (SaveManager.Instance.isWalletConnected)
         {
             this.gameObject.SetActive(true);
         }

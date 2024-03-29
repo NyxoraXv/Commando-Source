@@ -33,15 +33,6 @@ public class NFTResponse
     public List<NFTData> data;
 }
 
-
-[Serializable]
-public class WalletData
-{
-    public WalletDetails data;
-    public object errors;
-    public string message;
-    public int code;
-}
 [Serializable]
 public class WalletAdress
 {
@@ -51,12 +42,6 @@ public class WalletAdress
     public int code;
 }
 
-[Serializable]
-public class WalletDetails
-{
-    public string access_token;
-    public string refresh_token;
-}
 [Serializable]
 public class WalletAdressDetails
 {
@@ -107,7 +92,7 @@ public class WalletChain : MonoBehaviour
         while (true)
         {
             string url = Url + "/account/wallet";
-            string getToken = SaveManager.Instance.playerData.playerInformation.accessToken;
+            string getToken = SaveManager.Instance.playerData.authResponse.AccessToken;
             UnityWebRequest request = UnityWebRequest.Get(url);
             request.SetRequestHeader("Token", getToken);
             request.downloadHandler = new DownloadHandlerBuffer();
@@ -122,15 +107,15 @@ public class WalletChain : MonoBehaviour
 
                 // Format the URL with the token and open it
                 // string formattedUrl = "https://api.garudaverse.io?token=" + getToken;
-                SaveManager.Instance.playerData.playerInformation.walletAdress = myDatawallet.data.address_wallet;
-                Debug.Log("Address = " + myDatawallet.data.address_wallet);
+                SaveManager.Instance.playerData.WalletData = myDatawallet;
+                Debug.Log("Address = " + SaveManager.Instance.playerData.WalletData.data.address_wallet);
                 // Debug.Log(formattedUrl);
 
 
                 if (myDatawallet.data.address_wallet != "" && myDatawallet.data.request_disconnect == false || myDatawallet.data.is_connected == true && myDatawallet.data.request_disconnect == false)
                 {
                     isConnectedWallet = true;
-                    SaveManager.Instance.playerData.playerInformation.isWalletConnected = true;
+                    SaveManager.Instance.isWalletConnected = true;
                     disconnectButton.gameObject.SetActive(true);
                     refreshButton.gameObject.SetActive(true );
                     walletIcon.color = Color.white;
@@ -186,7 +171,7 @@ public class WalletChain : MonoBehaviour
     public IEnumerator GetWallet(bool openbrowser = true)
     {
         string url = Url + "/account/wallet";
-        string getToken = SaveManager.Instance.playerData.playerInformation.accessToken;
+        string getToken = SaveManager.Instance.playerData.authResponse.AccessToken;
         LoadingAnimation.Instance.toggleLoading();
         Debug.Log(getToken);
         UnityWebRequest request = UnityWebRequest.Get(url);
@@ -202,7 +187,7 @@ public class WalletChain : MonoBehaviour
 
             // Format the URL with the token and open it
             string formattedUrl = "https://www.garudaverse.io?token=" + getToken + "&serverId=3";
-            SaveManager.Instance.playerData.playerInformation.walletAdress = myDatawallet.data.address_wallet;
+            SaveManager.Instance.playerData.WalletData = myDatawallet;
             Debug.Log("Adress = " + myDatawallet.data.address_wallet);
             Debug.Log(formattedUrl);
             if (openbrowser)
@@ -217,7 +202,7 @@ public class WalletChain : MonoBehaviour
                 PopUpInformationhandler.Instance.pop("Wallet Connected");
                 setWalletInformation();
                 StartCoroutine(getNFT());
-                SaveManager.Instance.playerData.playerInformation.isWalletConnected = true;
+                SaveManager.Instance.isWalletConnected = true;
                 disconnectButton.gameObject.SetActive(true);
                 refreshButton.gameObject.SetActive(true);
                 LoadingAnimation.Instance.stopLoading();
@@ -258,7 +243,7 @@ public class WalletChain : MonoBehaviour
         disconnectButton.GetComponent<Button>().interactable = false;
         LoadingAnimation.Instance.toggleLoading();
         string url = Url + "/account/wallet/disconnect";
-        string getToken = SaveManager.Instance.playerData.playerInformation.accessToken;
+        string getToken = SaveManager.Instance.playerData.authResponse.AccessToken;
         UnityWebRequest request = UnityWebRequest.PostWwwForm(url, "");
         request.method = UnityWebRequest.kHttpVerbPOST;
         request.SetRequestHeader("Token", getToken);
@@ -270,7 +255,7 @@ public class WalletChain : MonoBehaviour
             Debug.Log("disconnect....");
             Debug.Log("Wallet data: " + walletData);
             isConnectedWallet = false;
-            SaveManager.Instance.playerData.playerInformation.isWalletConnected = false;
+            SaveManager.Instance.isWalletConnected = false;
             disconnectButton.gameObject.SetActive(false);
             refreshButton.gameObject.SetActive(false);
             walletIcon.color = Color.red;
@@ -301,7 +286,7 @@ public class WalletChain : MonoBehaviour
 
     IEnumerator getNFT()
     {
-        string addressWallet = SaveManager.Instance.playerData.playerInformation.walletAdress;
+        string addressWallet = SaveManager.Instance.playerData.WalletData.data.address_wallet;
         LoadingAnimation.Instance.toggleLoading();
         Debug.Log(addressWallet);
 
@@ -392,7 +377,7 @@ public class WalletChain : MonoBehaviour
     }
     private void OnEnable()
     {
-        if (SaveManager.Instance.playerData.playerInformation.isWalletConnected)
+        if (SaveManager.Instance.isWalletConnected)
         {
             setWalletInformation();
         }
@@ -410,7 +395,7 @@ public class WalletChain : MonoBehaviour
 
     private void setWalletInformation()
     {
-        string walletString = SaveManager.Instance.playerData.playerInformation.walletAdress;
+        string walletString = SaveManager.Instance.playerData.WalletData.data.address_wallet;
         string wallet = walletString.Substring(0, 4) + "..." + walletString.Substring(walletString.Length - 4);
 
         walletText.text = wallet;
@@ -419,7 +404,7 @@ public class WalletChain : MonoBehaviour
 
     public void refreshAll()
     {
-        AccountForm.Instance.RefreshTokenP();
+        //AccountForm.Instance.RefreshTokenP();
         getNFTp();
     }
 }

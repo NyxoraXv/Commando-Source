@@ -8,86 +8,25 @@ using System.Collections;
 using UnityEngine.Networking;
 using System.Text;
 using UnityEditor;
+using System.Net.Http.Headers;
 
 public class SaveManager : MonoBehaviour
 {
-
-    [Serializable]
-    public class Statistic
-    {
-        public Userdata data;
-        public object errors;
-        public string message;
-        public int code;
-
-    }
-
-    [Serializable]
-    public class Userdata
-    {
-        public string game_id;
-        public string id;
-        public string user_id;
-        public int score;
-        public int coin;
-        public int star;
-        public string username;
-        public int last_level;
-        public int health;
-        public short revive;
-        public GameDetail Game;
-    }
-
-
     public class PlayerData
     {
-        public class PlayerInfo
-        {
-            public string PlayerName { get; set; }
-            public int PlayerLevel { get; set; }    
-            public int PlayerXP { get; set; }
-            public int PlayerLastLevel { get; set; }
-            public int PlayerScore { get; set; }
-            public string walletAdress { get; set; }
-            public string accessToken { get; set; }
-            public string refreshToken { get; set; }
-            public bool isWalletConnected {  get; set; }
-        }
+        public Statistic statistic { get; set; } = new Statistic();
 
-        public class CurrencyInfo
-        {
-            public float PlayerLUNC { get; set; }
-            public float PlayerFRG { get; set; }
-        }
+        public Achievement achievement { get; set; } = new Achievement();
 
-        public class CharacterInfo
-        {
-            public Character SelectedCharacter { get; set; }
-            public Dictionary<Character, int> OwnedCharacters { get; set; } = new Dictionary<Character, int>();
-        }
+        public UserAuthResponse authResponse { get; set; } = new UserAuthResponse();
+        
+        public OwnedCharacterInformation characterInformation { get; set; } = new OwnedCharacterInformation();
+        
+        public UserResponse userData { get; set; } = new UserResponse();
 
-        public class OwnedCharacterInformation
-        {
-            public Character Character { get; set; }
-            public int Level { get; set; }
+        public WalletAdress WalletData = new WalletAdress();
 
-            public OwnedCharacterInformation(Character character, int level)
-            {
-                Character = character;
-                Level = level;
-            }
-        }
-
-        //public class OwnedWeaponInformation
-        //{
-        //    public Weapon selectedWeapon;
-        //    public List<Weapon> ownedWeapons = new List<Weapon>();
-        //}
-
-        public PlayerInfo playerInformation { get; set; } = new PlayerInfo();
-        public CurrencyInfo currencyInfo { get; set; } = new CurrencyInfo();
         public CharacterInfo characterInfo { get; set; } = new CharacterInfo();
-        //public OwnedWeaponInformation weaponInfo { get; set; } = new OwnedWeaponInformation();
     }
 
 
@@ -95,16 +34,18 @@ public class SaveManager : MonoBehaviour
 
     public PlayerData playerData;
 
-    private string serverUrl = "https://lunc-zombie.garudaverse.io";
+    public string serverUrl = "https://2df8-103-189-200-37.ngrok-free.app";
 
     public string username { get; set; }
 
     public bool isLogin;
+    public bool isWalletConnected;
+
 
     public bool isGetAchievement = false;
     public bool isSetAchievement = false;
+    private bool isGetStatisticCalled = false;
 
-    private Statistic userDataClass;
     private void Awake()
     {
         if (Instance == null)
@@ -122,18 +63,17 @@ public class SaveManager : MonoBehaviour
 
     public void InitializeNewPlayer()
     {
-        playerData.playerInformation.PlayerLevel = 1;
-        playerData.playerInformation.PlayerXP = 0;
-        playerData.currencyInfo.PlayerLUNC = 0f;
-        playerData.currencyInfo.PlayerFRG = 0f;
-        playerData.playerInformation.PlayerScore = 0;
-        playerData.playerInformation.PlayerScore = 0;
-        playerData.playerInformation.PlayerLastLevel = 0;
+        playerData.achievement.PlayerLevel = 1;
+        playerData.achievement.PlayerExp = 0;
+        playerData.achievement.LastLevel = 0;
+
+        playerData.statistic.Lunc= 0f;
+        playerData.statistic.Frg = 0f;
+        playerData.statistic.Score = 0;
 
         playerData.characterInfo.SelectedCharacter = Character.Sucipto;
     }
 
-    private bool isGetStatisticCalled = false;
     private void SetUpDataLoad()
     {
         if (!isGetStatisticCalled)
@@ -146,7 +86,7 @@ public class SaveManager : MonoBehaviour
     public bool Verify(string Username, string Password, string Email, bool isLogin)
     {
         if (isLogin) {
-            string jsonData = "{\"email\": \"" + Email + "\",\"password\": \"" + Password + "\", \"device\": \"laptop\"}";
+            string jsonData = "{\"Username\": \"" + Username + "\",\"Password\": \"" + Password + "\", \"device\": \"laptop\"}";
             print(jsonData);
             AccountForm.Instance.SignInP(jsonData);
             StartCoroutine(waitLoginScene());
@@ -155,29 +95,13 @@ public class SaveManager : MonoBehaviour
         }
         else
         {
-            string jsonData = "{\"email\": \"" + Email + "\",\"password\": \"" + Password + "\",\"username\": \"" + Username + "\", \"type\": \"54104f36-04d0-4b54-8d40-f8fb17fdb5cb\"}";
+            string jsonData = "{\"Password\": \"" + Password + "\",\"Username\": \"" + Username + "\",\"Email\": \"" + Email + "\"}";
             print(jsonData);
             AccountForm.Instance.SignUpP(jsonData);
             StartCoroutine(waitSignupScene());
 
             return true;
         }
-
-        /*if (Load())
-        {
-            SetUpDataLoad();
-            Debug.Log("Save Data Loaded");
-            isLogin = true;
-            return true;
-        }
-        else
-        {
-            // Initialize playerData if not loaded
-            InitializeNewPlayer(username);
-            Save();
-            isLogin = true;
-            return false;
-        }*/
     }
 
     IEnumerator waitLoginScene()
@@ -200,12 +124,7 @@ public class SaveManager : MonoBehaviour
 
     public void Save()
     {
-        SetCoin((int)(playerData.currencyInfo.PlayerFRG * 100f));
-        SetScore();
-        setLastLevel();
-        //Debug.Log((int)(SaveManager.Instance.playerData.currencyInfo.PlayerFRG * 1f));
-        //Debug.Log("score = " + playerData.playerInformation.PlayerScore);
-        //Debug.Log("Save");
+        SetStatistic(playerData.statistic);
     }
 
     private void OnApplicationQuit()
@@ -213,122 +132,123 @@ public class SaveManager : MonoBehaviour
         Save();
     }
 
-
-    public void GetStatistic()
-    {
-        if (Application.internetReachability == NetworkReachability.NotReachable)
-        {
-            Debug.Log("lost connection please check your internet");
-            PopUpInformationhandler.Instance.pop("lost connection please check your internet");
-            return;
-        }
-
-        if (string.IsNullOrEmpty(playerData.playerInformation.accessToken))
-        {
-            StartCoroutine(WaitForAccessToken(() => StartCoroutine(GetStatisticRequest())));
-        }
-        else
-        {
-            StartCoroutine(GetStatisticRequest());
-        }
-    }
-
     IEnumerator WaitForAccessToken(Action callback)
     {
-        while (string.IsNullOrEmpty(playerData.playerInformation.accessToken))
+        while (string.IsNullOrEmpty(playerData.authResponse.AccessToken))
         {
             yield return null;
         }
 
         callback?.Invoke();
     }
+    public void SetStatistic(Statistic newStatistic)
+    {
+        StartCoroutine(SetStatisticRequest(newStatistic));
+    }
 
+    IEnumerator SetStatisticRequest(Statistic newStatistic)
+    {
+        string url = serverUrl + "/statistics";
 
+        // Convert Statistic object to JSON
+        string jsonData = JsonConvert.SerializeObject(newStatistic);
+
+        UnityWebRequest request = UnityWebRequest.PostWwwForm(url, "POST");
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
+        request.certificateHandler = new CertificateWhore();
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.SetRequestHeader("Token", playerData.authResponse.AccessToken);
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            Debug.Log("Statistic data updated successfully!");
+        }
+        else
+        {
+            Debug.LogError("Failed to update statistic data: " + request.error);
+            if (request.downloadHandler != null)
+            {
+                Debug.LogError("Response: " + request.downloadHandler.text);
+            }
+            // Optionally, handle error response here
+        }
+    }
+
+    public void GetStatistic()
+    {
+        StartCoroutine(GetStatisticRequest());
+    }
 
     IEnumerator GetStatisticRequest()
     {
-        string access = playerData.playerInformation.accessToken;
-        Debug.Log("Getting Statistic Request");
-        string url = serverUrl + "/v2/game/statistic";
+        string access = playerData.authResponse.AccessToken;
+        string url = serverUrl + "/statistics";
         UnityWebRequest request = UnityWebRequest.Get(url);
         request.certificateHandler = new CertificateWhore();
         request.SetRequestHeader("Token", access);
         request.downloadHandler = new DownloadHandlerBuffer();
-        Debug.Log(access + "access");
 
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.Success)
         {
-            string coinData = request.downloadHandler.text;
-            userDataClass = JsonUtility.FromJson<Statistic>(coinData);
-
-            playerData.playerInformation.PlayerScore = userDataClass.data.score;
-            playerData.currencyInfo.PlayerFRG = userDataClass.data.coin/100f;
-            playerData.currencyInfo.PlayerLUNC= userDataClass.data.coin / 10f;
-            //PopUpInformationhandler.Instance.pop("Save Data Loaded");
-            playerData.playerInformation.PlayerName = userDataClass.data.username;
-
-            Debug.Log("Score:"+userDataClass.data.score +"Coin:"+ userDataClass.data.coin+"Name"+ userDataClass.data.username);
+            string jsonData = request.downloadHandler.text;
+            Statistic statistic = JsonConvert.DeserializeObject<Statistic>(jsonData);
         }
         else
         {
-            Debug.Log(request.error);
-            PopUpInformationhandler.Instance.pop("Failed To Load Save Data");
+            Debug.LogError("Failed to fetch statistic data: " + request.error);
+            PopUpInformationhandler.Instance.pop("Failed To Load Statistic Data");
         }
     }
-
-    public void setLastLevel() 
+    public void SetAchievement(Achievement newAchievement)
     {
-        StartCoroutine(setLastLevelRequest());
+        StartCoroutine(SetAchievementRequest(newAchievement));
     }
 
-    IEnumerator setLastLevelRequest()
+    IEnumerator SetAchievementRequest(Achievement newAchievement)
     {
-        Debug.Log("Setting level: " + playerData.playerInformation.PlayerLastLevel);
-        string url = serverUrl + "/v2/game/achievement";
+        string url = serverUrl + "/achievements";
 
-        // Update the JSON data to include the last_level as an integer value
-        string jsonData = "{\"last_level\":" + playerData.playerInformation.PlayerLastLevel + ",\"health\":2,\"revive\":3}";
+        // Convert Achievement object to JSON
+        string jsonData = JsonConvert.SerializeObject(newAchievement);
 
         UnityWebRequest request = UnityWebRequest.PostWwwForm(url, "POST");
         byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
         request.certificateHandler = new CertificateWhore();
         request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-        request.SetRequestHeader("Token", playerData.playerInformation.accessToken);
+        request.SetRequestHeader("Token", playerData.authResponse.AccessToken);
         request.SetRequestHeader("Content-Type", "application/json");
 
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.Success)
         {
-            Debug.Log("Progress Saved!");
-            isSetAchievement = true;
-            //PopUpInformationhandler.Instance.pop("Progress Saved!");
+            Debug.Log("Achievement data updated successfully!");
         }
         else
         {
-            isSetAchievement = true;
-            Debug.LogError("Failed to save progress: " + request.error);
+            Debug.LogError("Failed to update achievement data: " + request.error);
             if (request.downloadHandler != null)
             {
-                isSetAchievement = true;
                 Debug.LogError("Response: " + request.downloadHandler.text);
             }
-            //PopUpInformationhandler.Instance.pop("Failed to save progress");
+            // Optionally, handle error response here
         }
     }
 
-    public void getAchievement()
+    public void GetAchievement(Action<Achievement> callback)
     {
-        StartCoroutine(GetAchievementRequest());
+        StartCoroutine(GetAchievementRequest(callback));
     }
 
-    IEnumerator GetAchievementRequest()
+    IEnumerator GetAchievementRequest(Action<Achievement> callback)
     {
-        string access = playerData.playerInformation.accessToken;
-        Debug.Log("Getting Achievement Request");
-        string url = serverUrl + "/v2/game/achievement";
+        string access = playerData.authResponse.AccessToken;
+        string url = serverUrl + "/achievements";
         UnityWebRequest request = UnityWebRequest.Get(url);
         request.certificateHandler = new CertificateWhore();
         request.SetRequestHeader("Token", access);
@@ -338,102 +258,16 @@ public class SaveManager : MonoBehaviour
 
         if (request.result == UnityWebRequest.Result.Success)
         {
-            string achievementData = request.downloadHandler.text;
-            userDataClass = JsonUtility.FromJson<Statistic>(achievementData);
-
-            playerData.playerInformation.PlayerLastLevel = userDataClass.data.last_level;
-            Debug.Log("Last Level = " + userDataClass.data.last_level);
-            isGetAchievement = true;
-
+            string jsonData = request.downloadHandler.text;
+            Achievement achievement = JsonConvert.DeserializeObject<Achievement>(jsonData);
+            callback?.Invoke(achievement);
         }
         else
         {
+            Debug.LogError("Failed to fetch achievement data: " + request.error);
             PopUpInformationhandler.Instance.pop("Failed To Load Achievement Data");
         }
-
-        
     }
-
-    public void SetScore()
-    {
-        StartCoroutine(SetScoreRequest());
-    }
-
-    IEnumerator SetScoreRequest()
-    {
-        string url = serverUrl + "/v2/game/statistic/score";
-        string scoreEncrypt = Encrypt(playerData.playerInformation.PlayerScore);
-
-        // Create JSON data for the request body
-        string jsonData = "{\"score\":\"" + scoreEncrypt + "\"}";
-
-        UnityWebRequest request = UnityWebRequest.PostWwwForm(url, "POST");
-        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
-        request.certificateHandler = new CertificateWhore();
-        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-        request.SetRequestHeader("Token", playerData.playerInformation.accessToken);
-        request.SetRequestHeader("Content-Type", "application/json");
-
-        yield return request.SendWebRequest();
-
-        if (request.result == UnityWebRequest.Result.Success)
-        {
-            Debug.Log("Score added successfully!");
-            //SaveManager.Instance.playerData.playerInformation.PlayerScore += score;
-            // Optionally, handle successful response here
-        }
-        else
-        {
-            Debug.LogError("Failed to add score: " + request.error);
-            if (request.downloadHandler != null)
-            {
-                Debug.LogError("Response: " + request.downloadHandler.text);
-            }
-            // Optionally, handle error response here
-        }
-    }
-
-    public void SetCoin(int coin)
-    {
-        StartCoroutine(SetCoinRequest(coin));
-    }
-
-    IEnumerator SetCoinRequest(int coin)
-    {
-        Debug.Log("Setting coin: " + coin);
-
-        string url = serverUrl + "/v2/game/statistic/coin";
-        string coinEncrypt = Encrypt(coin);
-
-        string jsonData = "{\"coin\":\"" + coinEncrypt + "\"}";
-
-        UnityWebRequest request = UnityWebRequest.PostWwwForm(url, "POST");
-        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
-        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-        request.certificateHandler = new CertificateWhore();
-        request.SetRequestHeader("Token", playerData.playerInformation.accessToken);
-        request.SetRequestHeader("Content-Type", "application/json");
-
-        yield return request.SendWebRequest();
-
-        if (request.result == UnityWebRequest.Result.Success)
-        {
-            Debug.Log("Coin added successfully!");
-        }
-        else
-        {
-            Debug.LogError("Failed to add coin: " + request.error);
-            if (request.downloadHandler != null)
-            {
-                Debug.LogError("Response: " + request.downloadHandler.text);
-            }
-            // Optionally, handle error response here
-        }
-    }
-
-
-
-
 
     private string RandWord(int lengthWord, bool areNumber = false)
     {

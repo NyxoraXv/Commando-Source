@@ -15,11 +15,11 @@ public class Setnameprofile : MonoBehaviour
     {
         text = GetComponent<TMPro.TextMeshProUGUI>();
 
-        while (string.IsNullOrEmpty(SaveManager.Instance.playerData.playerInformation.PlayerName))
+        while (string.IsNullOrEmpty(SaveManager.Instance.playerData.userData.Username))
         {
             yield return null;
         }
 
-        text.text = SaveManager.Instance.playerData.playerInformation.PlayerName;
+        text.text = SaveManager.Instance.playerData.userData.Username;
     }
 }
