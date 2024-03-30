@@ -79,3 +79,5 @@ MonoBehaviour:
     HandPivotIdle: {x: -0.151, y: 0.396, z: 0}
     HandPivotRun: {x: 0, y: 0.312, z: 0}
     NFT_ID: 0
+    BulletParticle: {fileID: 66235608591359889, guid: e99169cd72f881e499c885b2c7851a91,
+      type: 3}

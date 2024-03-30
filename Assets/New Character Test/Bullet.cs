@@ -32,6 +32,8 @@ public class BulletHandler : MonoBehaviour
 
     private void Init()
     {
+        particleSystem = GetComponent<ParticleSystem>();
+        particleSystem = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.BulletParticle;
         expireTime = lifeTime;
         Vector3 bulletDirection = transform.right;
         rb = GetComponent<Rigidbody2D>();
