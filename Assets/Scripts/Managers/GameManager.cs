@@ -272,8 +272,6 @@ public class GameManager : MonoBehaviour
         if (MissionManager.Instance.onLoaded >= SaveManager.Instance.playerData.achievement.LastLevel) {
             SaveManager.Instance.playerData.achievement.LastLevel = MissionManager.Instance.onLoaded+1;
             SaveManager.Instance.playerData.statistic.Score = SaveManager.Instance.playerData.statistic.Score+current.score;
-            CurrencyManager.Instance.addFRG(current.frg);
-            CurrencyManager.Instance.addLUNC(current.lunc);
             SaveManager.Instance.Save();
         }
         current.isGameOver = true;

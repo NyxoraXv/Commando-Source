@@ -39,18 +39,17 @@ public class LeaderboardGameSystem : MonoBehaviour
     {
         Debug.Log("Starting GetLeaderboardData coroutine...");
         LoadingAnimation.Instance.toggleLoading();
-        string url = SaveManager.Instance.serverUrl + "/v2/game/statistics?order=desc&query=combined&limit=50&offset=0&short=null";
+        Debug.Log("access-token = " + SaveManager.Instance.playerData.accessTokenResponse.data.access_token);
+        string url = SaveManager.Instance.serverUrl + "/statistics/leaderboards";
 
         UnityWebRequest request = UnityWebRequest.Get(url);
-        request.SetRequestHeader("Token", SaveManager.Instance.playerData.authResponse.AccessToken);
+        request.SetRequestHeader("Authorization", SaveManager.Instance.playerData.accessTokenResponse.data.access_token);
         request.certificateHandler = new CertificateWhore();
         request.downloadHandler = new DownloadHandlerBuffer();
 
         yield return request.SendWebRequest();
         if (request.result == UnityWebRequest.Result.Success)
         {
-
-
             string scoreData = request.downloadHandler.text;
             leaderboardData = JsonUtility.FromJson<LeaderboardData>(scoreData);
 

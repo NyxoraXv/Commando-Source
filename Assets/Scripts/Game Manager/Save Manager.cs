@@ -18,13 +18,13 @@ public class SaveManager : MonoBehaviour
 
         public Achievement achievement { get; set; } = new Achievement();
 
-        public UserAuthResponse authResponse { get; set; } = new UserAuthResponse();
+        public AccessTokenResponse accessTokenResponse { get; set; } = new AccessTokenResponse();
         
         public OwnedCharacterInformation characterInformation { get; set; } = new OwnedCharacterInformation();
         
         public UserResponse userData { get; set; } = new UserResponse();
 
-        public WalletAdress WalletData = new WalletAdress();
+        public WalletAdressDetails WalletData = new WalletAdressDetails();
 
         public CharacterInfo characterInfo { get; set; } = new CharacterInfo();
     }
@@ -34,7 +34,7 @@ public class SaveManager : MonoBehaviour
 
     public PlayerData playerData;
 
-    public string serverUrl = "https://2df8-103-189-200-37.ngrok-free.app";
+    public string serverUrl;
 
     public string username { get; set; }
 
@@ -90,7 +90,6 @@ public class SaveManager : MonoBehaviour
             print(jsonData);
             AccountForm.Instance.SignInP(jsonData);
             StartCoroutine(waitLoginScene());
-            SetUpDataLoad();
             return true;
         }
         else
@@ -125,6 +124,7 @@ public class SaveManager : MonoBehaviour
     public void Save()
     {
         SetStatistic(playerData.statistic);
+        SetAchievement(playerData.achievement);
     }
 
     private void OnApplicationQuit()
@@ -134,7 +134,7 @@ public class SaveManager : MonoBehaviour
 
     IEnumerator WaitForAccessToken(Action callback)
     {
-        while (string.IsNullOrEmpty(playerData.authResponse.AccessToken))
+        while (string.IsNullOrEmpty(playerData.accessTokenResponse.data.access_token))
         {
             yield return null;
         }
@@ -157,7 +157,7 @@ public class SaveManager : MonoBehaviour
         byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
         request.certificateHandler = new CertificateWhore();
         request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-        request.SetRequestHeader("Token", playerData.authResponse.AccessToken);
+        request.SetRequestHeader("Authorization", playerData.accessTokenResponse.data.access_token);
         request.SetRequestHeader("Content-Type", "application/json");
 
         yield return request.SendWebRequest();
@@ -184,11 +184,11 @@ public class SaveManager : MonoBehaviour
 
     IEnumerator GetStatisticRequest()
     {
-        string access = playerData.authResponse.AccessToken;
+        string access = playerData.accessTokenResponse.data.access_token;
         string url = serverUrl + "/statistics";
         UnityWebRequest request = UnityWebRequest.Get(url);
         request.certificateHandler = new CertificateWhore();
-        request.SetRequestHeader("Token", access);
+        request.SetRequestHeader("Authorization", access);
         request.downloadHandler = new DownloadHandlerBuffer();
 
         yield return request.SendWebRequest();
@@ -197,6 +197,7 @@ public class SaveManager : MonoBehaviour
         {
             string jsonData = request.downloadHandler.text;
             Statistic statistic = JsonConvert.DeserializeObject<Statistic>(jsonData);
+            playerData.statistic = statistic;
         }
         else
         {
@@ -220,7 +221,7 @@ public class SaveManager : MonoBehaviour
         byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
         request.certificateHandler = new CertificateWhore();
         request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-        request.SetRequestHeader("Token", playerData.authResponse.AccessToken);
+        request.SetRequestHeader("Authorization", playerData.accessTokenResponse.data.access_token);
         request.SetRequestHeader("Content-Type", "application/json");
 
         yield return request.SendWebRequest();
@@ -247,11 +248,11 @@ public class SaveManager : MonoBehaviour
 
     IEnumerator GetAchievementRequest(Action<Achievement> callback)
     {
-        string access = playerData.authResponse.AccessToken;
+        string access = playerData.accessTokenResponse.data.access_token;
         string url = serverUrl + "/achievements";
         UnityWebRequest request = UnityWebRequest.Get(url);
         request.certificateHandler = new CertificateWhore();
-        request.SetRequestHeader("Token", access);
+        request.SetRequestHeader("Authorization", access);
         request.downloadHandler = new DownloadHandlerBuffer();
 
         yield return request.SendWebRequest();
@@ -260,6 +261,7 @@ public class SaveManager : MonoBehaviour
         {
             string jsonData = request.downloadHandler.text;
             Achievement achievement = JsonConvert.DeserializeObject<Achievement>(jsonData);
+            playerData.achievement = achievement;
             callback?.Invoke(achievement);
         }
         else

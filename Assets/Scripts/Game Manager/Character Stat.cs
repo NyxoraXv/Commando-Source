@@ -45,6 +45,9 @@ public class CharacterInformation : MonoBehaviour
         [Header("NFT ID")]
         public string NFT_ID;
 
+        [Header("Bullet Particle")]
+        public ParticleSystem bullet;
+
     }
 
     public CharacterData Character;

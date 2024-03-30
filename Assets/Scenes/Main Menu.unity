@@ -241,6 +241,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2705414511077166885, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
+      propertyPath: isLogin
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2705414511077166885, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      propertyPath: serverUrl
+      value: https://497a-114-125-56-220.ngrok-free.app/api
+      objectReference: {fileID: 0}
+    - target: {fileID: 2705414511077166885, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
       propertyPath: playerData.Character.Level
       value: 2
       objectReference: {fileID: 0}

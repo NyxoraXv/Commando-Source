@@ -5,23 +5,17 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System;
+using Newtonsoft.Json;
 
 
 
 
 public class AccountForm : MonoBehaviour
 {
-    // [SerializeField] private LoginForm loginForm;
-    // [SerializeField] private WalletChain walletChain;
     public static string accesWallet;
     public static AccountForm Instance;
     public bool isLogin = false;
     public bool isSignup = false;
-
-    //private void Awake()
-    //{
-    //    accesWallet = GetData(1);
-    //}
 
     private void Start()
     {
@@ -47,7 +41,7 @@ public class AccountForm : MonoBehaviour
     IEnumerator SignUp(string jsonData)
     {
         Debug.Log("SignUp");
-        string url = SaveManager.Instance.serverUrl + "/api/users";
+        string url = SaveManager.Instance.serverUrl + "/users";
         LoadingAnimation.Instance.toggleLoading();
 
         // Menyiapkan permintaan POST
@@ -73,8 +67,9 @@ public class AccountForm : MonoBehaviour
         else
         {
             isSignup = false;
+            Debug.Log(request.url);
             Debug.LogError("Sign up failed: " + request.error);
-            if (request.error == "Cannot resolve destination host")
+            if (request.error == "Cannot resolve destination host") 
             {
                 PopUpInformationhandler.Instance.pop("Network Error");
             }
@@ -95,7 +90,7 @@ public class AccountForm : MonoBehaviour
     }
     IEnumerator SignIn(string jsonData)
     {
-        string url = SaveManager.Instance.serverUrl + "/api/users/_login";
+        string url = SaveManager.Instance.serverUrl + "/users/_login";
         LoadingAnimation.Instance.toggleLoading();
         UnityWebRequest request = UnityWebRequest.PostWwwForm(url, jsonData);
         byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
@@ -107,11 +102,13 @@ public class AccountForm : MonoBehaviour
         if (request.result == UnityWebRequest.Result.Success)
         {
             string accountData = request.downloadHandler.text;
+            AccessTokenResponse response = JsonConvert.DeserializeObject<AccessTokenResponse>(accountData);
             PopUpInformationhandler.Instance.pop("Logged In");
-            Debug.Log("Account data: " + accountData);
-            Debug.Log("Sign in successful.");
+            Debug.Log(response.data.refresh_token);
+            SaveManager.Instance.playerData.accessTokenResponse = response;
+            //Debug.Log("Account data: " + accountData);
+            //Debug.Log("Sign in successful.");
             isLogin = true;
-            SaveAccessData(accountData);
             LoadingAnimation.Instance.stopLoading();
         }
         else
@@ -131,8 +128,6 @@ public class AccountForm : MonoBehaviour
             }
             LoadingAnimation.Instance.stopLoading();
         }
-
-
     }
 
     //////////////    token harus di refresh karena bisa kadaluarsa, fungsi token untuk akses api
@@ -175,10 +170,5 @@ public class AccountForm : MonoBehaviour
     }*/
 
 
-
-    private void SaveAccessData(string jsonData)
-    {
-        SaveManager.Instance.playerData.authResponse = JsonUtility.FromJson<UserAuthResponse>(jsonData);
-    }
 
 }

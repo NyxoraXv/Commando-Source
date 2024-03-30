@@ -20,11 +20,16 @@ public class UserResponse
     public int UpdatedAt;
 }
 
-[Serializable]
-public class UserAuthResponse
+public class AccessTokenResponse
 {
-    public string AccessToken;
-    public string RefreshToken;
+    public UserAuthResponseData data;
+}
+
+[Serializable]
+public class UserAuthResponseData
+{
+    public string access_token;
+    public string refresh_token;
 }
 
 [Serializable]
