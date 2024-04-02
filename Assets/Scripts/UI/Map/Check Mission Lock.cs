@@ -21,7 +21,7 @@ public class CheckMissionLock : MonoBehaviour
             yield return null;
         }
         SaveManager.Instance.isGetAchievement = false;   
-        if (SaveManager.Instance.playerData.achievement.LastLevel < level) { gameObject.SetActive(false); }
+        if (SaveManager.Instance.playerData.achievementData.data.last_level < level) { gameObject.SetActive(false); }
 
     }
 }

@@ -188,6 +188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c31ed02d5b98dae45b1a7fc95a629df6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  win: 0
   bottomAnimator: {fileID: 2082334299683471256}
   speed: 1
   speedMultiplier: 2
@@ -196,7 +197,7 @@ MonoBehaviour:
     m_Bits: 1024
   JumpForce: 10
   rateOfFire: 5
-  bulletPrefab: {fileID: 3542438601343707874, guid: e33cecc02f168fa4b9fa4ab2d2445f33,
+  bulletPrefab: {fileID: 3542438601343707874, guid: e90c20f3ea207254db6b7db1f437a0a1,
     type: 3}
   Weapon: {fileID: 8003484413249760742}
   granadeSpawner: {fileID: 0}

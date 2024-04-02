@@ -21,7 +21,11 @@ EditorBuildSettings:
     path: Assets/Scenes/Missions/Mission3Boss.unity
     guid: 124388dc11ccbf645a4c7e5711c0266b
   m_configObjects:
+    com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000,
+      guid: 89cd34eeb0fd832448796ac68c81843b, type: 2}
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 5990828fe5b225c42a99eed46c345dc3,
       type: 2}
+    com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000,
+      guid: 611bd718f69a2e941a9d4abfe4909d44, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000,
       guid: b4bc9604ac9ded149a86bc334e6e2579, type: 2}

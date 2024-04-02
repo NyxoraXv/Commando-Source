@@ -10,10 +10,10 @@ using Newtonsoft.Json;
 
 
 
-public class AccountForm : MonoBehaviour
+public class AccountManager : MonoBehaviour
 {
     public static string accesWallet;
-    public static AccountForm Instance;
+    public static AccountManager Instance;
     public bool isLogin = false;
     public bool isSignup = false;
 
@@ -106,10 +106,10 @@ public class AccountForm : MonoBehaviour
             PopUpInformationhandler.Instance.pop("Logged In");
             Debug.Log(response.data.refresh_token);
             SaveManager.Instance.playerData.accessTokenResponse = response;
+            StartCoroutine(getAccountData());
             //Debug.Log("Account data: " + accountData);
             //Debug.Log("Sign in successful.");
-            isLogin = true;
-            LoadingAnimation.Instance.stopLoading();
+
         }
         else
         {
@@ -129,6 +129,37 @@ public class AccountForm : MonoBehaviour
             LoadingAnimation.Instance.stopLoading();
         }
     }
+
+
+    IEnumerator getAccountData()
+    {
+        string access = SaveManager.Instance.playerData.accessTokenResponse.data.access_token;
+        string url = SaveManager.Instance.serverUrl + "/users/_current";
+        UnityWebRequest request = UnityWebRequest.Get(url);
+        request.certificateHandler = new CertificateWhore();
+        request.SetRequestHeader("Authorization", access);
+        request.downloadHandler = new DownloadHandlerBuffer();
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            string jsonData = request.downloadHandler.text;
+            Debug.Log(jsonData);
+            UserResponseData responseData = JsonConvert.DeserializeObject<UserResponseData>(jsonData);
+            Debug.Log(responseData.data.username);
+            SaveManager.Instance.playerData.userData = responseData;
+            isLogin = true;
+            LoadingAnimation.Instance.stopLoading();
+        }
+        else
+        {
+            isLogin = false;
+            PopUpInformationhandler.Instance.pop(request.error);
+            LoadingAnimation.Instance.stopLoading();
+        }
+    }
+
 
     //////////////    token harus di refresh karena bisa kadaluarsa, fungsi token untuk akses api
 

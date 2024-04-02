@@ -34,7 +34,7 @@ public class GetLoginCredential : MonoBehaviour
 
     IEnumerator waitSceneSignup()
     {
-        while (!AccountForm.Instance.isSignup)
+        while (!AccountManager.Instance.isSignup)
         {
             yield return null;
         }
@@ -44,7 +44,7 @@ public class GetLoginCredential : MonoBehaviour
 
     IEnumerator waitSceneLogin()
     {
-        while (!AccountForm.Instance.isLogin)
+        while (!AccountManager.Instance.isLogin)
         {
             yield return null;
         }

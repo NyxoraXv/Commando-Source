@@ -43,15 +43,14 @@ public class CurrencyManager : MonoBehaviour
                 if (LuncDisplay != null && FRGDisplay != null)
                 {
                     // Update the text values
-                    LuncDisplay.text = SaveManager.Instance.playerData.statistic.Lunc.ToString();
-                    FRGDisplay.text = SaveManager.Instance.playerData.statistic.Frg.ToString();
+                    LuncDisplay.text = SaveManager.Instance.playerData.statistic.data.lunc.ToString();
+                    FRGDisplay.text = SaveManager.Instance.playerData.statistic.data.frg.ToString();
                 }
             }
         }
         catch (Exception e)
         {
-            // Handle any other exceptions that might occur
-            Debug.LogError($"An error occurred: {e.Message}");
+
         }
 
 
@@ -59,9 +58,9 @@ public class CurrencyManager : MonoBehaviour
 
     public bool spendFRG(float Amount)
     {
-        if (SaveManager.Instance.playerData.statistic.Frg >= Amount)
+        if (SaveManager.Instance.playerData.statistic.data.frg >= Amount)
         {
-            SaveManager.Instance.playerData.statistic.Frg -= Amount;
+            SaveManager.Instance.playerData.statistic.data.frg -= Amount;
             //SaveManager.Instance.Save();
             return true;
         }
@@ -73,9 +72,9 @@ public class CurrencyManager : MonoBehaviour
 
     public bool spendLUNC(float Amount)
     {
-        if (SaveManager.Instance.playerData.statistic.Lunc >= Amount)
+        if (SaveManager.Instance.playerData.statistic.data.lunc >= Amount)
         {
-            SaveManager.Instance.playerData.statistic.Lunc -= Amount;
+            SaveManager.Instance.playerData.statistic.data.lunc -= Amount;
             //SaveManager.Instance.Save();
             return true;
         }
@@ -89,7 +88,7 @@ public class CurrencyManager : MonoBehaviour
     {
         if(SaveManager.Instance.isWalletConnected)
         {
-            SaveManager.Instance.playerData.statistic.Frg += Amount;
+            SaveManager.Instance.playerData.statistic.data.frg += Amount;
             //SaveManager.Instance.Save();
         }
 
@@ -99,7 +98,7 @@ public class CurrencyManager : MonoBehaviour
     {
         if (SaveManager.Instance.isWalletConnected)
         {
-            SaveManager.Instance.playerData.statistic.Lunc += Amount;
+            SaveManager.Instance.playerData.statistic.data.lunc += Amount;
             //SaveManager.Instance.Save();
         }
     }

@@ -34,7 +34,7 @@ public class UpgradeButton : MonoBehaviour
         }
         else
         {
-            CurrencyManager.Instance.insufficientFund(SaveManager.Instance.playerData.statistic.Frg - FRGToSpend,
+            CurrencyManager.Instance.insufficientFund(SaveManager.Instance.playerData.statistic.data.frg - FRGToSpend,
                                                     GameObject.FindWithTag("Main Menu Parent").transform,
                                                     PopUpInstantiate.CurrencyType.LUNC);
 

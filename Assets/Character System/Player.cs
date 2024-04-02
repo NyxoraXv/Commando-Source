@@ -23,7 +23,7 @@ public class MainPlayer : MonoBehaviour
 
     [Header("Shoot")]
     public float rateOfFire;    
-    public GameObject bulletPrefab;
+    private GameObject bulletPrefab;
     public Transform Weapon;
 
     [Header("Granate")]
@@ -43,7 +43,7 @@ public class MainPlayer : MonoBehaviour
     public float knifeDamage = 500f;     
     private float knifeRange = 0.35f;     
     public LayerMask enemyLayer;     
-    public GameObject knifeHitVFXPrefab;
+    private GameObject knifeHitVFXPrefab;
 
     private bool isKnifing = false;
     public float timeBetweenKnifes = 0.2f;       
@@ -86,6 +86,8 @@ public class MainPlayer : MonoBehaviour
 
     private void Start()
     {
+        knifeHitVFXPrefab = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.KnifeEffectPrefab;
+        bulletPrefab = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.BulletPrefab;
         animator = gameObject.GetComponent<Animator>();
         animator.runtimeAnimatorController = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.PlayerController;
         handPivotIdle = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.HandPivotIdle;
@@ -135,7 +137,7 @@ public class MainPlayer : MonoBehaviour
     {
         isKnifing = true;
 
-        yield return new WaitForSeconds(0.1f);          
+        yield return new WaitForSeconds(0.1f);
 
         RaycastHit2D hit = Physics2D.Raycast(transform.position, aimPoint.right, knifeRange, enemyLayer);
 
@@ -145,7 +147,17 @@ public class MainPlayer : MonoBehaviour
 
             if (distanceToEnemy <= knifeRange)
             {
-                Instantiate(knifeHitVFXPrefab, hit.point, Quaternion.identity);
+                // Instantiate the knife hit VFX
+                GameObject knifeHitVFX = Instantiate(knifeHitVFXPrefab, hit.point, Quaternion.identity);
+
+                // Calculate the direction vector from player to hit point
+                Vector2 direction = (hit.point - (Vector2)transform.position).normalized;
+
+                // Calculate the angle based on the direction vector
+                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+                // Rotate the knife VFX to match the direction
+                knifeHitVFX.transform.rotation = Quaternion.Euler(0f, 0f, angle);
 
                 bottomAnimator.SetTrigger("IsKniving");
                 Health enemyHealth = hit.collider.GetComponent<Health>();
@@ -160,6 +172,8 @@ public class MainPlayer : MonoBehaviour
 
         isKnifing = false;
     }
+
+
 
     private IEnumerator WaitGranade()
     {

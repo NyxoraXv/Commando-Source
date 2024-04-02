@@ -17,6 +17,7 @@ public class CharacterInformation : MonoBehaviour
         public class LevelData
         {
             public int Damage;
+            public int RateOfFire;
             public int HP;
             public float Agility;
             public float UpgradeCost;
@@ -45,8 +46,9 @@ public class CharacterInformation : MonoBehaviour
         [Header("NFT ID")]
         public string NFT_ID;
 
-        [Header("Bullet Particle")]
-        public ParticleSystem BulletParticle;
+        [Header("Damager Object")]
+        public GameObject BulletPrefab;
+        public GameObject KnifeEffectPrefab;
 
     }
 
@@ -58,15 +60,13 @@ public class CharacterInformation : MonoBehaviour
 
         if (SaveManager.Instance != null)
         {
-            // Iterate through the owned characters to find the one with the matching name
             foreach (var kvp in SaveManager.Instance.playerData.characterInfo.OwnedCharacters)
             {
-                Character ownedCharacter = kvp.Key; // Access the character enum directly
-                int characterLevel = kvp.Value; // Access the level
+                Character ownedCharacter = kvp.Key;
+                int characterLevel = kvp.Value;
 
                 if (ownedCharacter.ToString() == Character.CharacterName.ToString())
                 {
-                    // Use 'ownedCharacter' and 'characterLevel' as needed.
                 }
             }
         }

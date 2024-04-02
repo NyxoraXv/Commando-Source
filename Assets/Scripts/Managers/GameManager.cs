@@ -269,9 +269,11 @@ public class GameManager : MonoBehaviour
         UIManager.DisplayWinUI();
         AudioManager.PlayLevelCompleteAudio();
         AudioManager.PlayGameOverAudio();
-        if (MissionManager.Instance.onLoaded >= SaveManager.Instance.playerData.achievement.LastLevel) {
-            SaveManager.Instance.playerData.achievement.LastLevel = MissionManager.Instance.onLoaded+1;
-            SaveManager.Instance.playerData.statistic.Score = SaveManager.Instance.playerData.statistic.Score+current.score;
+        if (MissionManager.Instance.onLoaded >= SaveManager.Instance.playerData.achievementData.data.last_level) {
+            SaveManager.Instance.playerData.achievementData.data.last_level = MissionManager.Instance.onLoaded+1;
+            SaveManager.Instance.playerData.statistic.data.frg = SaveManager.Instance.playerData.statistic.data.frg + current.frg;
+            SaveManager.Instance.playerData.statistic.data.lunc = SaveManager.Instance.playerData.statistic.data.lunc + current.lunc;
+            SaveManager.Instance.playerData.statistic.data.score = SaveManager.Instance.playerData.statistic.data.score+current.score;
             SaveManager.Instance.Save();
         }
         current.isGameOver = true;

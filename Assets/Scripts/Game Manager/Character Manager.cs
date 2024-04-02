@@ -140,7 +140,6 @@ public class CharacterManager : MonoBehaviour
         if (!ownedCharacters.ContainsKey(character))
         {
             ownedCharacters.Add(character, 0);
-            SaveManager.Instance.Save();
             Debug.Log("Character Added" + character);
         }
     }

@@ -21,8 +21,8 @@ public class LeaderboardGameSystem : MonoBehaviour
     private void OnEnable()
     {
         LeaderboardData();
-        myScore.text = SaveManager.Instance.playerData.statistic.Score.ToString();
-        myName.text = SaveManager.Instance.playerData.userData.Username;
+        myScore.text = SaveManager.Instance.playerData.statistic.data.score.ToString();
+        myName.text = SaveManager.Instance.playerData.userData.data.username;
     }
 
     public void RefreshData()
@@ -51,9 +51,10 @@ public class LeaderboardGameSystem : MonoBehaviour
         if (request.result == UnityWebRequest.Result.Success)
         {
             string scoreData = request.downloadHandler.text;
-            leaderboardData = JsonUtility.FromJson<LeaderboardData>(scoreData);
+            LeaderboardData leaderboardData = JsonUtility.FromJson<LeaderboardData>(scoreData);
 
-            Array.Sort(leaderboardData.data, (x, y) => y.Score.CompareTo(x.Score));
+            // Sort leaderboard data by score
+            Array.Sort(leaderboardData.data, (x, y) => y.score.CompareTo(x.score));
 
             foreach (Transform child in leaderboardParent)
             {
@@ -69,8 +70,8 @@ public class LeaderboardGameSystem : MonoBehaviour
                 entry.transform.position = currentPosition;
 
                 TextMeshProUGUI[] texts = entry.GetComponentsInChildren<TextMeshProUGUI>();
-                texts[0].text = leaderboardData.data[i].Username;
-                texts[1].text = leaderboardData.data[i].Score.ToString();
+                texts[0].text = leaderboardData.data[i].username;
+                texts[1].text = leaderboardData.data[i].score.ToString();
                 texts[2].text = (i + 1).ToString(); // Assuming the third text is for the rank number
                 if (i == 0) // Gold for top rank
                 {
@@ -89,7 +90,6 @@ public class LeaderboardGameSystem : MonoBehaviour
                     entry.GetComponent<Image>().color = Color.white;
                 }
                 currentPosition.y -= gapBetweenEntries;
-
             }
             LoadingAnimation.Instance.stopLoading();
         }
@@ -101,4 +101,5 @@ public class LeaderboardGameSystem : MonoBehaviour
         Debug.Log("GetLeaderboardData coroutine finished.");
         LoadingAnimation.Instance.stopLoading();
     }
+
 }

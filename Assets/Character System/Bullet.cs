@@ -26,14 +26,11 @@ public class BulletHandler : MonoBehaviour
     void OnEnable()
     {
         damageShot = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.Levels[CharacterManager.Instance.GetOwnedCharacterLevel(CharacterManager.Instance.selectedCharacter)].Damage;
-        Debug.Log(damageShot);
         Init();
     }
 
     private void Init()
     {
-        particleSystem = GetComponent<ParticleSystem>();
-        particleSystem = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.BulletParticle;
         expireTime = lifeTime;
         Vector3 bulletDirection = transform.right;
         rb = GetComponent<Rigidbody2D>();
@@ -41,6 +38,7 @@ public class BulletHandler : MonoBehaviour
         isSpawned = true;
         AudioManager.PlayNormalShotAudio();
     }
+
 
     void Update()
     {

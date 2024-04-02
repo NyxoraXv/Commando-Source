@@ -14,17 +14,17 @@ public class SaveManager : MonoBehaviour
 {
     public class PlayerData
     {
-        public Statistic statistic { get; set; } = new Statistic();
+        public StatisticData statistic { get; set; } = new StatisticData();
 
-        public Achievement achievement { get; set; } = new Achievement();
+        public AchievementData achievementData { get; set; } = new AchievementData();
 
         public AccessTokenResponse accessTokenResponse { get; set; } = new AccessTokenResponse();
         
         public OwnedCharacterInformation characterInformation { get; set; } = new OwnedCharacterInformation();
         
-        public UserResponse userData { get; set; } = new UserResponse();
+        public UserResponseData userData { get; set; } = new UserResponseData();
 
-        public WalletAdressDetails WalletData = new WalletAdressDetails();
+        public WalletAdressData WalletData = new WalletAdressData();
 
         public CharacterInfo characterInfo { get; set; } = new CharacterInfo();
     }
@@ -63,13 +63,13 @@ public class SaveManager : MonoBehaviour
 
     public void InitializeNewPlayer()
     {
-        playerData.achievement.PlayerLevel = 1;
-        playerData.achievement.PlayerExp = 0;
-        playerData.achievement.LastLevel = 0;
+        playerData.achievementData.data.player_level = 1;
+        playerData.achievementData.data.player_exp = 0;
+        playerData.achievementData.data.last_level = 0;
 
-        playerData.statistic.Lunc= 0f;
-        playerData.statistic.Frg = 0f;
-        playerData.statistic.Score = 0;
+        playerData.statistic.data.lunc= 0f;
+        playerData.statistic.data.frg = 0f;
+        playerData.statistic.data.score = 0;
 
         playerData.characterInfo.SelectedCharacter = Character.Sucipto;
     }
@@ -88,7 +88,7 @@ public class SaveManager : MonoBehaviour
         if (isLogin) {
             string jsonData = "{\"Username\": \"" + Username + "\",\"Password\": \"" + Password + "\", \"device\": \"laptop\"}";
             print(jsonData);
-            AccountForm.Instance.SignInP(jsonData);
+            AccountManager.Instance.SignInP(jsonData);
             StartCoroutine(waitLoginScene());
             return true;
         }
@@ -96,7 +96,7 @@ public class SaveManager : MonoBehaviour
         {
             string jsonData = "{\"Password\": \"" + Password + "\",\"Username\": \"" + Username + "\",\"Email\": \"" + Email + "\"}";
             print(jsonData);
-            AccountForm.Instance.SignUpP(jsonData);
+            AccountManager.Instance.SignUpP(jsonData);
             StartCoroutine(waitSignupScene());
 
             return true;
@@ -105,7 +105,7 @@ public class SaveManager : MonoBehaviour
 
     IEnumerator waitLoginScene()
     {
-        while (!AccountForm.Instance.isLogin)
+        while (!AccountManager.Instance.isLogin)
         {
             yield return null;
         }
@@ -114,7 +114,7 @@ public class SaveManager : MonoBehaviour
 
     IEnumerator waitSignupScene()
     {
-        while (!AccountForm.Instance.isLogin)
+        while (!AccountManager.Instance.isLogin)
         {
             yield return null;
         }
@@ -123,8 +123,8 @@ public class SaveManager : MonoBehaviour
 
     public void Save()
     {
-        SetStatistic(playerData.statistic);
-        SetAchievement(playerData.achievement);
+        SetStatistic(playerData.statistic.data);
+        SetAchievement(playerData.achievementData.data);
     }
 
     private void OnApplicationQuit()
@@ -173,6 +173,7 @@ public class SaveManager : MonoBehaviour
             {
                 Debug.LogError("Response: " + request.downloadHandler.text);
             }
+            Debug.Log(jsonData);
             // Optionally, handle error response here
         }
     }
@@ -196,7 +197,7 @@ public class SaveManager : MonoBehaviour
         if (request.result == UnityWebRequest.Result.Success)
         {
             string jsonData = request.downloadHandler.text;
-            Statistic statistic = JsonConvert.DeserializeObject<Statistic>(jsonData);
+            StatisticData statistic = JsonConvert.DeserializeObject<StatisticData>(jsonData);
             playerData.statistic = statistic;
         }
         else
@@ -241,12 +242,12 @@ public class SaveManager : MonoBehaviour
         }
     }
 
-    public void GetAchievement(Action<Achievement> callback)
+    public void GetAchievement(Action<AchievementData> callback)
     {
         StartCoroutine(GetAchievementRequest(callback));
     }
 
-    IEnumerator GetAchievementRequest(Action<Achievement> callback)
+    IEnumerator GetAchievementRequest(Action<AchievementData> callback)
     {
         string access = playerData.accessTokenResponse.data.access_token;
         string url = serverUrl + "/achievements";
@@ -260,8 +261,10 @@ public class SaveManager : MonoBehaviour
         if (request.result == UnityWebRequest.Result.Success)
         {
             string jsonData = request.downloadHandler.text;
-            Achievement achievement = JsonConvert.DeserializeObject<Achievement>(jsonData);
-            playerData.achievement = achievement;
+            Debug.Log(jsonData);
+            AchievementData achievement = JsonUtility.FromJson<AchievementData>(jsonData);
+            playerData.achievementData = achievement;
+            Debug.Log("Last Level = " + achievement.data.last_level);
             callback?.Invoke(achievement);
         }
         else

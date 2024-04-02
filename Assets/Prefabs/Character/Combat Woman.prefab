@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7361782805168507399
 Transform:
   m_ObjectHideFlags: 0
@@ -48,22 +48,27 @@ MonoBehaviour:
     CharacterName: 5
     Levels:
     - Damage: 120
+      RateOfFire: 0
       HP: 500
       Agility: 2.87
       UpgradeCost: 1
     - Damage: 1
+      RateOfFire: 0
       HP: 700
       Agility: 2.95
       UpgradeCost: 1.1
     - Damage: 160
+      RateOfFire: 0
       HP: 700
       Agility: 3.02
       UpgradeCost: 1.3
     - Damage: 180
+      RateOfFire: 0
       HP: 800
       Agility: 3.08
       UpgradeCost: 1.4
     - Damage: 200
+      RateOfFire: 0
       HP: 1000
       Agility: 3.1
       UpgradeCost: 1.5
@@ -79,5 +84,7 @@ MonoBehaviour:
     HandPivotIdle: {x: -0.166, y: 0.386, z: 0}
     HandPivotRun: {x: -0.031, y: 0.294, z: 0}
     NFT_ID: 7,12,38,43,52,53,54,57,58,62,63,71,76,77,93,135,143,148,151,154,156,176,178,180,182,191,196,202,203,209,219,237,543,546,560,561,570,581,582,591,302,305,316,319,354,334,342,353,358,360,362,380,386,392,399,403,409,432,438,467,479,484,496,502,503,509,519,530,540,547,556,563,570,572,589,590,594,599,600,603,611,621,630,635,636,638,642,644,651,655,662,666,674,680,687,690,699,702,704,705,708,711,727,736,738,747
-    BulletParticle: {fileID: 6368070078951392227, guid: 5f50ff2d584f2f54dbfa91e1923b0207,
+    BulletPrefab: {fileID: 3542438601343707874, guid: 1bcf2b4cfa6fcfd4cb022a93dc40b207,
+      type: 3}
+    KnifeEffectPrefab: {fileID: 4030974680984363245, guid: 868fcba5e2d13b74499fc2b010a3da48,
       type: 3}
