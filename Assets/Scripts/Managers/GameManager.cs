@@ -507,15 +507,18 @@ public class GameManager : MonoBehaviour
     {
         if (!current)
             return;
-        LoadHome();
-        SaveManager.Instance.Save();
+        Debug.Log("Exit Pressed");
+        LoadScene((int)Missions.Home);
+        //LoadHome();
+        //SaveManager.Instance.Save();
     }
 
     public static void LoadHome()
     {
         if(current == null)
         return;
-        
+
+        Debug.Log("Exit");
         current.StartCoroutine(current.GoToHome());
     }
 
