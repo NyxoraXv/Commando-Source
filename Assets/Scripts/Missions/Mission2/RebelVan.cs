@@ -87,7 +87,6 @@ public class RebelVan : MonoBehaviour
             animator.SetBool("isDamaged", true);
             hasHalfHealth = true;
         }
-        GameManager.AddScore(damage);
         blinkingSprite.Play();
     }
 

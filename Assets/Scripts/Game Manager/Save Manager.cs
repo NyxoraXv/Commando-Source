@@ -9,6 +9,7 @@ using UnityEngine.Networking;
 using System.Text;
 using UnityEditor;
 using System.Net.Http.Headers;
+using System.Runtime.InteropServices;
 
 public class SaveManager : MonoBehaviour
 {
@@ -44,6 +45,7 @@ public class SaveManager : MonoBehaviour
 
     public bool isGetAchievement = false;
     public bool isSetAchievement = false;
+    public string Device;
     private bool isGetStatisticCalled = false;
 
     private void Awake()
@@ -83,10 +85,13 @@ public class SaveManager : MonoBehaviour
         }
     }
 
+
+
     public bool Verify(string Username, string Password, string Email, bool isLogin)
     {
         if (isLogin) {
-            string jsonData = "{\"Username\": \"" + Username + "\",\"Password\": \"" + Password + "\", \"device\": \"laptop\"}";
+
+            string jsonData = "{\"Username\": \"" + Username + "\",\"Password\": \"" + Password + "\", \"device\": \""+ Device +"\"}";
             print(jsonData);
             AccountManager.Instance.SignInP(jsonData);
             StartCoroutine(waitLoginScene());

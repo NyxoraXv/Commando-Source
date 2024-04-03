@@ -29,8 +29,8 @@ public class WinUI : MonoBehaviour
         //AnimateVictoryScreen();
 
         CountScore(scoreText, finalScore);
-        CountScore(luncText, finalLUNC);
-        CountScore(FRGText, finalFRG);
+        luncText.text = finalLUNC.ToString();
+        FRGText.text = finalFRG.ToString();
     }
 
     void AnimateVictoryScreen()

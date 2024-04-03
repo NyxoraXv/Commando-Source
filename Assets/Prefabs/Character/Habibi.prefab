@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7361782805168507399
 Transform:
   m_ObjectHideFlags: 0
@@ -86,5 +86,5 @@ MonoBehaviour:
     NFT_ID: 8,29,40,42,60,74,95,101,102,104,112,120,134,137,145,150,160,170,186,190,216,226,231,264,266,268,278,280,325,327,354,365,366,373,381,405,419,422,423,426,428,435,444,465,482,490,521,529,531,539,569,585,586,595,596,598,643,650,656,657,664,668,679,691,698,710,716,749
     BulletPrefab: {fileID: 3542438601343707874, guid: 1bcf2b4cfa6fcfd4cb022a93dc40b207,
       type: 3}
-    KnifeEffectPrefab: {fileID: 4030974680984363245, guid: 868fcba5e2d13b74499fc2b010a3da48,
+    KnifeEffectPrefab: {fileID: 930131930442724809, guid: 687240d9133f3e149a2376fc151fef88,
       type: 3}

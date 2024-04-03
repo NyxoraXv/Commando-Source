@@ -86,7 +86,7 @@ public class WalletChain : MonoBehaviour
                 Debug.LogError("Get wallet data failed: " + request.error);
                 LoadingAnimation.Instance.stopLoading();
             }
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(1.5f);
         }
     }
 
@@ -149,6 +149,7 @@ public class WalletChain : MonoBehaviour
                 setWalletInformation();
                 Debug.Log("Sukses Connect");
                 isConnectedWallet = true;
+                LoadingAnimation.Instance.stopLoading();
                 walletIcon.color = Color.white;
                 PopUpInformationhandler.Instance.pop("Wallet Connected");
                 StartCoroutine(getNFT());
@@ -234,7 +235,7 @@ public class WalletChain : MonoBehaviour
 
     IEnumerator getNFT()
     {
-        if(myDatawallet.data.is_connected && (myDatawallet.data.address !=null || myDatawallet.data.address == "")) {
+        if(myDatawallet.data.address !=null || myDatawallet.data.address != "") {
             string addressWallet = SaveManager.Instance.playerData.WalletData.data.address;
             LoadingAnimation.Instance.toggleLoading();
             Debug.Log(addressWallet);
@@ -271,6 +272,12 @@ public class WalletChain : MonoBehaviour
         {
             StartCoroutine(LoopGetWallet());
         }
+        LoadingAnimation.Instance.stopLoading();
+    }
+
+    public void getWalletNonBrowser()
+    {
+        StartCoroutine(GetWallet(false));
 
     }
 

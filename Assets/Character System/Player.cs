@@ -182,8 +182,6 @@ public class MainPlayer : MonoBehaviour
         yield return new WaitForSeconds(0.15f);
     }
 
-
-
     private void registerHealth()
     {
         health = GetComponent<Health>();
@@ -208,6 +206,14 @@ public class MainPlayer : MonoBehaviour
 
     public void Revive()
     {
+
+        GameObject walkable = GameObject.FindGameObjectWithTag("Walkable");
+        this.gameObject.transform.localPosition = new Vector3
+        {
+            x = this.gameObject.transform.localPosition.x,
+            y = walkable.transform.localPosition.y + 0.2f,
+            z = this.gameObject.transform.localPosition.z
+        };
         animator.SetBool("isDying", false);
         isDead = false;
         Weapon.gameObject.SetActive(true);
