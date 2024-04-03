@@ -56,7 +56,7 @@ public class WalletChain : MonoBehaviour
                 // Debug.Log(formattedUrl);
 
 
-                if (myDatawallet.data.address != "")
+                if (myDatawallet.data.address != "" || myDatawallet.data.address != null)
                 {
                     isConnectedWallet = true;
                     SaveManager.Instance.isWalletConnected = true;
@@ -65,7 +65,7 @@ public class WalletChain : MonoBehaviour
                     walletIcon.color = Color.white;
                     setWalletInformation();
                     StartCoroutine(getNFT());
-
+                    LoadingAnimation.Instance.stopLoading();    
                     // ---------------------------jika sudah sukses untuk connect wallet---------------------------
                     //------------------------------------------------------------------------------------------
                     break;
@@ -79,13 +79,14 @@ public class WalletChain : MonoBehaviour
                     StartCoroutine(getNFT());
                     setWalletInformation();
                 }
+
             }
             else
             {
                 Debug.LogError("Get wallet data failed: " + request.error);
-
+                LoadingAnimation.Instance.stopLoading();
             }
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(0.2f);
         }
     }
 
@@ -133,8 +134,6 @@ public class WalletChain : MonoBehaviour
             string address = myDatawallet.data.address;
             Debug.Log(address);
 
-
-
             // Format the URL with the token and open it
             string formattedUrl = "https://www.garudaverse.io?token=" + getToken + "&serverId=3";
             SaveManager.Instance.playerData.WalletData = myDatawallet;
@@ -145,7 +144,7 @@ public class WalletChain : MonoBehaviour
             {
                 Application.OpenURL(formattedUrl);
             }
-            if (myDatawallet.data.address != "" || myDatawallet.data.address != null)
+            if ((myDatawallet.data.address != "" || myDatawallet.data.address != null) && (myDatawallet.data.is_connected && !myDatawallet.data.request_disconnected))
             {
                 setWalletInformation();
                 Debug.Log("Sukses Connect");
@@ -156,7 +155,6 @@ public class WalletChain : MonoBehaviour
                 SaveManager.Instance.isWalletConnected = true;
                 disconnectButton.gameObject.SetActive(true);
                 refreshButton.gameObject.SetActive(true);
-                LoadingAnimation.Instance.stopLoading();
                 //=====================================jika connect wallet berhasil na=======================
                 //================================================================================================
             }
@@ -171,9 +169,7 @@ public class WalletChain : MonoBehaviour
                     StartCoroutine(LoopGetWallet());
                     Invoke("TimeOut", 300);
                 }
-                LoadingAnimation.Instance.stopLoading();
             }
-            yield return new WaitForSeconds(1f);
 
         }
         else
@@ -181,7 +177,7 @@ public class WalletChain : MonoBehaviour
             // urus na error handling mu di sini
             PopUpInformationhandler.Instance.pop("Please Try Again");
             Debug.LogError("Get wallet data failed: " + request.error);
-
+            LoadingAnimation.Instance.stopLoading();
         }
     }
 
@@ -238,37 +234,44 @@ public class WalletChain : MonoBehaviour
 
     IEnumerator getNFT()
     {
-        string addressWallet = SaveManager.Instance.playerData.WalletData.data.address;
-        LoadingAnimation.Instance.toggleLoading();
-        Debug.Log(addressWallet);
+        if(myDatawallet.data.is_connected && (myDatawallet.data.address !=null || myDatawallet.data.address == "")) {
+            string addressWallet = SaveManager.Instance.playerData.WalletData.data.address;
+            LoadingAnimation.Instance.toggleLoading();
+            Debug.Log(addressWallet);
 
-        string requestBody = "{\"contractAddress\":\"terra1j7h8v7sdppru5gl67y05h2jvh5xa0g9rmylfs8vf7xaa8l8anwxqmh0aew\",\"walletAddress\":\"" + addressWallet + "\"}";
-        Debug.Log(requestBody);
+            string requestBody = "{\"contractAddress\":\"terra1j7h8v7sdppru5gl67y05h2jvh5xa0g9rmylfs8vf7xaa8l8anwxqmh0aew\",\"walletAddress\":\"" + addressWallet + "\"}";
+            Debug.Log(requestBody);
 
-        UnityWebRequest request = new UnityWebRequest("https://api.garudaverse.io/check-list-nft", "POST");
+            UnityWebRequest request = new UnityWebRequest("https://api.garudaverse.io/check-list-nft", "POST");
 
-        request.SetRequestHeader("Content-Type", "application/json");
+            request.SetRequestHeader("Content-Type", "application/json");
 
-        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(requestBody);
+            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(requestBody);
 
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+            request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
 
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+            request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
 
-        yield return request.SendWebRequest();
+            yield return request.SendWebRequest();
 
-        if (request.result == UnityWebRequest.Result.Success)
-        {
-            string jsonResponse = request.downloadHandler.text;
-            LoadingAnimation.Instance.stopLoading();
-            Debug.Log($"{jsonResponse}");
-            HandleResponse(jsonResponse);
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                string jsonResponse = request.downloadHandler.text;
+                LoadingAnimation.Instance.stopLoading();
+                Debug.Log($"{jsonResponse}");
+                HandleResponse(jsonResponse);
+            }
+            else
+            {
+                Debug.LogError("Error: " + request.error);
+                LoadingAnimation.Instance.stopLoading();
+            }
         }
         else
         {
-            Debug.LogError("Error: " + request.error);
-            LoadingAnimation.Instance.stopLoading();
+            StartCoroutine(LoopGetWallet());
         }
+
     }
 
     public int[] convertCharacterID(string numbersString)
@@ -347,10 +350,18 @@ public class WalletChain : MonoBehaviour
 
     private void setWalletInformation()
     {
-        string walletString = SaveManager.Instance.playerData.WalletData.data.address;
-        string wallet = walletString.Substring(0, 4) + "..." + walletString.Substring(walletString.Length - 4);
+        try
+        {
+            string walletString = SaveManager.Instance.playerData.WalletData.data.address;
+            string wallet = walletString.Substring(0, 4) + "..." + walletString.Substring(walletString.Length - 4);
 
-        walletText.text = wallet;
+            walletText.text = wallet;
+        }
+        catch (Exception e)
+        {
+            Debug.Log("No wallet address");
+        }
+
     }
 
 
