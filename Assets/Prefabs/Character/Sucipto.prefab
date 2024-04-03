@@ -84,7 +84,7 @@ MonoBehaviour:
     HandPivotIdle: {x: -0.151, y: 0.396, z: 0}
     HandPivotRun: {x: 0, y: 0.312, z: 0}
     NFT_ID: 0
-    BulletPrefab: {fileID: 3542438601343707874, guid: e33cecc02f168fa4b9fa4ab2d2445f33,
+    BulletPrefab: {fileID: 3542438601343707874, guid: 1bcf2b4cfa6fcfd4cb022a93dc40b207,
       type: 3}
-    KnifeEffectPrefab: {fileID: 930131930442724809, guid: 687240d9133f3e149a2376fc151fef88,
+    KnifeEffectPrefab: {fileID: 4030974680984363245, guid: 868fcba5e2d13b74499fc2b010a3da48,
       type: 3}
