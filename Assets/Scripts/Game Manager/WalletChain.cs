@@ -136,7 +136,7 @@ public class WalletChain : MonoBehaviour
 
 
             // Format the URL with the token and open it
-            string formattedUrl = "https://dev-fe.garudaverse.io?token=" + getToken + "&serverId=3";
+            string formattedUrl = "https://www.garudaverse.io?token=" + getToken + "&serverId=3";
             SaveManager.Instance.playerData.WalletData = myDatawallet;
             Debug.Log("Adress = " + myDatawallet.data.address);
             Debug.Log(formattedUrl);
@@ -145,7 +145,7 @@ public class WalletChain : MonoBehaviour
             {
                 Application.OpenURL(formattedUrl);
             }
-            if (myDatawallet.data.address != "" && myDatawallet.data.request_disconnected == false || myDatawallet.data.request_disconnected == true && myDatawallet.data.request_disconnected == false)
+            if (myDatawallet.data.address != "" || myDatawallet.data.address != null)
             {
                 setWalletInformation();
                 Debug.Log("Sukses Connect");
@@ -173,6 +173,7 @@ public class WalletChain : MonoBehaviour
                 }
                 LoadingAnimation.Instance.stopLoading();
             }
+            yield return new WaitForSeconds(1f);
 
         }
         else
