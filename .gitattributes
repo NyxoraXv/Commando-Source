@@ -1,1 +1,2 @@
 *.cs eol=crlf
+*psd filter=lfs diff=lfs merge=lfs -text
