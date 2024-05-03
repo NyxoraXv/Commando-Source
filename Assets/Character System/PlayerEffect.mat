@@ -12,6 +12,8 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _ENABLEFULLALPHADISSOLVE_ON
+  - _ENABLEGLITCH_ON
   - _SHADERFADING_NONE
   - _SHADERSPACE_UV
   - _TEXTURELAYER1SHEETTOGGLE_ON
@@ -242,11 +244,11 @@ Material:
     - _EnableEnchanted: 0
     - _EnableFlame: 0
     - _EnableFrozen: 0
-    - _EnableFullAlphaDissolve: 0
+    - _EnableFullAlphaDissolve: 1
     - _EnableFullDistortion: 0
     - _EnableFullGlowDissolve: 0
     - _EnableGaussianBlur: 0
-    - _EnableGlitch: 0
+    - _EnableGlitch: 1
     - _EnableHalftone: 0
     - _EnableHologram: 0
     - _EnableHue: 0
@@ -324,7 +326,7 @@ Material:
     - _GlitchBrightness: 4
     - _GlitchFade: 1
     - _GlitchHueSpeed: 1
-    - _GlitchMaskMin: 0.4
+    - _GlitchMaskMin: 0.7
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1

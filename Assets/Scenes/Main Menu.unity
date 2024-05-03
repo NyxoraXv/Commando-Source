@@ -635,6 +635,34 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1666444575}
+    - targetCorrespondingSourceObject: {fileID: 3309609548692264067, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1666444589}
+    - targetCorrespondingSourceObject: {fileID: 3309609548692264067, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1666444588}
+    - targetCorrespondingSourceObject: {fileID: 3309609548692264067, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1666444587}
+    - targetCorrespondingSourceObject: {fileID: 3309609548692264067, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1666444586}
+    - targetCorrespondingSourceObject: {fileID: 3309609548692264067, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1666444585}
+    - targetCorrespondingSourceObject: {fileID: 3309609548692264067, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1666444584}
+    - targetCorrespondingSourceObject: {fileID: 3309609548692264067, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1666444583}
   m_SourcePrefab: {fileID: 100100000, guid: 47af4844d7c9fdb498941bf9d6c926f2, type: 3}
 --- !u!1 &268086818
 GameObject:
@@ -833,6 +861,181 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ace8b56830cfec48a97ae635fad06f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1666444583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1666444551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3fe589ae113348be4e1ae8d11ee82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGameOver: 0
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  buildingLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  walkableLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
+--- !u!114 &1666444584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1666444551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3fe589ae113348be4e1ae8d11ee82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGameOver: 0
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  buildingLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  walkableLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
+--- !u!114 &1666444585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1666444551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3fe589ae113348be4e1ae8d11ee82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGameOver: 0
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  buildingLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  walkableLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
+--- !u!114 &1666444586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1666444551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3fe589ae113348be4e1ae8d11ee82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGameOver: 0
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  buildingLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  walkableLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
+--- !u!114 &1666444587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1666444551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3fe589ae113348be4e1ae8d11ee82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGameOver: 0
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  buildingLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  walkableLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
+--- !u!114 &1666444588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1666444551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3fe589ae113348be4e1ae8d11ee82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGameOver: 0
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  buildingLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  walkableLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
+--- !u!114 &1666444589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1666444551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3fe589ae113348be4e1ae8d11ee82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGameOver: 0
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  buildingLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  walkableLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
