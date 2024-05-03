@@ -76,6 +76,12 @@ public class MainPlayer : MonoBehaviour
     private Vector3 handPivotIdle;
     private Vector3 handPivotRun;
 
+    [Header("Material")]
+    [SerializeField] public float glitchValue;
+    [SerializeField] public float fadeValue;
+    Material material;
+
+
     Cinemachine.CinemachineBrain cinemachineBrain;
     public enum CollectibleType
     {
@@ -106,6 +112,10 @@ public class MainPlayer : MonoBehaviour
         GameManager.SetBombs(15);
 
         isMobile = UIManager.isMobile();
+
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        material = spriteRenderer.material;
+        material.SetFloat("_GlitchFade", glitchValue);
     }
 
     void ThrowGranade()
@@ -179,6 +189,10 @@ public class MainPlayer : MonoBehaviour
 
     private void OnDead(float damage)    
     {
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        Material material = spriteRenderer.material;
+        material.SetFloat("_FullAlphaDissolveFade", fadeValue);
+
         Died();
         GameManager.PlayerDied("Water Dead");
         AudioManager.PlayDeathAudio();
@@ -206,6 +220,10 @@ public class MainPlayer : MonoBehaviour
 
     private void OnHit(float damage)    
     {
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        Material material = spriteRenderer.material;
+        material.SetFloat("_FullAlphaDissolveFade", fadeValue);
+
         if (!isDead) { 
         UIManager.UpdateHealthUI(health.GetHealth(), health.GetMaxHealth());
         AudioManager.PlayMeleeTakeAudio();

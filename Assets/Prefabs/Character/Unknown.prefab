@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7361782805168507399}
   - component: {fileID: 8795136070211642473}
   m_Layer: 0
-  m_Name: Big Man
+  m_Name: Unknown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,37 +45,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Character:
-    CharacterName: 6
+    CharacterName: 7
     Levels:
-    - Damage: 100
-      HP: 800
-      Agility: 2.85
-      UpgradeCost: 1
-    - Damage: 110
-      HP: 900
-      Agility: 2.9
-      UpgradeCost: 1.1
-    - Damage: 120
-      HP: 1000
-      Agility: 2.95
-      UpgradeCost: 1.3
-    - Damage: 130
-      HP: 1100
-      Agility: 3
-      UpgradeCost: 1.4
-    - Damage: 140
-      HP: 1200
-      Agility: 3.05
-      UpgradeCost: 1.5
+    - Damage: 300
+      HP: 3000
+      Agility: 3.5
+      UpgradeCost: 2
+    - Damage: 325
+      HP: 3200
+      Agility: 3.55
+      UpgradeCost: 2.1
+    - Damage: 350
+      HP: 3400
+      Agility: 3.6
+      UpgradeCost: 2.3
+    - Damage: 364
+      HP: 3600
+      Agility: 3.65
+      UpgradeCost: 2.5
+    - Damage: 400
+      HP: 4000
+      Agility: 3.8
+      UpgradeCost: 4
     MaxLevel: 5
-    FullAvatar: {fileID: 21300000, guid: 5bcf134102fe68a419723621192c5cda, type: 3}
-    MaskedAvatar: {fileID: 21300000, guid: 5bcf134102fe68a419723621192c5cda, type: 3}
+    FullAvatar: {fileID: 21300000, guid: 64cd55fdbf13a2c43981338befd94e2f, type: 3}
+    MaskedAvatar: {fileID: 21300000, guid: 81cc5a0182a83f24a845a22361cec754, type: 3}
     CroppedAvatar: {fileID: 0}
     Price: 1
-    PlayerController: {fileID: 22100000, guid: 62871cf759889a94f827b3d20584a538, type: 2}
-    PlayerPreviewController: {fileID: 22100000, guid: e2008dd2200fb2b46a0ac5468a2a9b4f,
+    PlayerController: {fileID: 22100000, guid: 62070588c33d2a942abce4abc510b34c, type: 2}
+    PlayerPreviewController: {fileID: 22100000, guid: 523781c56258e6d40ab0987ccdd4573f,
       type: 2}
-    Weapon: {fileID: 22100000, guid: 1cf26a6f553574449b405d87edcdd295, type: 2}
-    HandPivotIdle: {x: -0.169, y: 0.475, z: 0}
-    HandPivotRun: {x: -0.017, y: 0.318, z: 0}
-    NFT_ID: 1,3,24,28,36,41,45,69,98,103,106,114,116,117,133,141,142,161,162,171,173,177,179,188,194,195,207,214,220,221,222,225,232,241,244,250,251,252,258,262,267,269,276,285,286,289,290,300,301,303,333,341,343,347,352,356,367,368,384,391,408,414,415,418,427,429,431,436,437,439,451,454,457,461,476,478,492,495,498,500,514,515,526,527,534,535,538,546,551,559,561,564,571,580,587,588,597,607,610,617,622,625,631,633,634,639,645,659,669,692,695,700,709,719,729,732,737,750
+    Weapon: {fileID: 22100000, guid: 0e54e0c464baf2543a230f08fe71a509, type: 2}
+    HandPivotIdle: {x: -0.186, y: 0.292, z: 0}
+    HandPivotRun: {x: -0.036, y: 0.243, z: 0}
+    NFT_ID: 9,10,13,14,15,16,34,35,61,66,78,99,100,108,109,118,126,147,159,184,200,201,218,248,255,263,288,294,309,330,332,337,339,344,345,361,377,394,396,398,433,442,445,452,455,456,458,459,460,471,483,486,494,499,501,516,522,543,544,553,555,566,574,626,627,628,629,647,665,670,672,677,686,728,741,744,745
