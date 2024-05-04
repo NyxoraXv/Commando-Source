@@ -4121,7 +4121,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Email
+  m_text: Username
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3010ed3d4b3824242a834f8c8a83c22f, type: 2}
   m_sharedMaterial: {fileID: 4620965550418321561, guid: 3010ed3d4b3824242a834f8c8a83c22f,
@@ -6935,24 +6935,6 @@ MonoBehaviour:
   walletIcon: {fileID: 5854839475648857509}
   disconnectButton: {fileID: 1780907589653793370}
   refreshButton: {fileID: 4201238465376475994}
-  myDatawallet:
-    data:
-      id: 
-      user_id: 
-      address_wallet: 
-      balance: 
-      user_agent: 
-      is_connected: 0
-      request_disconnect: 0
-      UpdatedAt: 
-      CreatedAt: 
-      DeletedAt: 
-      score: 0
-      star: 0
-      coin: 0
-      last_level: 0
-    message: 
-    code: 0
   walletText: {fileID: 1007261152639686073}
 --- !u!1 &2789010051220727023
 GameObject:
@@ -12542,7 +12524,7 @@ GameObject:
   - component: {fileID: 7331239143715766570}
   - component: {fileID: 6313143374444314584}
   m_Layer: 5
-  m_Name: Email
+  m_Name: Username
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

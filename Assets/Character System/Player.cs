@@ -79,7 +79,9 @@ public class MainPlayer : MonoBehaviour
     [Header("Material")]
     [SerializeField] public float glitchValue;
     [SerializeField] public float fadeValue;
+    [SerializeField] private float hitEffectDuration;
     Material material;
+    Material materialWeapon;
 
 
     Cinemachine.CinemachineBrain cinemachineBrain;
@@ -116,8 +118,11 @@ public class MainPlayer : MonoBehaviour
         isMobile = UIManager.isMobile();
 
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        SpriteRenderer weaponRenderer = gameObject.transform.Find("Weapon").GetComponent<SpriteRenderer>();
         material = spriteRenderer.material;
+        materialWeapon = weaponRenderer.material;
         material.SetFloat("_GlitchFade", glitchValue);
+        materialWeapon.SetFloat("_GlitchFade", glitchValue);
     }
 
     void ThrowGranade()
@@ -244,11 +249,22 @@ public class MainPlayer : MonoBehaviour
         Material material = spriteRenderer.material;
         material.SetFloat("_FullAlphaDissolveFade", fadeValue);
 
+        StartCoroutine(ResetHitEffect());
+
         if (!isDead) { 
         UIManager.UpdateHealthUI(health.GetHealth(), health.GetMaxHealth());
         AudioManager.PlayMeleeTakeAudio();
         }
     }
+
+    private IEnumerator ResetHitEffect()
+    {
+        yield return new WaitForSeconds(hitEffectDuration);
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        Material material = spriteRenderer.material;
+        material.SetFloat("_FullAlphaDissolveFade", 1.0f);
+    }
+
     public void getCollectible(CollectibleType type)
     {
         switch (type)

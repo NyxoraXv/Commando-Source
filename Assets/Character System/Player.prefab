@@ -197,8 +197,6 @@ MonoBehaviour:
     m_Bits: 1024
   JumpForce: 10
   rateOfFire: 5
-  bulletPrefab: {fileID: 3542438601343707874, guid: e90c20f3ea207254db6b7db1f437a0a1,
-    type: 3}
   Weapon: {fileID: 8003484413249760742}
   granadeSpawner: {fileID: 0}
   granate: {fileID: 0}
@@ -209,12 +207,14 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 512
-  knifeHitVFXPrefab: {fileID: 100002, guid: 5d0554b4b6133a0428cbdab0f15661e6, type: 3}
   timeBetweenKnifes: 0.5
   grenadePrefab: {fileID: 5665392374265219023, guid: 969c77ef74c77ee4e9f6a33b41a4fad4,
     type: 3}
   grenadeCooldown: 1
   foreground: {fileID: 0}
+  glitchValue: 0
+  fadeValue: 0
+  hitEffectDuration: 0.1
 --- !u!114 &523120103920528663
 MonoBehaviour:
   m_ObjectHideFlags: 0
