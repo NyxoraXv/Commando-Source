@@ -183,6 +183,83 @@ public class SaveManager : MonoBehaviour
         }
     }
 
+    public void Withdraw(int amount)
+    {
+        StartCoroutine(WithdrawRequest(amount));
+    }
+
+    IEnumerator WithdrawRequest(int amount)
+    {
+        string url = serverUrl + "/transactions";
+
+        // Convert Statistic object to JSON
+        string jsonData = "{\"type\": \"" + "WITHDRAW" + "\",\"amount\":"+amount+ "}";
+        print(jsonData);
+
+        UnityWebRequest request = UnityWebRequest.PostWwwForm(url, "POST");
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
+        request.certificateHandler = new CertificateWhore();
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.SetRequestHeader("Authorization", playerData.accessTokenResponse.data.access_token);
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            Debug.Log("Withdraw Success!");
+        }
+        else
+        {
+            Debug.LogError("Failed to Withdraw: " + request.error);
+            if (request.downloadHandler != null)
+            {
+                Debug.LogError("Response: " + request.downloadHandler.text);
+            }
+            Debug.Log(jsonData);
+            // Optionally, handle error response here
+        }
+    }
+
+    public void Burn(int amount)
+    {
+        StartCoroutine(BurnRequest(amount));
+    }
+
+    IEnumerator BurnRequest(int amount)
+    {
+        string url = serverUrl + "/transactions";
+
+        // Convert Statistic object to JSON
+        string jsonData = "{\"type\": \"" + "BURN" + "\",\"amount\":" + amount + "}";
+        print(jsonData);
+
+        UnityWebRequest request = UnityWebRequest.PostWwwForm(url, "POST");
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
+        request.certificateHandler = new CertificateWhore();
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.SetRequestHeader("Authorization", playerData.accessTokenResponse.data.access_token);
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            Debug.Log("Burn Success!");
+            PopUpInformationhandler.Instance.pop("Burn Success");
+        }
+        else
+        {
+            Debug.LogError("Failed to Burn: " + request.error);
+            if (request.downloadHandler != null)
+            {
+                Debug.LogError("Response: " + request.downloadHandler.text);
+            }
+            Debug.Log(jsonData);
+            // Optionally, handle error response here
+        }
+    }
+
     public void GetStatistic()
     {
         StartCoroutine(GetStatisticRequest());

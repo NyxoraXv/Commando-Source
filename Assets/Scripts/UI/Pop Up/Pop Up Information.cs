@@ -38,7 +38,7 @@ public class PopUpInformation : MonoBehaviour
         DOTween.Init();
 
         container.sizeDelta = new Vector2(0f, container.sizeDelta.y);
-        container.DOSizeDelta(new Vector2(426f, container.sizeDelta.y), 1f).SetEase(Ease.InOutCubic);
+        container.DOSizeDelta(new Vector2(426f, container.sizeDelta.y), 2f).SetEase(Ease.InOutCubic);
 
         float containerWidthChange = 426f - container.sizeDelta.x;
         float borderLeftNewX = borderLeft.anchoredPosition.x - containerWidthChange / 2f;
@@ -53,7 +53,7 @@ public class PopUpInformation : MonoBehaviour
         textMeshPro.text = text;
 
         canvasGroup.alpha = 0f;
-        canvasGroup.DOFade(0.75f, 1f).SetEase(Ease.InOutCubic).OnComplete(() =>
+        canvasGroup.DOFade(0.75f, 2f).SetEase(Ease.InOutCubic).OnComplete(() =>
         {
             canvasGroup.DOFade(0f, 0.5f).SetEase(Ease.InOutCubic).SetDelay(0.5f).OnComplete(() =>
             {

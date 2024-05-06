@@ -252,7 +252,7 @@ PrefabInstance:
     - target: {fileID: 2705414511077166885, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
       propertyPath: serverUrl
-      value: https://lunc-zombie.garudaverse.io/api
+      value: https://dev-lunc-zombie.garudaverse.io/api
       objectReference: {fileID: 0}
     - target: {fileID: 2705414511077166885, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
