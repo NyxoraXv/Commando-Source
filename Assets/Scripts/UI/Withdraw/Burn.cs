@@ -11,7 +11,8 @@ public class burn : MonoBehaviour
 
     public void getAllCurrency()
     {
-        amount.text = SaveManager.Instance.playerData.statistic.data.lunc.ToString();
+        float luncValue = SaveManager.Instance.playerData.statistic.data.lunc;
+        amount.text = Math.Floor(luncValue).ToString();
     }
 
     public void send()
