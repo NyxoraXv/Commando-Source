@@ -14,7 +14,7 @@ scopes = {
 	"last_search.3BE40471" = "heli"
 	"OpenInspectorPreview.3BE40471" = "0"
 	"currentGroup.3BE40471" = "all"
-	"last_search.310DEAF1" = "Cinemachine"
+	"last_search.310DEAF1" = "mission"
 	"OpenInspectorPreview.310DEAF1" = "0"
 	"currentGroup.310DEAF1" = "all"
 }
@@ -68,6 +68,7 @@ providers = {
 objectSelectors = {
 }
 recentSearches = [
+	"m"
 	"C"
 ]
 searchItemFavorites = [
