@@ -11,12 +11,13 @@ public class withdraw : MonoBehaviour
 
     public void getAllCurrency()
     {
-        amount.text = SaveManager.Instance.playerData.statistic.data.frg.ToString();
+        float frgValue = SaveManager.Instance.playerData.statistic.data.frg;
+        amount.text = Math.Floor(frgValue).ToString();
     }
 
     public void send()
     {
-        if (int.Parse(amount.text) != 0 && CurrencyManager.Instance.spendFRG(int.Parse(amount.text)))
+        if (int.Parse(amount.text) != 0 && CurrencyManager.Instance.spendFRG(float.Parse(amount.text)))
         {
             SaveManager.Instance.Save();
             SaveManager.Instance.Withdraw(int.Parse(amount.text));
