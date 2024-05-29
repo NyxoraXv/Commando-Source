@@ -506,7 +506,7 @@ MonoBehaviour:
   canThrow: 0
   activationDistance: 20
   attackDistance: 5
-  meleeDistance: 1
+  meleeDistance: 2.5
   facingRight: 0
   collidingDown: 0
   fireDelta: 1

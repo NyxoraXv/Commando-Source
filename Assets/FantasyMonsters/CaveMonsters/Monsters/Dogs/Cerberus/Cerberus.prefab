@@ -728,7 +728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f6ec0127b05b3e4f8ba675d5058c440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.5
+  speed: 1
   attackDamage: 20
   isMovable: 1
   canMelee: 1
@@ -738,9 +738,9 @@ MonoBehaviour:
   projSpawner: {fileID: 0}
   throwableObj: {fileID: 0}
   canThrow: 0
-  activationDistance: 10
+  activationDistance: 20
   attackDistance: 5
-  meleeDistance: 1
+  meleeDistance: 2.5
   facingRight: 0
   collidingDown: 0
   fireDelta: 1
