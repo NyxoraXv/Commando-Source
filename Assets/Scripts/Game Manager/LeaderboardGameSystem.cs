@@ -40,7 +40,7 @@ public class LeaderboardGameSystem : MonoBehaviour
         Debug.Log("Starting GetLeaderboardData coroutine...");
         LoadingAnimation.Instance.toggleLoading();
         Debug.Log("access-token = " + SaveManager.Instance.playerData.accessTokenResponse.data.access_token);
-        string url = SaveManager.Instance.serverUrl + "/statistics/leaderboards";
+        string url = SaveManager.Instance.serverUrl + "/statistics/leaderboards?order=desc&limit=100";
 
         UnityWebRequest request = UnityWebRequest.Get(url);
         request.SetRequestHeader("Authorization", SaveManager.Instance.playerData.accessTokenResponse.data.access_token);
@@ -52,7 +52,6 @@ public class LeaderboardGameSystem : MonoBehaviour
         {
             string scoreData = request.downloadHandler.text;
             LeaderboardData leaderboardData = JsonUtility.FromJson<LeaderboardData>(scoreData);
-
             // Sort leaderboard data by score
             Array.Sort(leaderboardData.data, (x, y) => y.score.CompareTo(x.score));
 

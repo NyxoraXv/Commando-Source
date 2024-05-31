@@ -343,7 +343,7 @@ public class UIManager : MonoBehaviour
 
     public void BuyAmmo()
     {
-        if (CurrencyManager.Instance.spendFRG(1f))
+        if (CurrencyManager.Instance.spendFRG(1))
         {
             GameManager.addAmmo(150);
         }

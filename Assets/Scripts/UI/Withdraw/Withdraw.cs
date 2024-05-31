@@ -17,10 +17,10 @@ public class withdraw : MonoBehaviour
 
     public void send()
     {
-        if (int.Parse(amount.text) != 0 && CurrencyManager.Instance.spendFRG(float.Parse(amount.text)))
+        if (float.Parse(amount.text) >= 0)
         {
-            SaveManager.Instance.Save();
-            SaveManager.Instance.Withdraw(int.Parse(amount.text));
+            SaveManager.Instance.Withdraw(float.Parse(amount.text));
+
         }
         else
         {

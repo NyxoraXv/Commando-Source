@@ -6,6 +6,7 @@ using System;
 
 public class CurrencyManager : MonoBehaviour
 {
+
     public static CurrencyManager Instance;
     public GameObject insufficientFundObject;
 
@@ -16,11 +17,6 @@ public class CurrencyManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-    }
-
-    private void Update()
-    {
-        Refresh();
     }
 
     public void Refresh()
@@ -52,56 +48,28 @@ public class CurrencyManager : MonoBehaviour
         {
 
         }
-
-
     }
-
-    public bool spendFRG(float Amount)
+    
+    public bool spendFRG(float amount)
     {
-        if (SaveManager.Instance.playerData.statistic.data.frg >= Amount)
+        Statistic statistic = new Statistic
         {
-            SaveManager.Instance.playerData.statistic.data.frg -= Amount;
-            //SaveManager.Instance.Save();
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+            frg = amount*-1
+        };
+
+        return SaveManager.Instance.SetStatistic(statistic);
     }
 
-    public bool spendLUNC(float Amount)
+    public bool addLUNC(int amount)
     {
-        if (SaveManager.Instance.playerData.statistic.data.lunc >= Amount)
+        Statistic statistic = new Statistic
         {
-            SaveManager.Instance.playerData.statistic.data.lunc -= Amount;
-            //SaveManager.Instance.Save();
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+            lunc = amount
+        };
+
+        return SaveManager.Instance.SetStatistic(statistic);
     }
 
-    public void addFRG(float Amount)
-    {
-        if(SaveManager.Instance.isWalletConnected)
-        {
-            SaveManager.Instance.playerData.statistic.data.frg += Amount;
-            //SaveManager.Instance.Save();
-        }
-
-    }
-
-    public void addLUNC(float Amount)
-    {
-        if (SaveManager.Instance.isWalletConnected)
-        {
-            SaveManager.Instance.playerData.statistic.data.lunc += Amount;
-            //SaveManager.Instance.Save();
-        }
-    }
 
     public void insufficientFund(float Amount, Transform transform, PopUpInstantiate.CurrencyType type)
     {
@@ -110,7 +78,6 @@ public class CurrencyManager : MonoBehaviour
 
         if (popupInstantiateScript != null)
         {
-            // Call a method on the PopUpInstantiate script to set parameters
             popupInstantiateScript.pop(Amount);
         }
         else

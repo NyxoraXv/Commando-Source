@@ -6,6 +6,7 @@ using UnityEngine.Animations;
 public class MainPlayer : MonoBehaviour
 {
     [SerializeField] private bool win;
+    private bool hasPlayerWon = false;
 
     private Rigidbody2D rb;
     private Animator animator;
@@ -314,9 +315,10 @@ public class MainPlayer : MonoBehaviour
                 DeactivateHeavyMachineGun();
             }
         }
-        if (win)
+        if (win && !hasPlayerWon)
         {
             GameManager.PlayerWin();
+            hasPlayerWon = true;
         }
     }
 

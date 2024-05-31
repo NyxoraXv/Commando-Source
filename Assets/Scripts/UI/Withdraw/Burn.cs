@@ -17,10 +17,10 @@ public class burn : MonoBehaviour
 
     public void send()
     {
-        if (int.Parse(amount.text) != 0 && CurrencyManager.Instance.spendLUNC(int.Parse(amount.text)))
+        if (float.Parse(amount.text) >= 0)
         {
-            SaveManager.Instance.Save();
-            SaveManager.Instance.Burn(int.Parse(amount.text));
+            SaveManager.Instance.Burn(float.Parse(amount.text));
+
         }
         else
         {

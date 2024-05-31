@@ -85,7 +85,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4018868826912716012}
   - component: {fileID: 5647911821217291402}
-  - component: {fileID: 4188569731954309318}
   - component: {fileID: 7781563257488125428}
   m_Layer: 0
   m_Name: Hologram Map Camera
@@ -160,14 +159,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &4188569731954309318
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 292210572998798181}
-  m_Enabled: 1
 --- !u!114 &7781563257488125428
 MonoBehaviour:
   m_ObjectHideFlags: 0

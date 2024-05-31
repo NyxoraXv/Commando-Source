@@ -9,19 +9,8 @@ public class CheckMissionLock : MonoBehaviour
     public Image layer;
     void Start()
     {
-        StartCoroutine(WaitNextMission());
+        if (SaveManager.Instance.playerData.statistic.data.last_level < level) { gameObject.SetActive(false); }
         Debug.Log("Instantiated Hologram Map");
     }
 
-    IEnumerator WaitNextMission()
-    {
-        //SaveManager.Instance.getAchievement();
-        if(SaveManager.Instance.isGetAchievement)
-        {
-            yield return null;
-        }
-        SaveManager.Instance.isGetAchievement = false;   
-        if (SaveManager.Instance.playerData.achievementData.data.last_level < level) { gameObject.SetActive(false); }
-
-    }
 }

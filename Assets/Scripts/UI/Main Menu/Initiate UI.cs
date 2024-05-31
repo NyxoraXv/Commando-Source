@@ -34,5 +34,19 @@ public class InitiateUI : MonoBehaviour
             currency.SetActive(true);
         }
         volumeControl.SetAllSavedVolumes();
+
+        try
+        {
+            CurrencyManager.Instance.Refresh();
+        }
+        catch
+        {
+            Debug.Log("failed");
+        }
+    }
+
+    private void OnEnable()
+    {
+        SaveManager.Instance.fetchData();
     }
 }

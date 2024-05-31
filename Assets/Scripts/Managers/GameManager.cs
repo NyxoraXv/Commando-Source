@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviour
         LoadSettings();
         LoadRecords();
         SaveRecords();
+        SaveManager.Instance.fetchData();
         //PlayerWin();
     }
 
@@ -269,12 +270,13 @@ public class GameManager : MonoBehaviour
         UIManager.DisplayWinUI();
         AudioManager.PlayLevelCompleteAudio();
         AudioManager.PlayGameOverAudio();
-        if (MissionManager.Instance.onLoaded >= SaveManager.Instance.playerData.achievementData.data.last_level) {
-            SaveManager.Instance.playerData.achievementData.data.last_level = MissionManager.Instance.onLoaded+1;
-            SaveManager.Instance.playerData.statistic.data.frg = SaveManager.Instance.playerData.statistic.data.frg + current.frg;
-            SaveManager.Instance.playerData.statistic.data.lunc = SaveManager.Instance.playerData.statistic.data.lunc + current.lunc;
-            SaveManager.Instance.playerData.statistic.data.score = SaveManager.Instance.playerData.statistic.data.score+current.score;
-            SaveManager.Instance.Save();
+        if (MissionManager.Instance.onLoaded >= SaveManager.Instance.playerData.statistic.data.last_level) {
+            Statistic incrementedStatistic = new Statistic();
+            incrementedStatistic.frg = current.frg;
+            incrementedStatistic.lunc = current.lunc;
+            incrementedStatistic.score = current.score;
+            incrementedStatistic.last_level = 1;
+            SaveManager.Instance.SetStatistic(incrementedStatistic);
         }
         current.isGameOver = true;
     }

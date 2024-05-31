@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System;
-using JetBrains.Annotations;
 
 [Serializable]
 public class StatisticData
@@ -11,11 +10,18 @@ public class StatisticData
 [Serializable]
 public class Statistic
 {
-    public string id;
     public int score;
     public float lunc;
     public float frg;
-    public long created_at;
+    public int last_level;
+    public int level;
+    public int exp;
+}
+
+public class transaction
+{
+    public string type;
+    public int amount;
 }
 
 [Serializable]
@@ -48,10 +54,6 @@ public class NFTData
     public string level;
     public string collection;
     public string mystery_pack;
-}
-
-public class AchievementData{
-    public Achievement data;
 }
 
 [System.Serializable]
@@ -87,16 +89,6 @@ public class UserAuthResponseData
 {
     public string access_token;
     public string refresh_token;
-}
-
-[Serializable]
-public class Achievement
-{
-    public string id;
-    public int last_level;
-    public int player_level;
-    public int player_exp;
-    public long created_at;
 }
 
 public class CharacterInfo

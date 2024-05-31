@@ -17,8 +17,6 @@ public class SaveManager : MonoBehaviour
     {
         public StatisticData statistic { get; set; } = new StatisticData();
 
-        public AchievementData achievementData { get; set; } = new AchievementData();
-
         public AccessTokenResponse accessTokenResponse { get; set; } = new AccessTokenResponse();
         
         public OwnedCharacterInformation characterInformation { get; set; } = new OwnedCharacterInformation();
@@ -63,26 +61,10 @@ public class SaveManager : MonoBehaviour
 
     }
 
-    public void InitializeNewPlayer()
-    {
-        playerData.achievementData.data.player_level = 1;
-        playerData.achievementData.data.player_exp = 0;
-        playerData.achievementData.data.last_level = 0;
-
-        playerData.statistic.data.lunc= 0f;
-        playerData.statistic.data.frg = 0f;
-        playerData.statistic.data.score = 0;
-
-        playerData.characterInfo.SelectedCharacter = Character.Sucipto;
-    }
-
     private void SetUpDataLoad()
     {
-        if (!isGetStatisticCalled)
-        {
-            GetStatistic();
-            isGetStatisticCalled = true;
-        }
+        GetStatistic();
+        CurrencyManager.Instance.Refresh();
     }
 
 
@@ -123,18 +105,12 @@ public class SaveManager : MonoBehaviour
         {
             yield return null;
         }
-        InitializeNewPlayer();
     }
 
-    public void Save()
+    public void fetchData()
     {
-        SetStatistic(playerData.statistic.data);
-        SetAchievement(playerData.achievementData.data);
-    }
-
-    private void OnApplicationQuit()
-    {
-        Save();
+        GetStatistic();
+        CurrencyManager.Instance.Refresh();
     }
 
     IEnumerator WaitForAccessToken(Action callback)
@@ -146,16 +122,22 @@ public class SaveManager : MonoBehaviour
 
         callback?.Invoke();
     }
-    public void SetStatistic(Statistic newStatistic)
+    public bool SetStatistic(Statistic newStatistic)
     {
-        StartCoroutine(SetStatisticRequest(newStatistic));
+        // Use a local variable to store the result
+        bool requestSuccess = false;
+
+        StartCoroutine(SetStatisticRequest(newStatistic, result =>
+        {
+            requestSuccess = result;
+        }));
+
+        return requestSuccess;
     }
 
-    IEnumerator SetStatisticRequest(Statistic newStatistic)
+    IEnumerator SetStatisticRequest(Statistic newStatistic, Action<bool> resultCallback)
     {
         string url = serverUrl + "/statistics";
-
-        // Convert Statistic object to JSON
         string jsonData = JsonConvert.SerializeObject(newStatistic);
 
         UnityWebRequest request = UnityWebRequest.PostWwwForm(url, "POST");
@@ -169,7 +151,9 @@ public class SaveManager : MonoBehaviour
 
         if (request.result == UnityWebRequest.Result.Success)
         {
+            CurrencyManager.Instance.Refresh();
             Debug.Log("Statistic data updated successfully!");
+            resultCallback(true); // Indicate success
         }
         else
         {
@@ -179,23 +163,21 @@ public class SaveManager : MonoBehaviour
                 Debug.LogError("Response: " + request.downloadHandler.text);
             }
             Debug.Log(jsonData);
-            // Optionally, handle error response here
+            resultCallback(false); // Indicate failure
         }
     }
-
-    public void Withdraw(int amount)
+    public void Withdraw(float amount)
     {
         StartCoroutine(WithdrawRequest(amount));
     }
 
-    IEnumerator WithdrawRequest(int amount)
+    IEnumerator WithdrawRequest(float amount)
     {
         string url = serverUrl + "/transactions";
 
         // Convert Statistic object to JSON
         string jsonData = "{\"type\": \"" + "WITHDRAW" + "\",\"amount\":"+amount+ "}";
-        print(jsonData);
-
+        LoadingAnimation.Instance.toggleLoading();
         UnityWebRequest request = UnityWebRequest.PostWwwForm(url, "POST");
         byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
         request.certificateHandler = new CertificateWhore();
@@ -208,6 +190,9 @@ public class SaveManager : MonoBehaviour
         if (request.result == UnityWebRequest.Result.Success)
         {
             Debug.Log("Withdraw Success!");
+            PopUpInformationhandler.Instance.pop("Withdraw Success");
+            LoadingAnimation.Instance.stopLoading();
+            fetchData();
         }
         else
         {
@@ -215,24 +200,26 @@ public class SaveManager : MonoBehaviour
             if (request.downloadHandler != null)
             {
                 Debug.LogError("Response: " + request.downloadHandler.text);
+                LoadingAnimation.Instance.stopLoading();
             }
             Debug.Log(jsonData);
+            LoadingAnimation.Instance.stopLoading();
             // Optionally, handle error response here
         }
     }
 
-    public void Burn(int amount)
+    public void Burn(float amount)
     {
         StartCoroutine(BurnRequest(amount));
     }
 
-    IEnumerator BurnRequest(int amount)
+    IEnumerator BurnRequest(float amount)
     {
         string url = serverUrl + "/transactions";
 
         // Convert Statistic object to JSON
         string jsonData = "{\"type\": \"" + "BURN" + "\",\"amount\":" + amount + "}";
-        print(jsonData);
+        LoadingAnimation.Instance.toggleLoading();
 
         UnityWebRequest request = UnityWebRequest.PostWwwForm(url, "POST");
         byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
@@ -246,6 +233,8 @@ public class SaveManager : MonoBehaviour
         if (request.result == UnityWebRequest.Result.Success)
         {
             Debug.Log("Burn Success!");
+            fetchData();
+            LoadingAnimation.Instance.stopLoading();
             PopUpInformationhandler.Instance.pop("Burn Success");
         }
         else
@@ -256,18 +245,20 @@ public class SaveManager : MonoBehaviour
                 Debug.LogError("Response: " + request.downloadHandler.text);
             }
             Debug.Log(jsonData);
+            LoadingAnimation.Instance.stopLoading();
             // Optionally, handle error response here
         }
     }
 
-    public void GetStatistic()
+    public void GetStatistic(Action<StatisticData, bool, string> onComplete = null)
     {
-        StartCoroutine(GetStatisticRequest());
+        StartCoroutine(GetStatisticRequest(onComplete));
     }
 
-    IEnumerator GetStatisticRequest()
+    IEnumerator GetStatisticRequest(Action<StatisticData, bool, string> onComplete)
     {
         string access = playerData.accessTokenResponse.data.access_token;
+        try{LoadingAnimation.Instance.toggleLoading();}catch (Exception e) { }
         string url = serverUrl + "/statistics";
         UnityWebRequest request = UnityWebRequest.Get(url);
         request.certificateHandler = new CertificateWhore();
@@ -281,78 +272,17 @@ public class SaveManager : MonoBehaviour
             string jsonData = request.downloadHandler.text;
             StatisticData statistic = JsonConvert.DeserializeObject<StatisticData>(jsonData);
             playerData.statistic = statistic;
+            CurrencyManager.Instance.Refresh();
+            onComplete?.Invoke(statistic, true, null);
+            try { LoadingAnimation.Instance.stopLoading(); } catch (Exception e) { }
         }
         else
         {
-            Debug.LogError("Failed to fetch statistic data: " + request.error);
+            string errorMessage = "Failed to fetch statistic data: " + request.error;
+            Debug.LogError(errorMessage);
             PopUpInformationhandler.Instance.pop("Failed To Load Statistic Data");
-        }
-    }
-    public void SetAchievement(Achievement newAchievement)
-    {
-        StartCoroutine(SetAchievementRequest(newAchievement));
-    }
-
-    IEnumerator SetAchievementRequest(Achievement newAchievement)
-    {
-        string url = serverUrl + "/achievements";
-
-        // Convert Achievement object to JSON
-        string jsonData = JsonConvert.SerializeObject(newAchievement);
-
-        UnityWebRequest request = UnityWebRequest.PostWwwForm(url, "POST");
-        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
-        request.certificateHandler = new CertificateWhore();
-        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-        request.SetRequestHeader("Authorization", playerData.accessTokenResponse.data.access_token);
-        request.SetRequestHeader("Content-Type", "application/json");
-
-        yield return request.SendWebRequest();
-
-        if (request.result == UnityWebRequest.Result.Success)
-        {
-            Debug.Log("Achievement data updated successfully!");
-        }
-        else
-        {
-            Debug.LogError("Failed to update achievement data: " + request.error);
-            if (request.downloadHandler != null)
-            {
-                Debug.LogError("Response: " + request.downloadHandler.text);
-            }
-            // Optionally, handle error response here
-        }
-    }
-
-    public void GetAchievement(Action<AchievementData> callback)
-    {
-        StartCoroutine(GetAchievementRequest(callback));
-    }
-
-    IEnumerator GetAchievementRequest(Action<AchievementData> callback)
-    {
-        string access = playerData.accessTokenResponse.data.access_token;
-        string url = serverUrl + "/achievements";
-        UnityWebRequest request = UnityWebRequest.Get(url);
-        request.certificateHandler = new CertificateWhore();
-        request.SetRequestHeader("Authorization", access);
-        request.downloadHandler = new DownloadHandlerBuffer();
-
-        yield return request.SendWebRequest();
-
-        if (request.result == UnityWebRequest.Result.Success)
-        {
-            string jsonData = request.downloadHandler.text;
-            Debug.Log(jsonData);
-            AchievementData achievement = JsonUtility.FromJson<AchievementData>(jsonData);
-            playerData.achievementData = achievement;
-            Debug.Log("Last Level = " + achievement.data.last_level);
-            callback?.Invoke(achievement);
-        }
-        else
-        {
-            Debug.LogError("Failed to fetch achievement data: " + request.error);
-            PopUpInformationhandler.Instance.pop("Failed To Load Achievement Data");
+            onComplete?.Invoke(null, false, errorMessage);
+            try { LoadingAnimation.Instance.stopLoading(); } catch (Exception e) { }
         }
     }
 
