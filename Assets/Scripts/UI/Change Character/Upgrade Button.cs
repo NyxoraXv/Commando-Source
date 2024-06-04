@@ -27,7 +27,7 @@ public class UpgradeButton : MonoBehaviour
         FRGToSpend = changeCharacterManager.CalculateUpgradeCost();
         Debug.Log("goldToSpend calculated : " + FRGToSpend);
 
-        if (CurrencyManager.Instance.spendFRG(FRGToSpend))
+        if (CurrencyManager.Instance.SpendFRG(FRGToSpend))
         {
             CharacterManager.Instance.UpgradeCharacter(changeCharacterManager.selectedCard.Character);
             Debug.Log("Character Upgraded");

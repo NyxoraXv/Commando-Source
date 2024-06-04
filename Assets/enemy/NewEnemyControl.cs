@@ -149,8 +149,14 @@ namespace Assets.FantasyMonsters.Scripts
 
             if (health.IsAlive())
             {
+                float playerDistance = 0;
                 FlipShoot();
-                float playerDistance = transform.position.x - followPlayer.transform.position.x;
+                try
+                {
+                    playerDistance = transform.position.x - followPlayer.transform.position.x;
+                }
+                catch (Exception e) { }
+                
                 //Debug.Log("Player distance: " + playerDistance);
 
                 if (Mathf.Abs(playerDistance) < activationDistance)

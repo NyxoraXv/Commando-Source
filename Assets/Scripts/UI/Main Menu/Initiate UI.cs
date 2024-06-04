@@ -47,6 +47,10 @@ public class InitiateUI : MonoBehaviour
 
     private void OnEnable()
     {
-        SaveManager.Instance.fetchData();
+        if (SaveManager.Instance.isLogin)
+        {
+            SaveManager.Instance.fetchData();
+        }
+        
     }
 }

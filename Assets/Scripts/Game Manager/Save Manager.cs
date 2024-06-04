@@ -135,7 +135,7 @@ public class SaveManager : MonoBehaviour
         return requestSuccess;
     }
 
-    IEnumerator SetStatisticRequest(Statistic newStatistic, Action<bool> resultCallback)
+    public IEnumerator SetStatisticRequest(Statistic newStatistic, Action<bool> resultCallback)
     {
         string url = serverUrl + "/statistics";
         string jsonData = JsonConvert.SerializeObject(newStatistic);

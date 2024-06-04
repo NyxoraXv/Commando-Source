@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
         LoadRecords();
         SaveRecords();
         SaveManager.Instance.fetchData();
+        CurrencyManager.Instance.Refresh();
         //PlayerWin();
     }
 

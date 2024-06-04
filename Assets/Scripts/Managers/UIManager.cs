@@ -103,6 +103,7 @@ public class UIManager : MonoBehaviour
         if (current == null || currencyDisplayInProgress)
             return;
 
+        CurrencyManager.Instance.Refresh();
         currencyDisplayInProgress = true;
 
 
@@ -273,7 +274,7 @@ public class UIManager : MonoBehaviour
 
     public static void Revive()
     {
-        if (CurrencyManager.Instance.spendFRG(0)) { GameManager.GetPlayer().GetComponent<MainPlayer>().Revive(); }
+        if (CurrencyManager.Instance.SpendFRG(0)) { GameManager.GetPlayer().GetComponent<MainPlayer>().Revive(); }
 
         GameManager.Revive();
         DisplayCurrency();
@@ -343,10 +344,15 @@ public class UIManager : MonoBehaviour
 
     public void BuyAmmo()
     {
-        if (CurrencyManager.Instance.spendFRG(1))
+        
+        if (SaveManager.Instance.playerData.statistic.data.frg >= 1)
         {
+            CurrencyManager.Instance.SpendFRG(1);
             GameManager.addAmmo(150);
+            DisplayCurrency();
         }
-        DisplayCurrency();
+        SaveManager.Instance.fetchData();
+        CurrencyManager.Instance.Refresh();
+        
     }
 }

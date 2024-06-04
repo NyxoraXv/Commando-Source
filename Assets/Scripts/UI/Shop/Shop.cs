@@ -110,7 +110,7 @@ public class Shop : MonoBehaviour
 
     public void buy()
     {
-        if (CurrencyManager.Instance.spendFRG(CharacterManager.Instance.GetCharacterPrefab(current).GetComponent<CharacterInformation>().Character.Price))
+        if (CurrencyManager.Instance.SpendFRG(CharacterManager.Instance.GetCharacterPrefab(current).GetComponent<CharacterInformation>().Character.Price))
         {
             CharacterManager.Instance.AddOwnedCharacter(current);
             RefreshUI();

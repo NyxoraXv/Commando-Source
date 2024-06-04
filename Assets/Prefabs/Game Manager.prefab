@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 2705414511077166885}
   - component: {fileID: 9108472977005183931}
   - component: {fileID: 1123468740779158712}
+  - component: {fileID: 8706929936916856048}
+  - component: {fileID: 2501617888094445358}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: GameManager
@@ -49,9 +51,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f6c4c59d967741499f2aac79a4e945e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentLUNC: 0
-  CurrentFRG: 0
-  insufficientFundObject: {fileID: 0}
+  insufficientFundObject: {fileID: 983732885194184417, guid: d6461e210dee84f40b6497dc97c0d798,
+    type: 3}
 --- !u!114 &-3273356639008598148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66,10 +67,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectedCharacter: 0
   MaxLevel: 0
-  sucipto: {fileID: 0}
-  habibi: {fileID: 0}
-  nurul: {fileID: 0}
-  levia: {fileID: 0}
+  sucipto: {fileID: 3521382923466883720, guid: d7ce2fa0634f9844ea0a9bb32de4c8eb, type: 3}
+  habibi: {fileID: 3521382923466883720, guid: 6c57a4a2c0576894bb84ff91a9c119aa, type: 3}
+  nurul: {fileID: 3521382923466883720, guid: c2e3a187ddf9f4d4cb3d97510861b35a, type: 3}
+  levia: {fileID: 3521382923466883720, guid: 9b9d4b6881f22044cad8f72bb83646a6, type: 3}
+  frg: {fileID: 3521382923466883720, guid: 18e250a3ff8de4b4fa2e70cbdf7e7c35, type: 3}
+  levi: {fileID: 3521382923466883720, guid: d25d3c56c1e0044409569e5b06a2d459, type: 3}
+  bigboy: {fileID: 3521382923466883720, guid: 08e96db30369d844aa8d963a9fd83627, type: 3}
+  modelx: {fileID: 3521382923466883720, guid: 7620f5928c9120e4eb1c78ab7ad10db1, type: 3}
 --- !u!114 &3563596037907735314
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98,7 +103,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2abd63d93bd1933458e032d2cc5ce9b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serverUrl: https://lunc-zombie.garudaverse.io/api
   isLogin: 0
+  isWalletConnected: 0
+  isGetAchievement: 0
+  isSetAchievement: 0
+  Device: WEBGL
 --- !u!114 &9108472977005183931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111,7 +121,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5931e43c7811f0247b26cb7147a7fec2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MissionInformation: []
+  onLoaded: 0
+  MissionInformation:
+  - MissionName: Operation Dawn Break
+    Difficulty: 0
+    Objectives:
+    - Kill All Enemies
+    - Defeat The Boss
+    Rewards:
+    - Type: 1
+      Value: 25
+    Completed: 1
+    Level: 0
+  - MissionName: Fireflies
+    Difficulty: 1
+    Objectives:
+    - Kill all enemies
+    - Defeat the boss
+    Rewards:
+    - Type: 1
+      Value: 25
+    Completed: 1
+    Level: 1
+  - MissionName: '!!!'
+    Difficulty: 2
+    Objectives:
+    - Kill All Enemies
+    - Defeat The Boss
+    Rewards:
+    - Type: 1
+      Value: 25
+    Completed: 1
+    Level: 2
+  - MissionName: LvL 4
+    Difficulty: 2
+    Objectives:
+    - Kill All Enemies
+    - Defeat The Boss
+    Rewards:
+    - Type: 1
+      Value: 25
+    Completed: 0
+    Level: 3
 --- !u!114 &1123468740779158712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,5 +173,32 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 79345c2793c99ff4988d09959e6d8e5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLogin: 0
+  isSignup: 0
+--- !u!114 &8706929936916856048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3309609548692264067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d9a718b5e88acd42bdd406519d61184, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PopUp: {fileID: 6646830355339349330, guid: 315d3d488a6966844bf0815a47cec948, type: 3}
+--- !u!114 &2501617888094445358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3309609548692264067}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ace8b56830cfec48a97ae635fad06f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

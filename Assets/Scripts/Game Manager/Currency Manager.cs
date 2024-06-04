@@ -49,25 +49,60 @@ public class CurrencyManager : MonoBehaviour
 
         }
     }
-    
-    public bool spendFRG(float amount)
+
+    private IEnumerator WaitForStatisticUpdate(Statistic statistic, Action<bool> callback)
+    {
+        bool success = false;
+        yield return StartCoroutine(SaveManager.Instance.SetStatisticRequest(statistic, result => success = result));
+        callback(success);
+    }
+
+    public bool SpendFRG(float amount)
     {
         Statistic statistic = new Statistic
         {
-            frg = amount*-1
+            frg = amount * -1
         };
 
-        return SaveManager.Instance.SetStatistic(statistic);
+        bool result = false;
+        StartCoroutine(WaitForStatisticUpdate(statistic, success => result = success));
+        return result;
     }
 
-    public bool addLUNC(int amount)
+    public bool SpendLUNC(int amount)
+    {
+        Statistic statistic = new Statistic
+        {
+            lunc = amount * -1
+        };
+
+        bool result = false;
+        StartCoroutine(WaitForStatisticUpdate(statistic, success => result = success));
+        return result;
+    }
+
+    public bool AddFRG(float amount)
+    {
+        Statistic statistic = new Statistic
+        {
+            frg = amount
+        };
+
+        bool result = false;
+        StartCoroutine(WaitForStatisticUpdate(statistic, success => result = success));
+        return result;
+    }
+
+    public bool AddLUNC(int amount)
     {
         Statistic statistic = new Statistic
         {
             lunc = amount
         };
 
-        return SaveManager.Instance.SetStatistic(statistic);
+        bool result = false;
+        StartCoroutine(WaitForStatisticUpdate(statistic, success => result = success));
+        return result;
     }
 
 
