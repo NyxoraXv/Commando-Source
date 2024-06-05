@@ -187,6 +187,9 @@ namespace Assets.FantasyMonsters.Scripts
                 }
                 catch (Exception e) { }
 
+                // Log player distance for debugging
+                Debug.Log("Player distance: " + playerDistance);
+
                 // Check if basic attack conditions are met before considering the dash
                 if (Mathf.Abs(playerDistance) <= meleeDistance && canMelee)
                 {
@@ -206,7 +209,7 @@ namespace Assets.FantasyMonsters.Scripts
                         if (Mathf.Abs(weaponRenderer.bounds.SqrDistance(followPlayer.transform.position)) <= meleeDistance)
                         {
                             followPlayer.GetComponent<Health>().Hit(1);
-                            print("hit");
+                            Debug.Log("Hit player with melee attack");
                             if (meleeAttackClip)
                                 AudioManager.PlayEnemyAttackAudio(meleeAttackClip);
                         }
@@ -252,6 +255,7 @@ namespace Assets.FantasyMonsters.Scripts
                             rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
 
                             Vector2 targetPosition = rb.position + new Vector2(CHANGE_SIGN * Mathf.Sign(playerDistance) * speed * Time.deltaTime, 0);
+                            Debug.Log("Moving to position: " + targetPosition);
                             rb.MovePosition(targetPosition);
                         }
                         else
@@ -272,6 +276,7 @@ namespace Assets.FantasyMonsters.Scripts
                 }
             }
         }
+
 
         void Flip()
         {

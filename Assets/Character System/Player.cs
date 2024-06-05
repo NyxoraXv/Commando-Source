@@ -8,6 +8,7 @@ public class MainPlayer : MonoBehaviour
     [SerializeField] private bool win;
     [SerializeField] private bool onDevelopment;
     private bool hasPlayerWon = false;
+    public GameObject saveManager;
 
     private Rigidbody2D rb;
     private Animator animator;
@@ -96,9 +97,13 @@ public class MainPlayer : MonoBehaviour
 
     private void Start()
     {
+        if (SaveManager.Instance == null) {
+            Instantiate(saveManager);
+        }
+        
         if (onDevelopment)
         {
-            CharacterManager.Instance.SwitchCharacter(Character.Dylan);
+            CharacterManager.Instance.SwitchCharacter(Character.Sucipto);
             knifeHitVFXPrefab = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.KnifeEffectPrefab;
             bulletPrefab = CharacterManager.Instance.GetCharacterPrefab(CharacterManager.Instance.selectedCharacter).GetComponent<CharacterInformation>().Character.BulletPrefab;
             animator = gameObject.GetComponent<Animator>();
