@@ -383,7 +383,7 @@ GameObject:
   - component: {fileID: 7245924172506157425}
   - component: {fileID: 3393446993597103773}
   - component: {fileID: 7263923099382034621}
-  - component: {fileID: 6324639261587155803}
+  - component: {fileID: -1520681224199005768}
   - component: {fileID: 3940300654048919831}
   - component: {fileID: 3129575316697591716}
   m_Layer: 9
@@ -480,13 +480,13 @@ MonoBehaviour:
   HeadSprites:
   - {fileID: -7252215782646672311, guid: df997ea064489f84aa9ec02ea0f6f4cf, type: 3}
   - {fileID: -7252215782646672311, guid: df997ea064489f84aa9ec02ea0f6f4cf, type: 3}
-  - {fileID: -7252215782646672311, guid: df997ea064489f84aa9ec02ea0f6f4cf, type: 3}
+  - {fileID: -1381065623766834176, guid: df997ea064489f84aa9ec02ea0f6f4cf, type: 3}
   animator: {fileID: 3393446993597103773}
   Variations: 0
   weaponRenderer: {fileID: 3393446994645629534}
   dashCooldown: 5
   dashDuration: 1
-  dashSpeed: 2
+  dashSpeed: 5
   deathParticlesPrefab: {fileID: 0}
   deathEffectPrefab: {fileID: 0}
 --- !u!210 &7245924172506157425
@@ -539,7 +539,7 @@ MonoBehaviour:
   immortal: 0
   bloodDripImage: {fileID: 0}
   bloodDripDuration: 1
---- !u!114 &6324639261587155803
+--- !u!114 &-1520681224199005768
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -587,10 +587,10 @@ BoxCollider2D:
   m_Offset: {x: -0.6737642, y: 1.5487282}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 5.12, y: 5.12}
+    newSize: {x: 5.12, y: 5.12}
+    adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0

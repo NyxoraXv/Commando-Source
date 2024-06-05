@@ -183,7 +183,7 @@ namespace Assets.FantasyMonsters.Scripts
                 FlipShoot();
                 try
                 {
-                    playerDistance = transform.position.x - followPlayer.transform.position.x;
+                    playerDistance = followPlayer.transform.position.x - transform.position.x;
                 }
                 catch (Exception e) { }
 
@@ -249,19 +249,14 @@ namespace Assets.FantasyMonsters.Scripts
                     else
                     {
                         // Move towards the player if no attack actions are possible
-                        if (isMovable && collidingDown)
-                        {
-                            SetState(MonsterState.Walk);
-                            rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+                        float movementDirection = Mathf.Sign(playerDistance);
 
-                            Vector2 targetPosition = rb.position + new Vector2(CHANGE_SIGN * Mathf.Sign(playerDistance) * speed * Time.deltaTime, 0);
-                            Debug.Log("Moving to position: " + targetPosition);
-                            rb.MovePosition(targetPosition);
-                        }
-                        else
-                        {
-                            SetState(MonsterState.Idle);
-                        }
+                        // Set animation state
+                        SetState(MonsterState.Walk);
+
+                        // Move the enemy towards the player
+                        Vector2 targetPosition = rb.position + new Vector2(movementDirection * speed * Time.deltaTime, 0);
+                        rb.MovePosition(targetPosition);
                     }
                 }
 
@@ -277,15 +272,26 @@ namespace Assets.FantasyMonsters.Scripts
             }
         }
 
-
         void Flip()
         {
-            Vector3 scale = transform.localScale;
-            scale.x *= -1;
-            transform.localScale = scale;
+            // Get the direction from the enemy to the player
+            Vector3 directionToPlayer = transform.position - followPlayer.transform.position;
 
-            facingRight = !facingRight;
+            // Determine if the player is on the right side of the enemy
+            bool playerIsOnRight = directionToPlayer.x > 0;
+
+            // Update the facingRight variable based on player position
+            facingRight = playerIsOnRight;
+
+            // Flip the enemy's scale based on the facingRight variable
+            float scaleX = Mathf.Abs(transform.localScale.x) * (facingRight ? 1 : -1);
+            transform.localScale = new Vector3(scaleX, transform.localScale.y, transform.localScale.z);
+
+            // Debug log for tracking
+            Debug.Log("Facing Right: " + facingRight + ", Player Distance: " + directionToPlayer.x);
         }
+
+
 
         void FlipShoot()
         {
@@ -338,6 +344,10 @@ namespace Assets.FantasyMonsters.Scripts
             {
                 GetComponent<CapsuleCollider2D>().enabled = false;
             }
+
+            isDashing = false;
+            dashTimer = 0f;
+            dashPreparing = false;
 
             // Instantiate the prefab containing the particle system
             if (deathEffectPrefab)
@@ -421,7 +431,7 @@ namespace Assets.FantasyMonsters.Scripts
             dashPreparing = false;
             StartCoroutine(ExecuteDash(playerDistance));
         }
-
+        
         private IEnumerator ExecuteDash(float playerDistance)
         {
             Collider2D bossCollider = GetComponent<Collider2D>();
@@ -430,12 +440,61 @@ namespace Assets.FantasyMonsters.Scripts
             // Ignore collision between boss and player
             Physics2D.IgnoreCollision(bossCollider, playerCollider, true);
 
-            Vector2 dashDirection = new Vector2((playerDistance < 0 ? -1 : 1) * dashSpeed, rb.velocity.y);
-            rb.velocity = dashDirection; // Apply dash speed
+            // Disable the boss's collider to prevent collisions with the player during the dash
+            bossCollider.enabled = false;
 
-            yield return new WaitForSeconds(dashDuration); // Wait for the dash duration
+            // Calculate dash direction based on player's position
+            float dashDirection = Mathf.Sign(playerDistance);
 
-            rb.velocity = Vector2.zero; // Stop dashing
+            // Track the distance traveled during the dash
+            float distanceTraveled = 0f;
+
+            // Move backward for a short duration before dashing
+            float backwardDuration = 2f; // Adjust this value as needed
+            float backwardSpeed = 1f; // Adjust this value as needed
+
+            while (backwardDuration > 0f)
+            {
+                // Calculate movement distance for this frame
+                float movementThisFrame = backwardSpeed * Time.deltaTime;
+
+                // Move the boss backward
+                transform.Translate(new Vector3(-dashDirection * movementThisFrame, 0f, 0f));
+
+                // Update backward duration and distance traveled
+                backwardDuration -= Time.deltaTime;
+                distanceTraveled += Mathf.Abs(movementThisFrame);
+
+                yield return null; // Wait for the next frame
+            }
+
+            float stopDuration = 2f; // Adjust this value as needed
+            while (stopDuration > 0f)
+            {
+                stopDuration -= Time.deltaTime;
+                yield return null; // Wait for the next frame
+            }
+
+            // Continue with the dash
+            distanceTraveled = 0f; // Reset distance traveled for the dash phase
+            float dashStartTime = Time.time; // Record the start time of the dash
+            while (distanceTraveled < Mathf.Abs(playerDistance) && Time.time - dashStartTime < dashDuration)
+            {
+                // Calculate movement distance for this frame
+                float movementThisFrame = dashSpeed * Time.deltaTime;
+
+                // Move the boss towards the player's position
+                transform.Translate(new Vector3(dashDirection * movementThisFrame, 0f, 0f));
+
+                // Update the distance traveled
+                distanceTraveled += Mathf.Abs(movementThisFrame);
+
+                yield return null; // Wait for the next frame
+            }
+
+
+            // Re-enable the boss's collider after the dash to allow collisions again
+            bossCollider.enabled = true;
 
             // Re-enable collision between boss and player
             Physics2D.IgnoreCollision(bossCollider, playerCollider, false);

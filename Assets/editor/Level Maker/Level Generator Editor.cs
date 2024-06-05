@@ -2,8 +2,7 @@ using UnityEditor;
 using UnityEditor.TerrainTools;
 using UnityEngine;
 
-
-[CustomEditor(typeof(LevelGenerator))]
+/*[CustomEditor(typeof(LevelGenerator))]
 public class LevelGeneratorInspector : Editor
 {
     public override void OnInspectorGUI()
@@ -16,4 +15,4 @@ public class LevelGeneratorInspector : Editor
         };
         
     }
-}
+}*/
