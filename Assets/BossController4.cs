@@ -185,7 +185,10 @@ namespace Assets.FantasyMonsters.Scripts
                 {
                     playerDistance = followPlayer.transform.position.x - transform.position.x;
                 }
-                catch (Exception e) { }
+                catch (Exception e)
+                {
+                    Debug.LogError(e);
+                }
 
                 // Log player distance for debugging
                 Debug.Log("Player distance: " + playerDistance);
@@ -254,9 +257,12 @@ namespace Assets.FantasyMonsters.Scripts
                         // Set animation state
                         SetState(MonsterState.Walk);
 
-                        // Move the enemy towards the player
-                        Vector2 targetPosition = rb.position + new Vector2(movementDirection * speed * Time.deltaTime, 0);
+                        // Move the enemy towards the player using FixedDeltaTime
+                        Vector2 targetPosition = rb.position + new Vector2(movementDirection * speed * Time.fixedDeltaTime, 0);
                         rb.MovePosition(targetPosition);
+
+                        // Log the movement for debugging
+                        Debug.Log("Moving towards player: " + targetPosition);
                     }
                 }
 
@@ -290,7 +296,6 @@ namespace Assets.FantasyMonsters.Scripts
             // Debug log for tracking
             Debug.Log("Facing Right: " + facingRight + ", Player Distance: " + directionToPlayer.x);
         }
-
 
 
         void FlipShoot()
@@ -440,17 +445,12 @@ namespace Assets.FantasyMonsters.Scripts
             // Ignore collision between boss and player
             Physics2D.IgnoreCollision(bossCollider, playerCollider, true);
 
-            // Disable the boss's collider to prevent collisions with the player during the dash
-            bossCollider.enabled = false;
-
             // Calculate dash direction based on player's position
             float dashDirection = Mathf.Sign(playerDistance);
 
-            // Track the distance traveled during the dash
             float distanceTraveled = 0f;
 
-            // Move backward for a short duration before dashing
-            float backwardDuration = 2f; // Adjust this value as needed
+            float backwardDuration = 1.5f; // Adjust this value as needed
             float backwardSpeed = 1f; // Adjust this value as needed
 
             while (backwardDuration > 0f)
@@ -478,6 +478,7 @@ namespace Assets.FantasyMonsters.Scripts
             // Continue with the dash
             distanceTraveled = 0f; // Reset distance traveled for the dash phase
             float dashStartTime = Time.time; // Record the start time of the dash
+
             while (distanceTraveled < Mathf.Abs(playerDistance) && Time.time - dashStartTime < dashDuration)
             {
                 // Calculate movement distance for this frame
@@ -492,9 +493,8 @@ namespace Assets.FantasyMonsters.Scripts
                 yield return null; // Wait for the next frame
             }
 
-
-            // Re-enable the boss's collider after the dash to allow collisions again
-            bossCollider.enabled = true;
+            // Optional: Log total distance traveled during dash
+            Debug.Log("Distance traveled during dash: " + distanceTraveled);
 
             // Re-enable collision between boss and player
             Physics2D.IgnoreCollision(bossCollider, playerCollider, false);

@@ -11315,7 +11315,7 @@ PrefabInstance:
     - target: {fileID: 3393446993597103770, guid: 94d855cd30a54134f88efc35d8913d90,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 64.947
+      value: 64.438
       objectReference: {fileID: 0}
     - target: {fileID: 3393446993597103770, guid: 94d855cd30a54134f88efc35d8913d90,
         type: 3}
@@ -11362,15 +11362,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: BlackWolf
       objectReference: {fileID: 0}
-    - target: {fileID: 4172893518415301920, guid: 94d855cd30a54134f88efc35d8913d90,
+    - target: {fileID: 3393446993597103771, guid: 94d855cd30a54134f88efc35d8913d90,
         type: 3}
-      propertyPath: speed
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4172893518415301920, guid: 94d855cd30a54134f88efc35d8913d90,
         type: 3}
+      propertyPath: speed
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4172893518415301920, guid: 94d855cd30a54134f88efc35d8913d90,
+        type: 3}
       propertyPath: dashSpeed
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4172893518415301920, guid: 94d855cd30a54134f88efc35d8913d90,
         type: 3}
@@ -11390,7 +11395,7 @@ PrefabInstance:
     - target: {fileID: 4172893518415301920, guid: 94d855cd30a54134f88efc35d8913d90,
         type: 3}
       propertyPath: dashDuration
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4172893518415301920, guid: 94d855cd30a54134f88efc35d8913d90,
         type: 3}
