@@ -486,7 +486,7 @@ MonoBehaviour:
   weaponRenderer: {fileID: 3393446994645629534}
   dashCooldown: 3
   dashDuration: 4
-  dashSpeed: 4
+  dashSpeed: 3
   deathParticlesPrefab: {fileID: 0}
   deathEffectPrefab: {fileID: 0}
 --- !u!210 &7245924172506157425

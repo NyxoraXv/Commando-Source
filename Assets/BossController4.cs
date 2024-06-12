@@ -443,14 +443,14 @@ namespace Assets.FantasyMonsters.Scripts
             Collider2D playerCollider = followPlayer.GetComponent<Collider2D>();
 
             // Ignore collision between boss and player
-            Physics2D.IgnoreCollision(bossCollider, playerCollider, true);
+            //Physics2D.IgnoreCollision(bossCollider, playerCollider, true);
 
             // Calculate dash direction based on player's position
             float dashDirection = Mathf.Sign(playerDistance);
 
             float distanceTraveled = 0f;
 
-            float backwardDuration = 1.5f; // Adjust this value as needed
+            float backwardDuration = 0f; // Adjust this value as needed
             float backwardSpeed = 1f; // Adjust this value as needed
 
             while (backwardDuration > 0f)
@@ -497,7 +497,7 @@ namespace Assets.FantasyMonsters.Scripts
             Debug.Log("Distance traveled during dash: " + distanceTraveled);
 
             // Re-enable collision between boss and player
-            Physics2D.IgnoreCollision(bossCollider, playerCollider, false);
+            // Physics2D.IgnoreCollision(bossCollider, playerCollider, false);
 
             isDashing = false;
             dashTimer = 0f; // Reset the dash timer
