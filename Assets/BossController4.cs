@@ -468,7 +468,7 @@ namespace Assets.FantasyMonsters.Scripts
                 yield return null; // Wait for the next frame
             }
 
-            float stopDuration = 2f; // Adjust this value as needed
+            float stopDuration = 0f; // Adjust this value as needed
             while (stopDuration > 0f)
             {
                 stopDuration -= Time.deltaTime;

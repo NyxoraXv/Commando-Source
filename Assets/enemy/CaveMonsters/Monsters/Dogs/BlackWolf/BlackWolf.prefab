@@ -470,22 +470,22 @@ MonoBehaviour:
   projSpawner: {fileID: 0}
   throwableObj: {fileID: 0}
   canThrow: 0
-  attackDistance: 7
+  attackDistance: 8
   meleeDistance: 1
   facingRight: 0
   collidingDown: 0
-  fireDelta: 1
+  fireDelta: 0.5
   rangedDelta: 2
   Head: {fileID: 3393446994645629534}
   HeadSprites:
-  - {fileID: -7252215782646672311, guid: df997ea064489f84aa9ec02ea0f6f4cf, type: 3}
+  - {fileID: -1828946549344447192, guid: df997ea064489f84aa9ec02ea0f6f4cf, type: 3}
   - {fileID: -7252215782646672311, guid: df997ea064489f84aa9ec02ea0f6f4cf, type: 3}
   - {fileID: -1381065623766834176, guid: df997ea064489f84aa9ec02ea0f6f4cf, type: 3}
   animator: {fileID: 3393446993597103773}
   Variations: 0
   weaponRenderer: {fileID: 3393446994645629534}
-  dashCooldown: 5
-  dashDuration: 3
+  dashCooldown: 3
+  dashDuration: 4
   dashSpeed: 4
   deathParticlesPrefab: {fileID: 0}
   deathEffectPrefab: {fileID: 0}
