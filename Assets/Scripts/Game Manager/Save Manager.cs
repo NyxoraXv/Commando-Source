@@ -166,6 +166,7 @@ public class SaveManager : MonoBehaviour
             resultCallback(false); // Indicate failure
         }
     }
+
     public void Withdraw(float amount)
     {
         StartCoroutine(WithdrawRequest(amount));

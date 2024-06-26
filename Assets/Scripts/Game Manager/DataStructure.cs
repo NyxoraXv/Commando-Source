@@ -116,3 +116,43 @@ public class LeaderboardData
 {
     public LeaderboardEntry[] data;
 }
+
+[System.Serializable]
+public class HistoryEntry
+{
+    public string id { get; set; }
+    public int score { get; set; }
+    public float lunc { get; set; }
+    public float frg { get; set; }
+    public long created_at { get; set; }
+    public int last_level { get; set; }
+    public int level { get; set; }
+    public int exp { get; set; }
+
+    public override string ToString()
+    {
+        return $"ID: {id}, Score: {score}, Lunc: {lunc}, Frq: {frg}, Created At: {created_at}, Last Level: {last_level}, Level: {level}, Exp: {exp}";
+    }
+}
+
+
+[System.Serializable]
+public class HistoryData
+{
+    public List<HistoryEntry> data { get; set; }
+
+    public override string ToString()
+    {
+        if (data == null)
+            return "HistoryData: No entries";
+
+        string result = "HistoryData:\n";
+        foreach (var entry in data)
+        {
+            result += entry.ToString() + "\n";
+        }
+        return result;
+    }
+}
+
+
