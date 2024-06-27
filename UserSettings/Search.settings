@@ -8,7 +8,7 @@ onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
-	"last_search.E8DA15E5" = "wdw"
+	"last_search.E8DA15E5" = "main canvas"
 	"OpenInspectorPreview.E8DA15E5" = "0"
 	"currentGroup.E8DA15E5" = "all"
 	"last_search.3BE40471" = "heli"
@@ -68,6 +68,7 @@ providers = {
 objectSelectors = {
 }
 recentSearches = [
+	"main canvas"
 	"m"
 	"C"
 ]
