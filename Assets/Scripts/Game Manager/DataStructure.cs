@@ -25,7 +25,8 @@ public class transaction
 }
 
 [Serializable]
-public class UserResponseData{
+public class UserResponseData
+{
     public UserResponse data;
 }
 
@@ -79,6 +80,7 @@ public class WalletAdressDetails
     public int created_at;
     public int updated_at;
 }
+
 public class AccessTokenResponse
 {
     public UserAuthResponseData data;
@@ -131,10 +133,9 @@ public class HistoryEntry
 
     public override string ToString()
     {
-        return $"ID: {id}, Score: {score}, Lunc: {lunc}, Frq: {frg}, Created At: {created_at}, Last Level: {last_level}, Level: {level}, Exp: {exp}";
+        return $"ID: {id}, Score: {score}, Lunc: {lunc}, Frg: {frg}, Created At: {created_at}, Last Level: {last_level}, Level: {level}, Exp: {exp}";
     }
 }
-
 
 [System.Serializable]
 public class HistoryData
@@ -154,5 +155,3 @@ public class HistoryData
         return result;
     }
 }
-
-
