@@ -9,21 +9,10 @@ using UnityEngine.Networking;
 
 public class HistoryDataButton : MonoBehaviour
 {
-    public Button fetchHistoryButton;
-    public GameObject VisibleHistoryGameObject; // Reference to the GameObject to be made visible
-    public GameObject RemoveMainMenuGameObject;
     public GameObject historyEntryPrefab; // Reference to the HistoryEntry prefab
     public Transform contentTransform; // Reference to the Content transform in the Scroll View
 
-    void Start()
-    {
-        if (fetchHistoryButton != null)
-        {
-            fetchHistoryButton.onClick.AddListener(OnFetchHistoryButtonClicked);
-        }
-    }
-
-    private void OnFetchHistoryButtonClicked()
+    private void OnEnable()
     {
         GetHistoryData(OnHistoryDataReceived);
     }
@@ -63,7 +52,6 @@ public class HistoryDataButton : MonoBehaviour
         {
             Debug.Log(historyData.ToString());
             DisplayHistoryData(historyData); // Display the history data
-            MakeGameObjectVisibleAndDisable(); // Make history visible and main menu invisible
         }
         else
         {
@@ -73,96 +61,85 @@ public class HistoryDataButton : MonoBehaviour
     }
 
     private void DisplayHistoryData(HistoryData historyData)
-{
-    if (historyEntryPrefab == null)
     {
-        Debug.LogError("History entry prefab is not assigned!");
-        return;
+        if (historyEntryPrefab == null)
+        {
+            Debug.LogError("History entry prefab is not assigned!");
+            return;
+        }
+
+        if (contentTransform == null)
+        {
+            Debug.LogError("Content transform is not assigned!");
+            return;
+        }
+
+        // Clear existing history entries
+        foreach (Transform child in contentTransform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        // Calculate initial position from top of viewport
+        RectTransform contentRectTransform = contentTransform.GetComponent<RectTransform>();
+        float startY = contentRectTransform.rect.height / 2.25f - 100f; // Start at half the height of the content transform
+        float spacingY = 250f; // Adjust as needed for spacing between entries
+
+        // Create a history entry for each item in historyData
+        for (int i = 0; i < historyData.data.Count; i++)
+        {
+            var entry = historyData.data[i];
+
+            // Instantiate history entry prefab
+            GameObject historyItem = Instantiate(historyEntryPrefab, contentTransform);
+
+            // Set position for the new entry
+            float posY = startY - i * spacingY;
+            historyItem.transform.localPosition = new Vector3(0, posY, 0);
+
+            // Set data on the history entry
+            Transform idTextTransform = historyItem.transform.Find("ID/OutputText");
+            if (idTextTransform != null)
+            {
+                idTextTransform.GetComponent<TMP_Text>().text = entry.id;
+            }
+
+            Transform scoreTextTransform = historyItem.transform.Find("Score/OutputText");
+            if (scoreTextTransform != null)
+            {
+                scoreTextTransform.GetComponent<TMP_Text>().text = entry.score.ToString();
+            }
+
+            Transform luncTextTransform = historyItem.transform.Find("LUNC/OutputText");
+            if (luncTextTransform != null)
+            {
+                luncTextTransform.GetComponent<TMP_Text>().text = entry.lunc.ToString();
+            }
+
+            Transform frgTextTransform = historyItem.transform.Find("FRG/OutputText");
+            if (frgTextTransform != null)
+            {
+                frgTextTransform.GetComponent<TMP_Text>().text = entry.frg.ToString();
+            }
+
+            Transform createdAtTextTransform = historyItem.transform.Find("Current Mission Level/OutputText");
+            if (createdAtTextTransform != null)
+            {
+                createdAtTextTransform.GetComponent<TMP_Text>().text = entry.created_at.ToString();
+            }
+
+            Transform lastLevelTextTransform = historyItem.transform.Find("Account Level/OutputText");
+            if (lastLevelTextTransform != null)
+            {
+                lastLevelTextTransform.GetComponent<TMP_Text>().text = entry.last_level.ToString();
+            }
+
+            Transform levelTextTransform = historyItem.transform.Find("Account XP/OutputText");
+            if (levelTextTransform != null)
+            {
+                levelTextTransform.GetComponent<TMP_Text>().text = entry.level.ToString();
+            }
+        }
     }
 
-    if (contentTransform == null)
-    {
-        Debug.LogError("Content transform is not assigned!");
-        return;
-    }
-
-    // Clear existing history entries
-    foreach (Transform child in contentTransform)
-    {
-        Destroy(child.gameObject);
-    }
-
-    // Calculate initial position from top of viewport
-    RectTransform contentRectTransform = contentTransform.GetComponent<RectTransform>();
-    float startY = contentRectTransform.rect.height / 2.25f; // Start at half the height of the content transform
-    float spacingY = 125f; // Adjust as needed for spacing between entries
-
-    // Create a history entry for each item in historyData
-    for (int i = 0; i < historyData.data.Count; i++)
-    {
-        var entry = historyData.data[i];
-
-        // Instantiate history entry prefab
-        GameObject historyItem = Instantiate(historyEntryPrefab, contentTransform);
-
-        // Set position for the new entry
-        float posY = startY - i * spacingY;
-        historyItem.transform.localPosition = new Vector3(0, posY, 0);
-
-        // Set data on the history entry
-        Transform idTextTransform = historyItem.transform.Find("ID/OutputText");
-        if (idTextTransform != null)
-        {
-            idTextTransform.GetComponent<TMP_Text>().text = entry.id;
-        }
-
-        Transform scoreTextTransform = historyItem.transform.Find("Score/OutputText");
-        if (scoreTextTransform != null)
-        {
-            scoreTextTransform.GetComponent<TMP_Text>().text = entry.score.ToString();
-        }
-
-        Transform luncTextTransform = historyItem.transform.Find("LUNC/OutputText");
-        if (luncTextTransform != null)
-        {
-            luncTextTransform.GetComponent<TMP_Text>().text = entry.lunc.ToString();
-        }
-
-        Transform frgTextTransform = historyItem.transform.Find("FRG/OutputText");
-        if (frgTextTransform != null)
-        {
-            frgTextTransform.GetComponent<TMP_Text>().text = entry.frg.ToString();
-        }
-
-        Transform createdAtTextTransform = historyItem.transform.Find("Current Mission Level/OutputText");
-        if (createdAtTextTransform != null)
-        {
-            createdAtTextTransform.GetComponent<TMP_Text>().text = entry.created_at.ToString();
-        }
-
-        Transform lastLevelTextTransform = historyItem.transform.Find("Account Level/OutputText");
-        if (lastLevelTextTransform != null)
-        {
-            lastLevelTextTransform.GetComponent<TMP_Text>().text = entry.last_level.ToString();
-        }
-
-        Transform levelTextTransform = historyItem.transform.Find("Account XP/OutputText");
-        if (levelTextTransform != null)
-        {
-            levelTextTransform.GetComponent<TMP_Text>().text = entry.level.ToString();
-        }
-    }
-}
-
-    private void MakeGameObjectVisibleAndDisable()
-    {
-        if (VisibleHistoryGameObject != null)
-        {
-            VisibleHistoryGameObject.SetActive(true);
-        }
-        if (RemoveMainMenuGameObject != null)
-        {
-            RemoveMainMenuGameObject.SetActive(false);
-        }
-    }
 }

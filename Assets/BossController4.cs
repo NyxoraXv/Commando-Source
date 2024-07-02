@@ -200,7 +200,7 @@ namespace Assets.FantasyMonsters.Scripts
                     // Attack player - Primary attack (near)
                     animator.SetTrigger("Attack");
 
-                    rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+                    rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
                     shotTime += Time.deltaTime;
 
@@ -233,7 +233,7 @@ namespace Assets.FantasyMonsters.Scripts
                         Debug.Log("Performing ranged attack");
                         // Attack player - Secondary attack (far)
                         if (!canMelee)
-                            rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+                            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
                         else
                             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 

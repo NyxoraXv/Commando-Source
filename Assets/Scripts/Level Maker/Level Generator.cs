@@ -1,34 +1,251 @@
-using System.Linq;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.Tilemaps;
+using System.Collections.Generic;
 
-public class LevelGenerator : MonoBehaviour
+public class ProceduralLevelGenerator : MonoBehaviour
 {
-    [SerializeField]public AssetDataStructure levelStructure;
-    public class ObjectStructure
+    public Tilemap tilemap;
+    public TileBase grassTile;
+    public TileBase undergroundTile;
+    public TileBase grass45LeftTile;
+    public TileBase grass45RightTile;
+    public TileBase waterTile; // New water tile
+    public GameObject enemyPrefab; // Enemy prefab
+    public int seed = 0;
+    public int width = 20;
+    public int height = 30; // Increased height to accommodate underground
+    public int totalEnemies = 5;
+    public float noiseScale = 0.1f;
+    public float heightMultiplier = 5.0f;
+    public int undergroundDepth = 20; // Fixed depth for underground layer
+    public int maxCanyonCount = 3; // Maximum number of canyons to place
+    public int canyonDepth = 10; // Depth of the canyon
+    public float hillFrequency = 0.05f; // Frequency of hills
+    public float valleyFrequency = 0.05f; // Frequency of valleys
+    public float plateauFrequency = 0.05f; // Frequency of plateaus
+
+    private System.Random prng;
+
+    public void generate()
     {
-        public GameObject prefab;
-        public Vector3 position;
+        prng = new System.Random(seed); // Initialize random seed for reproducibility
+        
+        
+        ClearTiles();
+        clearEnemy();
+        GenerateLevel();
+        PlaceEnemies();
     }
 
-    public void generateLevel(int length = 0, int margin = 0)
+    void clearEnemy()
     {
-        print("level generated");
-    }
+        GameObject[] enemy = GameObject.FindGameObjectsWithTag("Enemy");
 
-    private ObjectStructure[] calculateObstacle(GameObject prefab, int length)
-    {
-        ObjectStructure[] objectStructureArray = new ObjectStructure[0];
-        for (int i = 0; i<=length; i++)
+        foreach (GameObject enemyObj in enemy)
         {
-            ObjectStructure objectStructure = new ObjectStructure
+            Destroy(enemyObj);
+        }
+    }
+
+    void GenerateLevel()
+    {
+        float[,] noiseMap = GenerateNoiseMap(width, height, seed, noiseScale, heightMultiplier);
+        int[] terrainHeights = new int[width];
+
+        for (int x = 0; x < width; x++)
+        {
+            terrainHeights[x] = Mathf.FloorToInt(noiseMap[x, 0]) + undergroundDepth;
+        }
+
+        // Add hills, valleys, and plateaus
+        ModifyTerrain(terrainHeights);
+
+        // Adjust terrain heights to ensure all paths can be hiked from the left
+        for (int x = 1; x < width; x++)
+        {
+            if (terrainHeights[x] - terrainHeights[x - 1] > 2)
             {
+                terrainHeights[x] = terrainHeights[x - 1] + 2;
+            }
+        }
 
-            };
-            objectStructureArray.Append(objectStructure);
-        };
+        for (int x = 0; x < width; x++)
+        {
+            int terrainY = terrainHeights[x];
 
-        return objectStructureArray;
+            for (int y = 0; y < height; y++)
+            {
+                TileBase tileToPlace = null;
+
+                if (y < undergroundDepth)
+                {
+                    tileToPlace = undergroundTile;
+                }
+                else if (y < terrainY)
+                {
+                    tileToPlace = undergroundTile;
+                }
+                else if (y == terrainY)
+                {
+                    tileToPlace = grassTile;
+                }
+                else if (y == terrainY + 1)
+                {
+                    if (x > 0 && terrainHeights[x - 1] > terrainY)
+                    {
+                        tileToPlace = grass45RightTile; // Grass is going down to the right
+                    }
+                    else if (x < width - 1 && terrainHeights[x + 1] > terrainY)
+                    {
+                        tileToPlace = grass45LeftTile; // Grass is going down to the left
+                    }
+                }
+
+                if (tileToPlace != null)
+                {
+                    Vector3Int tilePosition = new Vector3Int(x, y, 0);
+                    tilemap.SetTile(tilePosition, tileToPlace);
+                }
+            }
+        }
+
+        PlaceCanyons(terrainHeights); // Place canyons after generating the terrain
+    }
+
+    void ModifyTerrain(int[] terrainHeights)
+    {
+        for (int x = 0; x < terrainHeights.Length; x++)
+        {
+            float hillNoise = Mathf.PerlinNoise(x * hillFrequency, seed);
+            float valleyNoise = Mathf.PerlinNoise(x * valleyFrequency, seed);
+            float plateauNoise = Mathf.PerlinNoise(x * plateauFrequency, seed);
+
+            if (hillNoise > 0.6f)
+            {
+                int hillHeight = Mathf.FloorToInt(hillNoise * 5);
+                for (int i = 0; i <= hillHeight; i++)
+                {
+                    if (x - i >= 0)
+                    {
+                        terrainHeights[x - i] = Mathf.Max(terrainHeights[x - i], terrainHeights[x] + hillHeight - i);
+                    }
+                }
+            }
+            else if (valleyNoise > 0.6f)
+            {
+                terrainHeights[x] -= Mathf.FloorToInt(valleyNoise * 5);
+            }
+            else if (plateauNoise > 0.6f)
+            {
+                terrainHeights[x] = Mathf.FloorToInt(plateauNoise * 10) + undergroundDepth;
+            }
+        }
+    }
+
+    void PlaceCanyons(int[] terrainHeights)
+    {
+        for (int i = 0; i < maxCanyonCount; i++)
+        {
+            int canyonWidth = prng.Next(1, 3); // Width between 1 and 2
+            int canyonX = prng.Next(0, width - canyonWidth);
+            int surfaceY = terrainHeights[canyonX];
+
+            for (int x = canyonX; x < canyonX + canyonWidth; x++)
+            {
+                int waterY = surfaceY - canyonDepth;
+
+                // Clear tiles above the water surface
+                for (int y = surfaceY; y >= waterY; y--)
+                {
+                    Vector3Int tilePosition = new Vector3Int(x, y, 0);
+                    tilemap.SetTile(tilePosition, null);
+                }
+
+                // Place water tiles at the waterY level
+                Vector3Int waterPosition = new Vector3Int(x, waterY, 0);
+                tilemap.SetTile(waterPosition, waterTile);
+            }
+        }
+
+        // Remove tiles above water
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                Vector3Int tilePosition = new Vector3Int(x, y, 0);
+                if (tilemap.GetTile(tilePosition) == waterTile)
+                {
+                    // Clear any tiles above the water
+                    for (int aboveY = y + 1; aboveY < height; aboveY++)
+                    {
+                        Vector3Int aboveTilePosition = new Vector3Int(x, aboveY, 0);
+                        tilemap.SetTile(aboveTilePosition, null);
+                    }
+                }
+            }
+        }
+    }
+
+    float[,] GenerateNoiseMap(int mapWidth, int mapHeight, int seed, float scale, float heightMultiplier)
+    {
+        float[,] noiseMap = new float[mapWidth, mapHeight];
+        System.Random prng = new System.Random(seed);
+        float offsetX = prng.Next(-100000, 100000);
+        float offsetY = prng.Next(-100000, 100000);
+
+        for (int x = 0; x < mapWidth; x++)
+        {
+            for (int y = 0; y < mapHeight; y++)
+            {
+                float sampleX = x * scale + offsetX;
+                float sampleY = y * scale + offsetY;
+
+                float perlinValue = Mathf.PerlinNoise(sampleX, sampleY) * heightMultiplier;
+                noiseMap[x, y] = perlinValue;
+            }
+        }
+
+        return noiseMap;
+    }
+    public void ClearTiles()
+    {
+        tilemap.ClearAllTiles();
+    }
+
+    void PlaceEnemies()
+    {
+        List<Vector3Int> emptyPositions = new List<Vector3Int>();
+
+        // Collect all empty tile positions
+        BoundsInt bounds = tilemap.cellBounds;
+        foreach (var position in bounds.allPositionsWithin)
+        {
+            Vector3Int localPlace = new Vector3Int(position.x, position.y, position.z);
+            if (tilemap.HasTile(localPlace) && tilemap.GetTile(localPlace) == grassTile)
+            {
+                // Check the tile 2 blocks above the grass tile is empty and not on a slope tile
+                Vector3Int abovePlace = new Vector3Int(localPlace.x, localPlace.y + 2, localPlace.z);
+                if (!tilemap.HasTile(abovePlace) &&
+                    tilemap.GetTile(new Vector3Int(localPlace.x, localPlace.y + 1, localPlace.z)) != grass45LeftTile &&
+                    tilemap.GetTile(new Vector3Int(localPlace.x, localPlace.y + 1, localPlace.z)) != grass45RightTile)
+                {
+                    emptyPositions.Add(abovePlace);
+                }
+            }
+        }
+
+        // Ensure we don't place more enemies than available empty positions
+        int enemiesToPlace = Mathf.Min(totalEnemies, emptyPositions.Count);
+
+        // Place enemies randomly in empty positions using the seeded prng
+        for (int i = 0; i < enemiesToPlace; i++)
+        {
+            int randomIndex = prng.Next(emptyPositions.Count);
+            Vector3Int enemyPosition = emptyPositions[randomIndex];
+            // Instantiate enemy prefab at the selected position
+            Instantiate(enemyPrefab, tilemap.CellToWorld(enemyPosition) + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
+            Debug.Log("Enemy placed at: " + enemyPosition);
+            emptyPositions.RemoveAt(randomIndex);
+        }
     }
 }
-

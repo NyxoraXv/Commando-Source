@@ -2,17 +2,21 @@ using UnityEditor;
 using UnityEditor.TerrainTools;
 using UnityEngine;
 
-/*[CustomEditor(typeof(LevelGenerator))]
+[CustomEditor(typeof(ProceduralLevelGenerator))]
 public class LevelGeneratorInspector : Editor
 {
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        LevelGenerator levelGenerator = (LevelGenerator)target;
+        ProceduralLevelGenerator levelGenerator = (ProceduralLevelGenerator)target;
         if (GUILayout.Button("Generate Level"))
         {
-            levelGenerator.generateLevel();
+            levelGenerator.generate();
         };
-        
+        if (GUILayout.Button("Clear"))
+        {
+            levelGenerator.ClearTiles();
+        };
+
     }
-}*/
+}
