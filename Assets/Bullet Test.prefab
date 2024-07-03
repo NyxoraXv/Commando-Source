@@ -10,11 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 3198259390623985170}
   - component: {fileID: 8755749666833772091}
-  - component: {fileID: 2773407336446457380}
+  - component: {fileID: 6963441390737149473}
   - component: {fileID: 3344899479662048602}
   - component: {fileID: 30554251601518993}
+  - component: {fileID: -2271438744496149570}
   m_Layer: 0
-  m_Name: BulletHeli
+  m_Name: Bullet Test
   m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -87,7 +88,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2773407336446457380
+--- !u!114 &6963441390737149473
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -96,14 +97,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8074557712258021186}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aac15555dbf7ce64d8acc943cbb2a90c, type: 3}
+  m_Script: {fileID: 11500000, guid: 5bc2c9e587928e349893bfb3d434d7a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletForce: 2
-  lifeTime: 5
-  damageShot: 5
-  launcher: 1
-  explosionPrefab: {fileID: 100006, guid: 8a4aceaf2957c044480166b429f4c7d0, type: 3}
+  speed: 0.1
+  homingDuration: 0.1
+  target: {fileID: 0}
 --- !u!50 &3344899479662048602
 Rigidbody2D:
   serializedVersion: 4
@@ -166,3 +165,18 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.1, y: 0.06}
   m_Direction: 1
+--- !u!114 &-2271438744496149570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8074557712258021186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bc2c9e587928e349893bfb3d434d7a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
+  homingDuration: 1
+  target: {fileID: 0}

@@ -371,11 +371,19 @@ namespace Assets.FantasyMonsters.Scripts
 
         private IEnumerator WaitSecondaryAttack()
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.5f);
+            animator.SetTrigger("SecondaryAttack");
             if (rangeAttackClip)
+            {
                 AudioManager.PlayEnemyAttackAudio(rangeAttackClip);
-            Instantiate(throwableObj, projSpawner.transform.position, projSpawner.transform.rotation);
-            yield return new WaitForSeconds(0.15f);
+            }
+
+            GameObject projectile = Instantiate(throwableObj, projSpawner.transform.position, projSpawner.transform.rotation);
+            HomingProjectile homingProjectile = projectile.GetComponent<HomingProjectile>();
+            if (homingProjectile != null)
+            {
+                homingProjectile.SetDamage(attackDamage); // Set the damage value on the projectile
+            }
         }
     }
 }
