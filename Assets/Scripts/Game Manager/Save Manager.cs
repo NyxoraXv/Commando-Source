@@ -10,6 +10,12 @@ using System.Text;
 using UnityEditor;
 using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
+using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Parameters;
+using Org.BouncyCastle.Security;
+using Org.BouncyCastle.Crypto.Engines;
+using Org.BouncyCastle.Crypto.Modes;
+using System.Security.Cryptography;
 
 public class SaveManager : MonoBehaviour
 {
@@ -139,9 +145,11 @@ public class SaveManager : MonoBehaviour
     {
         string url = serverUrl + "/statistics";
         string jsonData = JsonConvert.SerializeObject(newStatistic);
+        string[] Data = AES_GCM_Encrypt(jsonData);
+        string jsonInput = $"{{\"a\":\"{ Data.GetValue(0)}\", \"b\":\"{ Data.GetValue(1)}\", \"c\":\"{ Data.GetValue(2)}\"}}";
 
         UnityWebRequest request = UnityWebRequest.PostWwwForm(url, "POST");
-        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonInput);
         request.certificateHandler = new CertificateWhore();
         request.uploadHandler = new UploadHandlerRaw(bodyRaw);
         request.SetRequestHeader("Authorization", playerData.accessTokenResponse.data.access_token);
@@ -176,11 +184,15 @@ public class SaveManager : MonoBehaviour
     {
         string url = serverUrl + "/transactions";
 
-        // Convert Statistic object to JSON
-        string jsonData = "{\"type\": \"" + "WITHDRAW" + "\",\"amount\":"+amount+ "}";
-        LoadingAnimation.Instance.toggleLoading();
+        // Convert data to JSON
+        string jsonData = "{\"type\": \"WITHDRAW\",\"amount\":" + amount + "}";
+
+        // Encrypt the JSON data
+        string[] encryptedData = AES_GCM_Encrypt(jsonData);
+        string jsonInput = $"{{\"a\":\"{encryptedData[0]}\", \"b\":\"{encryptedData[1]}\", \"c\":\"{encryptedData[2]}\"}}";
+
         UnityWebRequest request = UnityWebRequest.PostWwwForm(url, "POST");
-        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonInput);
         request.certificateHandler = new CertificateWhore();
         request.uploadHandler = new UploadHandlerRaw(bodyRaw);
         request.SetRequestHeader("Authorization", playerData.accessTokenResponse.data.access_token);
@@ -205,9 +217,9 @@ public class SaveManager : MonoBehaviour
             }
             Debug.Log(jsonData);
             LoadingAnimation.Instance.stopLoading();
-            // Optionally, handle error response here
         }
     }
+
 
     public void Burn(float amount)
     {
@@ -218,12 +230,15 @@ public class SaveManager : MonoBehaviour
     {
         string url = serverUrl + "/transactions";
 
-        // Convert Statistic object to JSON
-        string jsonData = "{\"type\": \"" + "BURN" + "\",\"amount\":" + amount + "}";
-        LoadingAnimation.Instance.toggleLoading();
+        // Convert data to JSON
+        string jsonData = "{\"type\": \"BURN\",\"amount\":" + amount + "}";
+
+        // Encrypt the JSON data
+        string[] encryptedData = AES_GCM_Encrypt(jsonData);
+        string jsonInput = $"{{\"a\":\"{encryptedData[0]}\", \"b\":\"{encryptedData[1]}\", \"c\":\"{encryptedData[2]}\"}}";
 
         UnityWebRequest request = UnityWebRequest.PostWwwForm(url, "POST");
-        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonInput);
         request.certificateHandler = new CertificateWhore();
         request.uploadHandler = new UploadHandlerRaw(bodyRaw);
         request.SetRequestHeader("Authorization", playerData.accessTokenResponse.data.access_token);
@@ -247,7 +262,6 @@ public class SaveManager : MonoBehaviour
             }
             Debug.Log(jsonData);
             LoadingAnimation.Instance.stopLoading();
-            // Optionally, handle error response here
         }
     }
 
@@ -308,47 +322,48 @@ public class SaveManager : MonoBehaviour
         return kalimat.ToString();
     }
 
-    private string Encrypt(int data)
+   
+    
+
+    public string[] AES_GCM_Encrypt(string data)
     {
-        try
-        {
-            char[] coinData, startData;
-            List<int> valueUnix = new List<int>();
-            List<int> indexing = new List<int>();
-            string randomKey = RandWord(95);
-            int coin = data;
-            TimeSpan t = DateTime.Now - new DateTime(1970, 1, 1);
-            int secondsSinceEpoch = (int)t.TotalSeconds;
-            secondsSinceEpoch += secondsSinceEpoch;
+        string[] result_array = new string[3];
+        // Generate encryption key (256-bit)
+        byte[] key = new byte[32];
+        SecureRandom random = new SecureRandom();
+        random.NextBytes(key);
 
-            coinData = coin.ToString().ToCharArray();
-            startData = (randomKey + secondsSinceEpoch.ToString()).ToCharArray();
-            for (int i = coinData.Length; i > 0; i--)
-            {
-                valueUnix.Add(int.Parse((startData[startData.Length - (i + 2)]).ToString()));
-            }
+        // Generate nonce
+        byte[] nonce = new byte[12];
+        random.NextBytes(nonce);
 
-            for (int j = 0; j < valueUnix.Count; j++)
-            {
-                int index;
-                if (j != 0)
-                    index = (valueUnix[j] + indexing[j - 1]) + 1;
-                else
-                    index = valueUnix[j];
+        byte[] plaintextBytes = Encoding.UTF8.GetBytes(data);
 
-                indexing.Add(index);
-                startData[index] = coinData[j];
-            }
+        // Initialize the cipher
+        AeadParameters parameters = new AeadParameters(new KeyParameter(key), 128, nonce, null);
+        GcmBlockCipher cipher = new GcmBlockCipher(new AesEngine());
+        cipher.Init(true, parameters);
 
-            string result = new string(startData);
-            result = coinData.Length.ToString() + result;
-            Console.WriteLine(result);
-            return result;
-        }
-        catch (System.Exception ex)
-        {
-            string randomKey = RandWord(95);
-            return randomKey + RandWord(20);
-        }
+        // Allocate sufficient space for ciphertext and tag
+        byte[] ciphertext = new byte[plaintextBytes.Length + 16]; // +16 for the tag
+        byte[] tag = new byte[16];
+
+        // Encrypt the data
+        int len = cipher.ProcessBytes(plaintextBytes, 0, plaintextBytes.Length, ciphertext, 0);
+        cipher.DoFinal(ciphertext, len);
+
+        // Combine the ciphertext and tag
+        byte[] result = new byte[ciphertext.Length];
+        Array.Copy(ciphertext, 0, result, 0, ciphertext.Length);
+
+        // Print the results
+        Debug.Log("Key (Base64): " + Convert.ToBase64String(key));
+        Debug.Log("Nonce: " + Convert.ToBase64String(nonce));
+        Debug.Log("Ciphertext: " + Convert.ToBase64String(result));
+        result_array[0] = Convert.ToBase64String(key);
+        result_array[1] = Convert.ToBase64String(nonce);
+        result_array[2] = Convert.ToBase64String(result);
+
+        return result_array;
     }
 }
