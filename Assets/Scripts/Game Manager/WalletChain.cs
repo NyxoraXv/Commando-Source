@@ -135,7 +135,7 @@ public class WalletChain : MonoBehaviour
             Debug.Log(address);
 
             // Format the URL with the token and open it
-            string formattedUrl = "https://garudaverse.io?token=" + getToken + "&serverId=3";
+            string formattedUrl = "https://garudaverse.tech?token=" + getToken + "&serverId=3";
             SaveManager.Instance.playerData.WalletData = myDatawallet;
             Debug.Log("Adress = " + myDatawallet.data.address);
             Debug.Log(formattedUrl);
@@ -243,7 +243,7 @@ public class WalletChain : MonoBehaviour
             string requestBody = "{\"contractAddress\":\"terra1j7h8v7sdppru5gl67y05h2jvh5xa0g9rmylfs8vf7xaa8l8anwxqmh0aew\",\"walletAddress\":\"" + addressWallet + "\"}";
             Debug.Log(requestBody);
 
-            UnityWebRequest request = new UnityWebRequest("https://api.garudaverse.io/check-list-nft", "POST");
+            UnityWebRequest request = new UnityWebRequest("https://api.garudaverse.tech/check-list-nft", "POST");
 
             request.SetRequestHeader("Content-Type", "application/json");
 
