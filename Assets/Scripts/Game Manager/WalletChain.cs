@@ -135,7 +135,7 @@ public class WalletChain : MonoBehaviour
             Debug.Log(address);
 
             // Format the URL with the token and open it
-            string formattedUrl = "https://garudaverse.tech?token=" + getToken + "&serverId=3";
+            string formattedUrl = "https://dev-fe.garudaverse.tech?token=" + getToken + "&serverId=3";
             SaveManager.Instance.playerData.WalletData = myDatawallet;
             Debug.Log("Adress = " + myDatawallet.data.address);
             Debug.Log(formattedUrl);
