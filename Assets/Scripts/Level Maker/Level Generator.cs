@@ -11,6 +11,7 @@ public class ProceduralLevelGenerator : MonoBehaviour
     public TileBase grass45RightTile;
     public TileBase waterTile; // New water tile
     public GameObject enemyPrefab; // Enemy prefab
+    public GameObject winTriggerPrefab; // Win trigger prefab
     public int seed = 0;
     public int width = 20;
     public int height = 30; // Increased height to accommodate underground
@@ -23,6 +24,7 @@ public class ProceduralLevelGenerator : MonoBehaviour
     public float hillFrequency = 0.05f; // Frequency of hills
     public float valleyFrequency = 0.05f; // Frequency of valleys
     public float plateauFrequency = 0.05f; // Frequency of plateaus
+
 
     private System.Random prng;
 
@@ -57,10 +59,8 @@ public class ProceduralLevelGenerator : MonoBehaviour
             terrainHeights[x] = Mathf.FloorToInt(noiseMap[x, 0]) + undergroundDepth;
         }
 
-        // Add hills, valleys, and plateaus
         ModifyTerrain(terrainHeights);
 
-        // Adjust terrain heights to ensure all paths can be hiked from the left
         for (int x = 1; x < width; x++)
         {
             if (terrainHeights[x] - terrainHeights[x - 1] > 2)
@@ -93,11 +93,11 @@ public class ProceduralLevelGenerator : MonoBehaviour
                 {
                     if (x > 0 && terrainHeights[x - 1] > terrainY)
                     {
-                        tileToPlace = grass45RightTile; // Grass is going down to the right
+                        tileToPlace = grass45RightTile;
                     }
                     else if (x < width - 1 && terrainHeights[x + 1] > terrainY)
                     {
-                        tileToPlace = grass45LeftTile; // Grass is going down to the left
+                        tileToPlace = grass45LeftTile;
                     }
                 }
 
@@ -109,7 +109,8 @@ public class ProceduralLevelGenerator : MonoBehaviour
             }
         }
 
-        PlaceCanyons(terrainHeights); // Place canyons after generating the terrain
+        PlaceCanyons(terrainHeights);
+        PlaceWinTrigger(terrainHeights); // Place the win trigger after generating the terrain
     }
 
     void ModifyTerrain(int[] terrainHeights)
@@ -248,4 +249,21 @@ public class ProceduralLevelGenerator : MonoBehaviour
             emptyPositions.RemoveAt(randomIndex);
         }
     }
-}
+
+    void PlaceWinTrigger(int[] terrainHeights)
+    {
+        // Check if the win trigger has already been placed
+        if (GameObject.FindGameObjectWithTag("WinTrigger") != null)
+        {
+            Debug.Log("Win trigger already placed.");
+            return; // Exit the method if the win trigger is already present
+        }
+
+        int winTriggerX = width - width / 6;
+        int winTriggerY = terrainHeights[winTriggerX] + 1;
+
+        Vector3Int winTriggerPosition = new Vector3Int(winTriggerX, winTriggerY, 0);
+        Vector3 worldPosition = tilemap.CellToWorld(winTriggerPosition) + new Vector3(0.5f, 0.5f, 0);
+        Instantiate(winTriggerPrefab, worldPosition, Quaternion.identity);
+    }
+    }

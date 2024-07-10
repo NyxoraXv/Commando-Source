@@ -26,6 +26,8 @@ TagManager:
   - Main Menu Parent
   - GameManager
   - MainCanvas
+  - FxTemporaire
+  - WinTrigger
   layers:
   - Default
   - TransparentFX
