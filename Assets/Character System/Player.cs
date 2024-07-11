@@ -658,9 +658,4 @@ public class MainPlayer : MonoBehaviour
         animator.SetBool("IsGrounded", IsGrounded);
         Shoot();
     }
-
-    public void SetWin(bool winState)
-    {
-        win = winState;
-    }
 }
