@@ -10,6 +10,7 @@ public class ProceduralLevelGenerator : MonoBehaviour
     public TileBase grass45LeftTile;
     public TileBase grass45RightTile;
     public TileBase waterTile; // New water tile
+    public TileBase newTile; // New tile for the second half of the level
     public GameObject enemyPrefab; // Enemy prefab
     public GameObject winTriggerPrefab; // Win trigger prefab
     public int seed = 0;
@@ -21,6 +22,8 @@ public class ProceduralLevelGenerator : MonoBehaviour
     public int undergroundDepth = 20; // Fixed depth for underground layer
     public int maxCanyonCount = 3; // Maximum number of canyons to place
     public int canyonDepth = 10; // Depth of the canyon
+    public int slopeStartWidth = 10; // Width after which the slope starts
+    public int slopeDepth = 10; // Depth of the slope
     public float hillFrequency = 0.05f; // Frequency of hills
     public float valleyFrequency = 0.05f; // Frequency of valleys
     public float plateauFrequency = 0.05f; // Frequency of plateaus
@@ -69,9 +72,24 @@ public class ProceduralLevelGenerator : MonoBehaviour
             }
         }
 
+        PlaceTiles(terrainHeights);
+
+        // Adjust terrain heights to create a downward slope after a certain width
+        for (int x = slopeStartWidth; x < width; x++)
+        {
+            terrainHeights[x] -= (x - slopeStartWidth) * slopeDepth / (width - slopeStartWidth);
+        }
+
+        PlaceCanyons(terrainHeights);
+        PlaceWinTrigger(terrainHeights); // Place the win trigger after generating the terrain
+    }
+
+    void PlaceTiles(int[] terrainHeights)
+    {
         for (int x = 0; x < width; x++)
         {
             int terrainY = terrainHeights[x];
+            TileBase currentTile = (x < width / 2) ? grassTile : newTile; // Change tile halfway through the level
 
             for (int y = 0; y < height; y++)
             {
@@ -87,7 +105,7 @@ public class ProceduralLevelGenerator : MonoBehaviour
                 }
                 else if (y == terrainY)
                 {
-                    tileToPlace = grassTile;
+                    tileToPlace = currentTile;
                 }
                 else if (y == terrainY + 1)
                 {
@@ -108,9 +126,6 @@ public class ProceduralLevelGenerator : MonoBehaviour
                 }
             }
         }
-
-        PlaceCanyons(terrainHeights);
-        PlaceWinTrigger(terrainHeights); // Place the win trigger after generating the terrain
     }
 
     void ModifyTerrain(int[] terrainHeights)
@@ -259,7 +274,7 @@ public class ProceduralLevelGenerator : MonoBehaviour
             return; // Exit the method if the win trigger is already present
         }
 
-        int winTriggerX = width - width / 6;
+        int winTriggerX = width - width / 5;
         int winTriggerY = terrainHeights[winTriggerX] + 1;
 
         Vector3Int winTriggerPosition = new Vector3Int(winTriggerX, winTriggerY, 0);

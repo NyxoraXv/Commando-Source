@@ -107,7 +107,7 @@ GameObject:
   - component: {fileID: 651520323812985599}
   - component: {fileID: 7552340737445929039}
   - component: {fileID: 4909552546741619939}
-  - component: {fileID: 6783175396514845404}
+  - component: {fileID: 8198397917949385410}
   m_Layer: 15
   m_Name: Player
   m_TagString: Player
@@ -182,7 +182,7 @@ SpriteRenderer:
   m_Size: {x: 3, y: 3}
   m_AdaptiveModeThreshold: 0.469
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
 --- !u!95 &1306547141628836490
@@ -281,8 +281,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!61 &6783175396514845404
-BoxCollider2D:
+--- !u!70 &8198397917949385410
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -313,16 +313,6 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.032955885}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3, y: 3}
-    newSize: {x: 3, y: 3}
-    adaptiveTilingThreshold: 0.469
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 2.55, y: 3.0378308}
-  m_EdgeRadius: 0
+  m_Offset: {x: 0.021985173, y: 0.029313564}
+  m_Size: {x: 2.5372865, y: 3.022631}
+  m_Direction: 0
