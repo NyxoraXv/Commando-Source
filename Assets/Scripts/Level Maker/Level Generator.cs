@@ -41,6 +41,7 @@ public class ProceduralLevelGenerator : MonoBehaviour
         
         ClearTiles();
         clearEnemy();
+        ClearWinTrigger();
         GenerateLevel();
         PlaceEnemies();
     }
@@ -52,6 +53,20 @@ public class ProceduralLevelGenerator : MonoBehaviour
         foreach (GameObject enemyObj in enemy)
         {
             Destroy(enemyObj);
+        }
+    }
+
+    void ClearWinTrigger()
+    {
+        GameObject winTrigger = GameObject.FindGameObjectWithTag("WinTrigger");
+        if (winTrigger != null)
+        {
+            Destroy(winTrigger);
+            Debug.Log("Win trigger destroyed.");
+        }
+        else
+        {
+            Debug.Log("No win trigger found to destroy.");
         }
     }
 
@@ -280,11 +295,16 @@ public class ProceduralLevelGenerator : MonoBehaviour
             return; // Exit the method if the win trigger is already present
         }
 
+        // Place the win trigger near the end of the level
         int winTriggerX = width - width / 5;
+
+        // Set winTriggerY to be just above the terrain at winTriggerX
         int winTriggerY = terrainHeights[winTriggerX] + 1;
 
         Vector3Int winTriggerPosition = new Vector3Int(winTriggerX, winTriggerY, 0);
         Vector3 worldPosition = tilemap.CellToWorld(winTriggerPosition) + new Vector3(0.5f, 0.5f, 0);
         Instantiate(winTriggerPrefab, worldPosition, Quaternion.identity);
+
+        Debug.Log("Win trigger placed at: " + winTriggerPosition);
     }
-    }
+}
