@@ -10,7 +10,10 @@ public class ProceduralLevelGenerator : MonoBehaviour
     public TileBase grass45LeftTile;
     public TileBase grass45RightTile;
     public TileBase waterTile; // New water tile
-    public TileBase newTile; // New tile for the second half of the level
+    public TileBase secondTile; // New tile for the second half of the level
+    public TileBase secondUndergroundTile; // New underground tile for the second half of the level
+    public TileBase secondGrass45RightTile; // New 45-degree left tile for the second half of the level
+    public TileBase secondGrass45LeftTile; // New 45-degree right tile for the second half of the level
     public GameObject enemyPrefab; // Enemy prefab
     public GameObject winTriggerPrefab; // Win trigger prefab
     public int seed = 0;
@@ -89,7 +92,10 @@ public class ProceduralLevelGenerator : MonoBehaviour
         for (int x = 0; x < width; x++)
         {
             int terrainY = terrainHeights[x];
-            TileBase currentTile = (x < width / 2) ? grassTile : newTile; // Change tile halfway through the level
+            TileBase currentTile = (x < width / 2) ? grassTile : secondTile; // Change tile halfway through the level
+            TileBase currentUndergroundTile = (x < width / 2) ? undergroundTile : secondUndergroundTile; // Change underground tile halfway through the level
+            TileBase currentGrass45LeftTile = (x < width / 2) ? grass45LeftTile : secondGrass45LeftTile; // Change left slope tile halfway through the level
+            TileBase currentGrass45RightTile = (x < width / 2) ? grass45RightTile : secondGrass45RightTile; // Change right slope tile halfway through the level
 
             for (int y = 0; y < height; y++)
             {
@@ -97,11 +103,11 @@ public class ProceduralLevelGenerator : MonoBehaviour
 
                 if (y < undergroundDepth)
                 {
-                    tileToPlace = undergroundTile;
+                    tileToPlace = currentUndergroundTile;
                 }
                 else if (y < terrainY)
                 {
-                    tileToPlace = undergroundTile;
+                    tileToPlace = currentUndergroundTile;
                 }
                 else if (y == terrainY)
                 {
@@ -111,11 +117,11 @@ public class ProceduralLevelGenerator : MonoBehaviour
                 {
                     if (x > 0 && terrainHeights[x - 1] > terrainY)
                     {
-                        tileToPlace = grass45RightTile;
+                        tileToPlace = currentGrass45RightTile;
                     }
                     else if (x < width - 1 && terrainHeights[x + 1] > terrainY)
                     {
-                        tileToPlace = grass45LeftTile;
+                        tileToPlace = currentGrass45LeftTile;
                     }
                 }
 
