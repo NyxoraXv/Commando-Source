@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class BulletHandler : MonoBehaviour
@@ -56,18 +58,39 @@ public class BulletHandler : MonoBehaviour
             return;
         isSpawned = false;
 
-        // Instantiate the explosion sprite instead of prefab
-        Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        rb.velocity = Vector2.zero;
 
+        // Instantiate the explosion
+        GameObject explosionGO = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        ParticleSystem explosionPS = explosionGO.GetComponent<ParticleSystem>();
+
+        // Check if the explosion particle system exists
+        if (explosionPS != null)
+        {
+            // Get the duration of the particle system
+            float explosionDuration = explosionPS.main.duration;
+
+            // Destroy the explosion game object after the particle system has finished
+            Destroy(explosionGO, explosionDuration);
+        }
+        else
+        {
+            // If there's no particle system, just destroy the explosion game object
+            Destroy(explosionGO);
+        }
+
+        // Despawn the bullet based on who launched it
         if (launcher == LauncherType.Player)
         {
-            BulletManager.GetNormalBulletPool()?.Despawn(this.gameObject);
+            BulletManager.GetNormalBulletPool()?.Despawn(gameObject);
+            Destroy(gameObject);
         }
         else
         {
             Destroy(gameObject);
         }
     }
+
 
     // Destroy the bullet when out of camera
     private void OnBecameInvisible()
@@ -77,14 +100,18 @@ public class BulletHandler : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if ((launcher != LauncherType.Enemy && (collider.CompareTag("Enemy")) || collider.CompareTag("EnemyBomb")) || (GameManager.IsPlayer(collider) && launcher != LauncherType.Player) || collider.CompareTag("Building") || collider.CompareTag("Roof"))
+        if ((launcher != LauncherType.Enemy && (collider.CompareTag("Enemy")) || collider.CompareTag("EnemyBomb")) || (GameManager.IsPlayer(collider) && launcher != LauncherType.Player) || collider.CompareTag("Building") || collider.CompareTag("Roof") || collider.CompareTag("Walkable"))
         {
-            if (GameManager.IsPlayer(collider))
-                GameManager.GetPlayer(collider).GetComponent<Health>()?.Hit(damageShot);
-            else
-                collider.gameObject.GetComponent<Health>()?.Hit(damageShot);
+            if (!collider.CompareTag("Walkable"))
+            {
+                if (GameManager.IsPlayer(collider))
+                    GameManager.GetPlayer(collider).GetComponent<Health>()?.Hit(damageShot);
+                else
+                    collider.gameObject.GetComponent<Health>()?.Hit(damageShot);
 
-            AudioManager.PlayShotHitAudio();
+                AudioManager.PlayShotHitAudio();
+                Despawn();
+            }
             Despawn();
         }
     }

@@ -25,14 +25,21 @@ public class ProceduralLevelGenerator : MonoBehaviour
     public float valleyFrequency = 0.05f; // Frequency of valleys
     public float plateauFrequency = 0.05f; // Frequency of plateaus
 
+    // New tile variables
+    public TileBase leftTopCornerTile;
+    public TileBase rightTopCornerTile;
+    public TileBase leftBottomCornerTile;
+    public TileBase rightBottomCornerTile;
+    public TileBase leftEdgeTile;
+    public TileBase rightEdgeTile;
+    public TileBase bottomTile;
 
     private System.Random prng;
 
     public void generate()
     {
         prng = new System.Random(seed); // Initialize random seed for reproducibility
-        
-        
+
         ClearTiles();
         clearEnemy();
         GenerateLevel();
@@ -109,6 +116,8 @@ public class ProceduralLevelGenerator : MonoBehaviour
             }
         }
 
+        PlaceSpecialTiles(terrainHeights);
+
         PlaceCanyons(terrainHeights);
         PlaceWinTrigger(terrainHeights); // Place the win trigger after generating the terrain
     }
@@ -143,6 +152,76 @@ public class ProceduralLevelGenerator : MonoBehaviour
         }
     }
 
+    void PlaceSpecialTiles(int[] terrainHeights)
+    {
+        for (int x = 0; x < width; x++)
+        {
+            int terrainY = terrainHeights[x];
+
+            for (int y = terrainY; y < height; y++)
+            {
+                TileBase tileToPlace = null;
+
+                if (tilemap.GetTile(new Vector3Int(x, y, 0)) == grassTile || tilemap.GetTile(new Vector3Int(x, y, 0)) == grass45LeftTile || tilemap.GetTile(new Vector3Int(x, y, 0)) == grass45RightTile)
+                {
+                    if (IsLeftTopCorner(x, y, terrainHeights))
+                    {
+                        tileToPlace = leftTopCornerTile;
+                    }
+                    else if (IsRightTopCorner(x, y, terrainHeights))
+                    {
+                        tileToPlace = rightTopCornerTile;
+                    }
+                    else if (IsLeftBottomCorner(x, y, terrainHeights))
+                    {
+                        tileToPlace = leftBottomCornerTile;
+                    }
+                    else if (IsRightBottomCorner(x, y, terrainHeights))
+                    {
+                        tileToPlace = rightBottomCornerTile;
+                    }
+                    else if (IsLeftEdge(x, y, terrainHeights))
+                    {
+                        tileToPlace = leftEdgeTile;
+                    }
+                    else if (IsRightEdge(x, y, terrainHeights))
+                    {
+                        tileToPlace = rightEdgeTile;
+                    }
+                    else if (IsBottom(x, y, terrainHeights))
+                    {
+                        tileToPlace = bottomTile;
+                    }
+                }
+
+                if (tileToPlace != null)
+                {
+                    Vector3Int tilePosition = new Vector3Int(x, y, 0);
+                    tilemap.SetTile(tilePosition, tileToPlace);
+                }
+            }
+        }
+
+        // Ensure corners are converted to edges if there's a slope above
+        for (int x = 0; x < width; x++)
+        {
+            int terrainY = terrainHeights[x];
+            for (int y = terrainY; y < height; y++)
+            {
+                if (tilemap.GetTile(new Vector3Int(x, y, 0)) == leftTopCornerTile && IsSlopeTopLeft(x, y, terrainHeights))
+                {
+                    tilemap.SetTile(new Vector3Int(x, y, 0), leftEdgeTile);
+                    tilemap.SetTile(new Vector3Int(x, y - 1, 0), leftEdgeTile);
+                }
+                if (tilemap.GetTile(new Vector3Int(x, y, 0)) == rightTopCornerTile && IsSlopeTopRight(x, y, terrainHeights))
+                {
+                    tilemap.SetTile(new Vector3Int(x, y, 0), rightEdgeTile);
+                    tilemap.SetTile(new Vector3Int(x, y - 1, 0), rightEdgeTile);
+                }
+            }
+        }
+    }
+
     void PlaceCanyons(int[] terrainHeights)
     {
         for (int i = 0; i < maxCanyonCount; i++)
@@ -173,30 +252,27 @@ public class ProceduralLevelGenerator : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                Vector3Int tilePosition = new Vector3Int(x, y, 0);
-                if (tilemap.GetTile(tilePosition) == waterTile)
+                if (tilemap.GetTile(new Vector3Int(x, y, 0)) == waterTile)
                 {
-                    // Clear any tiles above the water
-                    for (int aboveY = y + 1; aboveY < height; aboveY++)
+                    for (int removeY = y + 1; removeY < height; removeY++)
                     {
-                        Vector3Int aboveTilePosition = new Vector3Int(x, aboveY, 0);
-                        tilemap.SetTile(aboveTilePosition, null);
+                        tilemap.SetTile(new Vector3Int(x, removeY, 0), null);
                     }
                 }
             }
         }
     }
 
-    float[,] GenerateNoiseMap(int mapWidth, int mapHeight, int seed, float scale, float heightMultiplier)
+    float[,] GenerateNoiseMap(int width, int height, int seed, float scale, float heightMultiplier)
     {
-        float[,] noiseMap = new float[mapWidth, mapHeight];
+        float[,] noiseMap = new float[width, height];
         System.Random prng = new System.Random(seed);
         float offsetX = prng.Next(-100000, 100000);
         float offsetY = prng.Next(-100000, 100000);
 
-        for (int x = 0; x < mapWidth; x++)
+        for (int x = 0; x < width; x++)
         {
-            for (int y = 0; y < mapHeight; y++)
+            for (int y = 0; y < height; y++)
             {
                 float sampleX = x * scale + offsetX;
                 float sampleY = y * scale + offsetY;
@@ -208,6 +284,7 @@ public class ProceduralLevelGenerator : MonoBehaviour
 
         return noiseMap;
     }
+
     public void ClearTiles()
     {
         tilemap.ClearAllTiles();
@@ -266,4 +343,60 @@ public class ProceduralLevelGenerator : MonoBehaviour
         Vector3 worldPosition = tilemap.CellToWorld(winTriggerPosition) + new Vector3(0.5f, 0.5f, 0);
         Instantiate(winTriggerPrefab, worldPosition, Quaternion.identity);
     }
+
+    // Methods to check placement of corner and edge tiles
+    bool IsLeftTopCorner(int x, int y, int[] terrainHeights)
+    {
+        return x > 0 && y == terrainHeights[x] && terrainHeights[x] > terrainHeights[x - 1] && !IsSlope(x - 1, y, terrainHeights);
     }
+
+    bool IsRightTopCorner(int x, int y, int[] terrainHeights)
+    {
+        return x < width - 1 && y == terrainHeights[x] && terrainHeights[x] > terrainHeights[x + 1] && !IsSlope(x + 1, y, terrainHeights);
+    }
+
+    bool IsLeftBottomCorner(int x, int y, int[] terrainHeights)
+    {
+        return x > 0 && y == terrainHeights[x] - 1 && terrainHeights[x] < terrainHeights[x - 1] && !IsSlope(x - 1, y, terrainHeights);
+    }
+
+    bool IsRightBottomCorner(int x, int y, int[] terrainHeights)
+    {
+        return x < width - 1 && y == terrainHeights[x] - 1 && terrainHeights[x] < terrainHeights[x + 1] && !IsSlope(x + 1, y, terrainHeights);
+    }
+
+    bool IsLeftEdge(int x, int y, int[] terrainHeights)
+    {
+        return x > 0 && y < terrainHeights[x] && terrainHeights[x] < terrainHeights[x - 1] && !IsSlope(x - 1, y, terrainHeights);
+    }
+
+    bool IsRightEdge(int x, int y, int[] terrainHeights)
+    {
+        return x < width - 1 && y < terrainHeights[x] && terrainHeights[x] < terrainHeights[x + 1] && !IsSlope(x + 1, y, terrainHeights);
+    }
+
+    bool IsBottom(int x, int y, int[] terrainHeights)
+    {
+        return y == terrainHeights[x] - 1 && (x == 0 || x == width - 1 || y < terrainHeights[x - 1] && y < terrainHeights[x + 1]) && !IsSlope(x, y + 1, terrainHeights);
+    }
+
+    bool IsSlope(int x, int y, int[] terrainHeights)
+    {
+        return tilemap.GetTile(new Vector3Int(x, y, 0)) == grass45LeftTile || tilemap.GetTile(new Vector3Int(x, y, 0)) == grass45RightTile;
+    }
+
+    bool IsSlopeTopLeft(int x, int y, int[] terrainHeights)
+    {
+        return IsSlope(x - 1, y + 1, terrainHeights);
+    }
+
+    bool IsSlopeTopRight(int x, int y, int[] terrainHeights)
+    {
+        return IsSlope(x + 1, y + 1, terrainHeights);
+    }
+
+    bool IsGrassAboveSlope(int x, int y, int[] terrainHeights)
+    {
+        return !IsSlopeTopLeft(x, y, terrainHeights) && !IsSlopeTopRight(x, y, terrainHeights);
+    }
+}
