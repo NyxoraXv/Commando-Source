@@ -226,7 +226,7 @@ public class ProceduralLevelGenerator : MonoBehaviour
     {
         for (int i = 0; i < maxCanyonCount; i++)
         {
-            int canyonWidth = prng.Next(1, 3); // Width between 1 and 2
+            int canyonWidth = 1; // Width between 1 and 2
             int canyonX = prng.Next(0, width - canyonWidth);
             int surfaceY = terrainHeights[canyonX];
 

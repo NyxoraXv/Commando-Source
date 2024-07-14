@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEditor.Experimental;
 
 public class GameManager : MonoBehaviour
 {
@@ -153,7 +154,15 @@ public class GameManager : MonoBehaviour
         current.score += amountScore;
         //UIManager.DisplayCurrency();
         UIManager.UpdateScoreUI();
-        AddReward(FRG, LUNC, xp);
+
+        Statistic incrementedStatistic = new Statistic();
+        incrementedStatistic.frg = FRG;
+        incrementedStatistic.lunc = LUNC;
+        incrementedStatistic.score = amountScore;
+        incrementedStatistic.exp = xp;
+        incrementedStatistic.last_level = 1;
+        SaveManager.Instance.SetStatistic(incrementedStatistic);
+        SaveManager.Instance.GetStatistic();
         UIManager.refreshCurrency();
     }
 
@@ -169,11 +178,8 @@ public class GameManager : MonoBehaviour
 
     public static void AddReward(float FRG = 0F, float LUNC = 0f, int XP = 0)
     {
-        if (SaveManager.Instance.isLogin)
-        {
-            current.lunc += LUNC;
-            current.frg += FRG;
-        }
+        current.lunc += LUNC;
+        current.frg += FRG;
         LevelManager.Instance.addXP(XP);
     }
 
@@ -271,14 +277,6 @@ public class GameManager : MonoBehaviour
         UIManager.DisplayWinUI();
         AudioManager.PlayLevelCompleteAudio();
         AudioManager.PlayGameOverAudio();
-        if (MissionManager.Instance.onLoaded >= SaveManager.Instance.playerData.statistic.data.last_level) {
-            Statistic incrementedStatistic = new Statistic();
-            incrementedStatistic.frg = current.frg;
-            incrementedStatistic.lunc = current.lunc;
-            incrementedStatistic.score = current.score;
-            incrementedStatistic.last_level = 1;
-            SaveManager.Instance.SetStatistic(incrementedStatistic);
-        }
         current.isGameOver = true;
     }
 
