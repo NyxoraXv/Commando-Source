@@ -1,6 +1,11 @@
+using Newtonsoft.Json;
+using Org.BouncyCastle.Asn1.Ocsp;
+using Org.BouncyCastle.Pqc.Crypto.Lms;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.UIElements;
 
 public enum Difficulty
 {
@@ -19,39 +24,26 @@ public enum RewardType
     Item
 }
 
+[System.Serializable]
+public class mission_data
+{
+    public string id;
+    public string name;
+    public int user_level;
+    public int width;
+    public int height;
+    public int seed;
+    public int total_enemy;
+    public int created_at;
+    public int updated_at;
+}
+
 public class MissionManager : MonoBehaviour
 {
     public static MissionManager Instance;
-    public int onLoaded = 0;
+    private SaveManager saveManager;
 
-    [System.Serializable]
-    public class RewardData
-    {
-        public RewardType Type;
-        public int Value;
-    }
-
-    [System.Serializable]
-    public class missionData
-    {
-        [Header("Mission Information")]
-        public string MissionName;
-        public Difficulty Difficulty;
-
-        [Header("Mission Objectives")]
-        public List<string> Objectives;
-
-        [Header("Mission Rewards")]
-        public List<RewardData> Rewards; // List of rewards with type and value.
-
-        [Header("Mission Status")]
-        public bool Completed;
-
-        [Header("Mission Int")]
-        public int Level;
-    }
-
-    public List<missionData> MissionInformation;
+    public mission_data mission;
 
     private void Awake()
     {
@@ -60,7 +52,35 @@ public class MissionManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
+
+        saveManager = SaveManager.Instance;
     }
+
+    public void fetch()
+    {
+        StartCoroutine(fetch_i());
+    }
+
+    IEnumerator fetch_i()
+    {
+        string url = saveManager.serverUrl + "/manager-levels/users";
+        string access_token = SaveManager.Instance.playerData.accessTokenResponse.data.access_token;
+        UnityWebRequest request = UnityWebRequest.Get(url);
+        request.certificateHandler = new CertificateWhore();
+        request.SetRequestHeader("Authorization", access_token);
+        request.downloadHandler = new DownloadHandlerBuffer();
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            string json = request.downloadHandler.text;
+            mission_data mission_cache = JsonConvert.DeserializeObject<mission_data>(json);
+            mission = mission_cache;
+        }
+    }
+
+
 
 
 }
