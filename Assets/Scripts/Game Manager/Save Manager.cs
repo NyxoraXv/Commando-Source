@@ -10,6 +10,7 @@ using System.Text;
 using UnityEditor;
 using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
+using Org.BouncyCastle;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Security;

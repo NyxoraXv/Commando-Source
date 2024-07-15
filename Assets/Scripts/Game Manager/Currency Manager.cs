@@ -21,7 +21,6 @@ public class CurrencyManager : MonoBehaviour
 
     public void Refresh()
     {
-
         try
         {
             // Find the game objects with the "gold" and "diamond" tags

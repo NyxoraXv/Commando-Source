@@ -184,7 +184,7 @@ PrefabInstance:
     - target: {fileID: 2705414511077166885, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
       propertyPath: serverUrl
-      value: https://dev-lunc-zombie.garudaverse.tech/api
+      value: https://lunc-zombie.garudaverse.tech/api
       objectReference: {fileID: 0}
     - target: {fileID: 3309609548692264067, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
@@ -209,7 +209,7 @@ GameObject:
   - component: {fileID: 268086819}
   - component: {fileID: 268086822}
   m_Layer: 0
-  m_Name: EventSystem
+  m_Name: Event System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

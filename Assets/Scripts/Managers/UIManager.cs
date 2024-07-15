@@ -28,14 +28,12 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI winPointsText;
     public GameObject MobileCanvas;
     public GameObject Currency;
-    public GameObject CurrentCurrency;
     public GameObject backButton;
     public GameObject buyButton;
     public GameObject shopUI;
     public GameObject RateOfFireUI;
     public Image RateOfFireSlide;
     public Image healthBorder;
-    public  CurrentCurrencyDisplay currentCurrencyDisplay;
 
     public Image characterAvatar;
 
@@ -108,7 +106,8 @@ public class UIManager : MonoBehaviour
 
 
         // Set initial alpha to 0f
-        CanvasGroup canvasGroup = current.CurrentCurrency.GetComponent<CanvasGroup>();
+        
+        CanvasGroup canvasGroup = current.Currency.GetComponent<CanvasGroup>();
         if (canvasGroup == null)
         {
             canvasGroup = current.Currency.AddComponent<CanvasGroup>();
@@ -300,7 +299,7 @@ public class UIManager : MonoBehaviour
 
     public static void refreshCurrency()
     {
-        current.currentCurrencyDisplay.refresh();
+        CurrencyManager.Instance.Refresh();
     }
 
     public static void DisableReviveUI()
