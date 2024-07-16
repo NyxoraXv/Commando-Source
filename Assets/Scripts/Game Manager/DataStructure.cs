@@ -155,3 +155,20 @@ public class HistoryData
         return result;
     }
 }
+public class MissionDataWrapper
+{
+    public Mission_Data data;
+}
+
+public class Mission_Data
+{
+    public string id;
+    public string name;
+    public int user_level;
+    public int width;
+    public int height;
+    public int seed;
+    public int total_enemy;
+    public int created_at;
+    public int updated_at;
+}

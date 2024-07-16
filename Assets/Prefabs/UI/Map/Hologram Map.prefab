@@ -1203,11 +1203,8 @@ MonoBehaviour:
   MissionTittle: {fileID: 3281505221447022880}
   pin: {fileID: 6787801660435404675}
   DifficultyParent: {fileID: 6616960363248015207}
-  HologramClampPosition:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
+  targetBoxCollider: {fileID: 292567875080402366}
+  missionManager: {fileID: 0}
 --- !u!114 &5617860669133690051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3534,6 +3531,7 @@ GameObject:
   - component: {fileID: 4659228739471828746}
   - component: {fileID: 4823376827730680709}
   - component: {fileID: 7290613385305257895}
+  - component: {fileID: 292567875080402366}
   m_Layer: 0
   m_Name: Cube.002
   m_TagString: Untagged
@@ -3610,6 +3608,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &292567875080402366
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9200107781473586396}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.05749976, y: 0.051317934, z: 0.002684462}
+  m_Center: {x: 0.00066186907, y: 0.012043512, z: 0.00073775224}
 --- !u!1001 &6225409780019158721
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3681,7 +3700,7 @@ PrefabInstance:
     - target: {fileID: 3563104711040386248, guid: b19f122da8fcf674c87aacaf0c61fae1,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -255.1
+      value: -255
       objectReference: {fileID: 0}
     - target: {fileID: 3563104711040386248, guid: b19f122da8fcf674c87aacaf0c61fae1,
         type: 3}
@@ -3706,12 +3725,12 @@ PrefabInstance:
     - target: {fileID: 3563104711040386248, guid: b19f122da8fcf674c87aacaf0c61fae1,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -93
+      value: 199
       objectReference: {fileID: 0}
     - target: {fileID: 3563104711040386248, guid: b19f122da8fcf674c87aacaf0c61fae1,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -192.2
+      value: -66
       objectReference: {fileID: 0}
     - target: {fileID: 3563104711040386248, guid: b19f122da8fcf674c87aacaf0c61fae1,
         type: 3}
@@ -3727,6 +3746,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7343513236813367512, guid: b19f122da8fcf674c87aacaf0c61fae1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8822933262955300512, guid: b19f122da8fcf674c87aacaf0c61fae1,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8822933262955300512, guid: b19f122da8fcf674c87aacaf0c61fae1,
         type: 3}

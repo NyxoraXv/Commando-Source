@@ -29,17 +29,10 @@ public class StartButton : MonoBehaviour
         if (mainCanvasGroup != null)
         {
             mainCanvasGroup.DOFade(0f, 0.5f).From(1f);
-            SaveManager.Instance.GetStatistic((statistic, success, errorMessage) =>
+            GenerativeMissionManager.instance.fetch(() =>
             {
-                if (success)
-                {
-                    Destroy(MainCanvas);
-                    Instantiate(HologramMap);
-                }
-                else
-                {
-                    Debug.LogError("Error retrieving statistic data: " + errorMessage);
-                }
+                Destroy(MainCanvas);
+                Instantiate(HologramMap);
             });
         }
         else

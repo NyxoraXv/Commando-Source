@@ -323,9 +323,6 @@ public class SaveManager : MonoBehaviour
         return kalimat.ToString();
     }
 
-   
-    
-
     public string[] AES_GCM_Encrypt(string data)
     {
         string[] result_array = new string[3];
