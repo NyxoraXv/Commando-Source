@@ -53,11 +53,19 @@ namespace Assets.FantasyMonsters.Scripts
         [Header("Weapon")]
         public SpriteRenderer weaponRenderer; // Declare the weapon SpriteRenderer
 
-        public void Awake()
+        void Awake()
         {
             SetState(MonsterState.Idle);
             followPlayer = GameManager.GetPlayer();
-            Debug.Log("Follow player assigned: " + (followPlayer != null));
+            if (followPlayer == null)
+            {
+                Debug.LogError("Follow player is not assigned.");
+            }
+            else
+            {
+                Debug.Log("Follow player assigned: " + followPlayer.name);
+            }
+
             rb = GetComponent<Rigidbody2D>();
             blinkingSprite = GetComponent<BlinkingSprite>();
             registerHealth();
@@ -142,104 +150,162 @@ namespace Assets.FantasyMonsters.Scripts
                 return;
         }
 
-        void FixedUpdate()
+void FixedUpdate()
+{
+    if (GameManager.IsGameOver())
+        return;
+
+    if (health.IsAlive())
+    {
+        if (followPlayer == null)
         {
-            if (GameManager.IsGameOver())
-                return;
-
-            if (health.IsAlive())
+            followPlayer = GameManager.GetPlayer();
+            if (followPlayer == null)
             {
-                float playerDistance = 0;
-                FlipShoot();
-                try
-                {
-                    playerDistance = transform.position.x - followPlayer.transform.position.x;
-                }
-                catch (Exception e) { }
-                
-                //Debug.Log("Player distance: " + playerDistance);
+                Debug.LogError("Follow player is still not assigned.");
+                return;
+            }
+        }
 
-                if (Mathf.Abs(playerDistance) < activationDistance)
-                {
-                    //Debug.Log("Within activation distance.");
+        float playerDistance = 0;
+        FlipShoot();
+        try
+        {
+            playerDistance = Vector2.Distance(transform.position, followPlayer.transform.position);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Error calculating player distance: " + e.Message);
+            return;
+        }
 
-                    if (Mathf.Abs(playerDistance) <= meleeDistance && canMelee)
+        Debug.Log("Player distance: " + playerDistance);
+
+        if (playerDistance < activationDistance)
+        {
+            Debug.Log("Within activation distance.");
+
+            if (playerDistance <= meleeDistance && canMelee)
+            {
+                // Attack player - Primary attack (near)
+                Debug.Log("Preparing for melee attack.");
+                animator.SetTrigger("Attack");
+
+                rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+
+                shotTime += Time.deltaTime;
+
+                if (shotTime > nextFire)
+                {
+                    nextFire = shotTime + fireDelta;
+
+                    // check also the correct height
+                    if (Mathf.Abs(weaponRenderer.bounds.SqrDistance(followPlayer.transform.position)) <= meleeDistance)
                     {
-                        // Attack player - Primary attack (near)
-                        animator.SetTrigger("Attack");
-
-                        rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
-
-                        shotTime += Time.deltaTime;
-
-                        if (shotTime > nextFire)
-                        {
-                            nextFire = shotTime + fireDelta;
-
-                            // check also the correct height
-                            if (Mathf.Abs(weaponRenderer.bounds.SqrDistance(followPlayer.transform.position)) <= meleeDistance)
-                            {
-                                followPlayer.GetComponent<Health>().Hit(attackDamage);
-                                print("hit");
-                                if (meleeAttackClip)
-                                    AudioManager.PlayEnemyAttackAudio(meleeAttackClip);
-                            }
-
-                            nextFire -= shotTime;
-                            shotTime = 0.0f;
-                        }
+                        followPlayer.GetComponent<Health>().Hit(attackDamage);
+                        Debug.Log("Hit player with melee attack.");
+                        if (meleeAttackClip)
+                            AudioManager.PlayEnemyAttackAudio(meleeAttackClip);
                     }
-                    else if (Mathf.Abs(playerDistance) <= attackDistance && canThrow)
-                    {
-                        // Attack player - Secondary attack (far)
-                        if (!canMelee)
-                            rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
-                        else
-                            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
-                        shotTime += Time.deltaTime;
-
-                        if (shotTime > nextFire)
-                        {
-                            nextFire = shotTime + rangedDelta;
-
-                            StartCoroutine(WaitSecondaryAttack());
-
-                            nextFire -= shotTime;
-                            shotTime = 0.0f;
-                        }
-                    }
-                    else
-                    {
-                        // Move to the player
-                        if (isMovable && collidingDown)
-                        {
-                            SetState(MonsterState.Walk);
-                            rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
-
-                            Vector2 targetPosition = rb.position + new Vector2(CHANGE_SIGN * Mathf.Sign(playerDistance) * speed * Time.deltaTime, 0);
-                            rb.MovePosition(targetPosition);
-
-                            Debug.Log("Moving towards player.");
-                        }
-                        else
-                        {
-                            SetState(MonsterState.Idle);
-                        }
-                    }
+                    nextFire -= shotTime;
+                    shotTime = 0.0f;
                 }
+            }
+            else if (playerDistance <= attackDistance && canThrow)
+            {
+                // Attack player - Secondary attack (far)
+                Debug.Log("Preparing for ranged attack.");
+                if (!canMelee)
+                    rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+                else
+                    rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
-                // Flip enemy
-                if (playerDistance < 0 && !facingRight)
+                shotTime += Time.deltaTime;
+
+                if (shotTime > nextFire)
                 {
-                    Flip();
+                    nextFire = shotTime + rangedDelta;
+
+                    StartCoroutine(WaitSecondaryAttack());
+
+                    nextFire -= shotTime;
+                    shotTime = 0.0f;
                 }
-                else if (playerDistance > 0 && facingRight)
+            }
+            else
+            {
+                // Move to the player
+                Debug.Log($"isMovable: {isMovable}, collidingDown: {collidingDown}, canMelee: {canMelee}");
+                if (isMovable && collidingDown)
                 {
-                    Flip();
+                    SetState(MonsterState.Walk);
+                    rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Ensure we only freeze rotation
+
+                    Vector2 direction = followPlayer.transform.position - transform.position;
+                    Vector2 targetPosition = rb.position + direction.normalized * speed * Time.deltaTime;
+                    rb.MovePosition(targetPosition);
+
+                    Debug.Log("Moving towards player.");
+                }
+                else
+                {
+                    SetState(MonsterState.Idle);
                 }
             }
         }
+
+        // Flip enemy
+        if (followPlayer.transform.position.x < transform.position.x && facingRight)
+        {
+            Flip();
+        }
+        else if (followPlayer.transform.position.x > transform.position.x && !facingRight)
+        {
+            Flip();
+        }
+    }
+}
+
+private void OnCollisionEnter2D(Collision2D collision)
+{
+    // Print the name of the gameobject that the enemy collides with
+    Debug.Log("Collided with: " + collision.collider.gameObject.name);
+
+    // Check if the enemy collides with walkable surfaces or specific objects
+    if (collision.collider.CompareTag("Walkable") || collision.collider.CompareTag("Marco Boat") || collision.collider.CompareTag("Water Dead"))
+    {
+        collidingDown = true; // Enemy is colliding with the ground or specific objects
+    }
+
+    // Check if the enemy collides with the player
+    if (GameManager.IsPlayer(collision))
+    {
+        // Add a force to the enemy in a random direction
+        switch (UnityEngine.Random.Range(0, 2)) // Range should be 0 to 2 to include both 0 and 1
+        {
+            case 0:
+                gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(1f, 2f), ForceMode2D.Impulse);
+                break;
+            case 1:
+                gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(-1f, 2f), ForceMode2D.Impulse);
+                break;
+        }
+    }
+    else if (collision.collider.CompareTag("Water Dead"))
+    {
+        // Enemy dies instantly upon colliding with "Water Dead" tagged objects
+        health.Hit(health.GetHealth());
+    }
+}
+
+private void OnCollisionExit2D(Collision2D collision)
+{
+    if (collision.collider.CompareTag("Walkable") || collision.collider.CompareTag("Marco Boat"))
+    {
+        collidingDown = false;
+    }
+}
 
         void Flip()
         {
@@ -326,47 +392,6 @@ namespace Assets.FantasyMonsters.Scripts
         {
             if (deathClip)
                 AudioManager.PlayEnemyDeathAudio(deathClip);
-        }
-
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
-            // Print the name of the gameobject that the enemy collides with
-            Debug.Log("Collided with: " + collision.collider.gameObject.name);
-
-            // Check if the enemy collides with walkable surfaces or specific objects
-            if (collision.collider.CompareTag("Walkable") || collision.collider.CompareTag("Marco Boat") || collision.collider.CompareTag("Water Dead"))
-            {
-                collidingDown = true; // Enemy is colliding with the ground or specific objects
-            }
-
-            // Check if the enemy collides with the player
-            if (GameManager.IsPlayer(collision))
-            {
-                // Add a force to the enemy in a random direction
-                switch (UnityEngine.Random.Range(0, 2)) // Range should be 0 to 2 to include both 0 and 1
-                {
-                    case 0:
-                        gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(1f, 2f), ForceMode2D.Impulse);
-                        break;
-                    case 1:
-                        gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(-1f, 2f), ForceMode2D.Impulse);
-                        break;
-                }
-            }
-            else if (collision.collider.CompareTag("Water Dead"))
-            {
-                // Enemy dies instantly upon colliding with "Water Dead" tagged objects
-                health.Hit(health.GetHealth());
-            }
-        }
-
-
-        private void OnCollisionExit2D(Collision2D collision)
-        {
-            if (collision.collider.CompareTag("Walkable") || collision.collider.CompareTag("Marco Boat"))
-            {
-                collidingDown = false;
-            }
         }
 
         private IEnumerator WaitSecondaryAttack()
