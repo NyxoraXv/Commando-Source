@@ -150,162 +150,169 @@ namespace Assets.FantasyMonsters.Scripts
                 return;
         }
 
-void FixedUpdate()
-{
-    if (GameManager.IsGameOver())
-        return;
-
-    if (health.IsAlive())
-    {
-        if (followPlayer == null)
+        void FixedUpdate()
         {
-            followPlayer = GameManager.GetPlayer();
-            if (followPlayer == null)
-            {
-                Debug.LogError("Follow player is still not assigned.");
+            if (GameManager.IsGameOver())
                 return;
-            }
-        }
 
-        float playerDistance = 0;
-        FlipShoot();
-        try
-        {
-            playerDistance = Vector2.Distance(transform.position, followPlayer.transform.position);
-        }
-        catch (Exception e)
-        {
-            Debug.LogError("Error calculating player distance: " + e.Message);
-            return;
-        }
-
-        Debug.Log("Player distance: " + playerDistance);
-
-        if (playerDistance < activationDistance)
-        {
-            Debug.Log("Within activation distance.");
-
-            if (playerDistance <= meleeDistance && canMelee)
+            if (health.IsAlive())
             {
-                // Attack player - Primary attack (near)
-                Debug.Log("Preparing for melee attack.");
-                animator.SetTrigger("Attack");
-
-                rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
-
-                shotTime += Time.deltaTime;
-
-                if (shotTime > nextFire)
+                if (followPlayer == null)
                 {
-                    nextFire = shotTime + fireDelta;
-
-                    // check also the correct height
-                    if (Mathf.Abs(weaponRenderer.bounds.SqrDistance(followPlayer.transform.position)) <= meleeDistance)
+                    followPlayer = GameManager.GetPlayer();
+                    if (followPlayer == null)
                     {
-                        followPlayer.GetComponent<Health>().Hit(attackDamage);
-                        Debug.Log("Hit player with melee attack.");
-                        if (meleeAttackClip)
-                            AudioManager.PlayEnemyAttackAudio(meleeAttackClip);
+                        Debug.LogError("Follow player is still not assigned.");
+                        return;
                     }
+                }
 
-                    nextFire -= shotTime;
-                    shotTime = 0.0f;
+                float playerDistance = 0;
+                FlipShoot();
+                try
+                {
+                    playerDistance = Vector2.Distance(transform.position, followPlayer.transform.position);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError("Error calculating player distance: " + e.Message);
+                    return;
+                }
+
+                Debug.Log("Player distance: " + playerDistance);
+
+                if (playerDistance < activationDistance)
+                {
+                    Debug.Log("Within activation distance.");
+
+                    if (playerDistance <= meleeDistance && canMelee)
+                    {
+                        // Attack player - Primary attack (near)
+                        Debug.Log("Preparing for melee attack.");
+                        animator.SetTrigger("Attack");
+
+                        rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+
+                        shotTime += Time.deltaTime;
+
+                        if (shotTime > nextFire)
+                        {
+                            nextFire = shotTime + fireDelta;
+
+                            // check also the correct height
+                            if (Mathf.Abs(weaponRenderer.bounds.SqrDistance(followPlayer.transform.position)) <= meleeDistance)
+                            {
+                                followPlayer.GetComponent<Health>().Hit(attackDamage);
+                                Debug.Log("Hit player with melee attack.");
+                                if (meleeAttackClip)
+                                    AudioManager.PlayEnemyAttackAudio(meleeAttackClip);
+                            }
+
+                            nextFire -= shotTime;
+                            shotTime = 0.0f;
+                        }
+                    }
+                    else if (playerDistance <= attackDistance && canThrow)
+                    {
+                        // Attack player - Secondary attack (far)
+                        Debug.Log("Preparing for ranged attack.");
+                        if (!canMelee)
+                            rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+                        else
+                            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+
+                        shotTime += Time.deltaTime;
+
+                        if (shotTime > nextFire)
+                        {
+                            nextFire = shotTime + rangedDelta;
+
+                            StartCoroutine(WaitSecondaryAttack());
+
+                            nextFire -= shotTime;
+                            shotTime = 0.0f;
+                        }
+                    }
+                    else
+                    {
+                        // Move to the player
+                        Debug.Log($"isMovable: {isMovable}, collidingDown: {collidingDown}, canMelee: {canMelee}");
+                        if (isMovable && collidingDown)
+                        {
+                            SetState(MonsterState.Walk);
+                            rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Ensure we only freeze rotation
+
+                            Vector2 direction = followPlayer.transform.position - transform.position;
+                            Vector2 targetPosition = rb.position + direction.normalized * speed * Time.deltaTime;
+
+                            if (IsGrounded(targetPosition)) // Check if the target position is grounded
+                            {
+                                rb.MovePosition(targetPosition);
+                                Debug.Log("Moving towards player.");
+                            }
+                            else
+                            {
+                                Debug.Log("Target position is not grounded, not moving.");
+                            }
+                        }
+                        else
+                        {
+                            SetState(MonsterState.Idle);
+                        }
+                    }
+                }
+
+                // Flip enemy
+                if (followPlayer.transform.position.x < transform.position.x && facingRight)
+                {
+                    Flip();
+                }
+                else if (followPlayer.transform.position.x > transform.position.x && !facingRight)
+                {
+                    Flip();
                 }
             }
-            else if (playerDistance <= attackDistance && canThrow)
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            // Print the name of the gameobject that the enemy collides with
+            Debug.Log("Collided with: " + collision.collider.gameObject.name);
+
+            // Check if the enemy collides with walkable surfaces or specific objects
+            if (collision.collider.CompareTag("Walkable") || collision.collider.CompareTag("Marco Boat") || collision.collider.CompareTag("Water Dead"))
             {
-                // Attack player - Secondary attack (far)
-                Debug.Log("Preparing for ranged attack.");
-                if (!canMelee)
-                    rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
-                else
-                    rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-
-                shotTime += Time.deltaTime;
-
-                if (shotTime > nextFire)
-                {
-                    nextFire = shotTime + rangedDelta;
-
-                    StartCoroutine(WaitSecondaryAttack());
-
-                    nextFire -= shotTime;
-                    shotTime = 0.0f;
-                }
+                collidingDown = true; // Enemy is colliding with the ground or specific objects
             }
-            else
+
+            // Check if the enemy collides with the player
+            if (GameManager.IsPlayer(collision))
             {
-                // Move to the player
-                Debug.Log($"isMovable: {isMovable}, collidingDown: {collidingDown}, canMelee: {canMelee}");
-                if (isMovable && collidingDown)
+                // Add a force to the enemy in a random direction
+                switch (UnityEngine.Random.Range(0, 2)) // Range should be 0 to 2 to include both 0 and 1
                 {
-                    SetState(MonsterState.Walk);
-                    rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Ensure we only freeze rotation
-
-                    Vector2 direction = followPlayer.transform.position - transform.position;
-                    Vector2 targetPosition = rb.position + direction.normalized * speed * Time.deltaTime;
-                    rb.MovePosition(targetPosition);
-
-                    Debug.Log("Moving towards player.");
+                    case 0:
+                        gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(1f, 2f), ForceMode2D.Impulse);
+                        break;
+                    case 1:
+                        gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(-1f, 2f), ForceMode2D.Impulse);
+                        break;
                 }
-                else
-                {
-                    SetState(MonsterState.Idle);
-                }
+            }
+            else if (collision.collider.CompareTag("Water Dead"))
+            {
+                // Enemy dies instantly upon colliding with "Water Dead" tagged objects
+                health.Hit(health.GetHealth());
             }
         }
 
-        // Flip enemy
-        if (followPlayer.transform.position.x < transform.position.x && facingRight)
+        private void OnCollisionExit2D(Collision2D collision)
         {
-            Flip();
+            if (collision.collider.CompareTag("Walkable") || collision.collider.CompareTag("Marco Boat"))
+            {
+                collidingDown = false;
+            }
         }
-        else if (followPlayer.transform.position.x > transform.position.x && !facingRight)
-        {
-            Flip();
-        }
-    }
-}
-
-private void OnCollisionEnter2D(Collision2D collision)
-{
-    // Print the name of the gameobject that the enemy collides with
-    Debug.Log("Collided with: " + collision.collider.gameObject.name);
-
-    // Check if the enemy collides with walkable surfaces or specific objects
-    if (collision.collider.CompareTag("Walkable") || collision.collider.CompareTag("Marco Boat") || collision.collider.CompareTag("Water Dead"))
-    {
-        collidingDown = true; // Enemy is colliding with the ground or specific objects
-    }
-
-    // Check if the enemy collides with the player
-    if (GameManager.IsPlayer(collision))
-    {
-        // Add a force to the enemy in a random direction
-        switch (UnityEngine.Random.Range(0, 2)) // Range should be 0 to 2 to include both 0 and 1
-        {
-            case 0:
-                gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(1f, 2f), ForceMode2D.Impulse);
-                break;
-            case 1:
-                gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(-1f, 2f), ForceMode2D.Impulse);
-                break;
-        }
-    }
-    else if (collision.collider.CompareTag("Water Dead"))
-    {
-        // Enemy dies instantly upon colliding with "Water Dead" tagged objects
-        health.Hit(health.GetHealth());
-    }
-}
-
-private void OnCollisionExit2D(Collision2D collision)
-{
-    if (collision.collider.CompareTag("Walkable") || collision.collider.CompareTag("Marco Boat"))
-    {
-        collidingDown = false;
-    }
-}
 
         void Flip()
         {
@@ -409,6 +416,13 @@ private void OnCollisionExit2D(Collision2D collision)
             {
                 homingProjectile.SetDamage(attackDamage); // Set the damage value on the projectile
             }
+        }
+
+        private bool IsGrounded(Vector2 position)
+        {
+            // Perform a box cast or raycast to check if the position is on the ground
+            RaycastHit2D hit = Physics2D.BoxCast(position, new Vector2(0.1f, 0.1f), 0, Vector2.down, 0.1f, LayerMask.GetMask("Walkable"));
+            return hit.collider != null;
         }
     }
 }
