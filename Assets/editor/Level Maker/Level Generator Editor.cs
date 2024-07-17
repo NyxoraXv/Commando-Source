@@ -11,7 +11,7 @@ public class LevelGeneratorInspector : Editor
         ProceduralLevelGenerator levelGenerator = (ProceduralLevelGenerator)target;
         if (GUILayout.Button("Generate Level"))
         {
-            levelGenerator.generate();
+            levelGenerator.Generate();
         };
         if (GUILayout.Button("Clear"))
         {

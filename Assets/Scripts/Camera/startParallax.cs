@@ -10,7 +10,7 @@ public class startParallax : MonoBehaviour
     {
         if (GameManager.IsPlayer(collider))
         {
-            parallax.setActive(true);
+            //parallax.setActive(true);
         }
     }
 }

@@ -28,6 +28,7 @@ TagManager:
   - MainCanvas
   - FxTemporaire
   - WinTrigger
+  - Confiner
   layers:
   - Default
   - TransparentFX

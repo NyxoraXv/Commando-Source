@@ -84,7 +84,7 @@ public class BossController : MonoBehaviour
         if (!isSpawned && followPlayer.transform.position.x >= bossSpawner.position.x)
         {
             isSpawned = true;
-            parallax.setActive(false);
+            //parallax.setActive(false);
             AudioManager.StartBossAudio();
             StartCoroutine(Spawn());
         }

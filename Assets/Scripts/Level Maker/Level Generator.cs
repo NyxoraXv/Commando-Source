@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
+using System;
 
 public class ProceduralLevelGenerator : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class ProceduralLevelGenerator : MonoBehaviour
     public TileBase grass45LeftTile;
     public TileBase grass45RightTile;
     public TileBase waterTile; // New water tile
-    public GameObject enemyPrefab; // Enemy prefab
+    public GameObject[] enemyPrefabs; // Array of enemy prefabs
     public GameObject winTriggerPrefab; // Win trigger prefab
     public int totalSupplies;
     public GameObject medkitPrefab;
@@ -38,16 +39,34 @@ public class ProceduralLevelGenerator : MonoBehaviour
     public TileBase rightEdgeTile;
     public TileBase bottomTile;
 
-    private System.Random prng;
+    public GameObject playerPrefab; // Reference to the player prefab
+    public Vector3 playerOffset = new Vector3(0.5f, 0.5f, 0); // Player offset
 
-    public void generate()
+    private System.Random prng;
+    private Vector3Int playerSpawnPosition;
+
+    private void Start()
+    {
+        Mission_Data missionData = GenerativeMissionManager.instance.missionData;
+
+        seed = missionData.seed;
+        totalEnemies = missionData.total_enemy;
+        totalSupplies = Convert.ToInt32(Math.Round(missionData.total_enemy / 1.5f));
+        width = missionData.width;
+        height = missionData.height;
+
+        Generate();
+    }
+
+    public void Generate()
     {
         prng = new System.Random(seed); // Initialize random seed for reproducibility
 
         ClearTiles();
         GenerateLevel();
+        PlacePlayer(); // Place the player first
         PlaceEnemies();
-        
+        PlaceCollectibles();
     }
 
     void PlaceCollectibles()
@@ -76,8 +95,20 @@ public class ProceduralLevelGenerator : MonoBehaviour
         int suppliesToPlace = Mathf.Min(totalSupplies, validPositions.Count);
 
         // Define the safe zone around the player's starting position
-        Vector3Int playerStart = new Vector3Int(7, 0, 0);
+        Vector3Int playerStart = playerSpawnPosition;
         int safeZoneRadius = 3; // Adjust this value as needed
+
+        // Determine the win trigger position
+        int winTriggerX = width - width / 6;
+        Vector3Int winTriggerPosition = new Vector3Int(winTriggerX, tilemap.cellBounds.yMin, 0);
+        for (int y = tilemap.cellBounds.yMax; y >= tilemap.cellBounds.yMin; y--)
+        {
+            if (tilemap.HasTile(new Vector3Int(winTriggerX, y, 0)))
+            {
+                winTriggerPosition.y = y;
+                break;
+            }
+        }
 
         // Place supplies randomly in valid positions using the seeded prng
         for (int i = 0; i < suppliesToPlace; i++)
@@ -89,8 +120,7 @@ public class ProceduralLevelGenerator : MonoBehaviour
             Vector3Int supplyPosition = validPositions[randomIndex];
 
             // Ensure supplies are not placed near the win trigger position or the player's starting position
-            int winTriggerX = width - width / 6;
-            if (supplyPosition.x >= winTriggerX - 2 ||
+            if (supplyPosition.x >= winTriggerPosition.x - 2 ||
                 Vector3Int.Distance(supplyPosition, playerStart) <= safeZoneRadius)
             {
                 validPositions.RemoveAt(randomIndex);
@@ -116,20 +146,39 @@ public class ProceduralLevelGenerator : MonoBehaviour
 
             if (supplyPrefab != null)
             {
-                Instantiate(supplyPrefab, tilemap.CellToWorld(supplyPosition) + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
+                Instantiate(supplyPrefab, tilemap.CellToWorld(supplyPosition) + playerOffset, Quaternion.identity);
                 Debug.Log("Supply placed at: " + supplyPosition);
             }
         }
     }
 
-
-    void clearEnemy()
+    void ClearEnemiesAndCollectibles()
     {
-        GameObject[] enemy = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject[] winTriggers = GameObject.FindGameObjectsWithTag("WinTrigger");
+        GameObject[] player = GameObject.FindGameObjectsWithTag("Player");
 
-        foreach (GameObject enemyObj in enemy)
+        foreach (GameObject enemy in enemies)
         {
-            Destroy(enemyObj);
+            DestroyImmediate(enemy);
+        }
+        foreach (GameObject Player in player)
+        {
+            DestroyImmediate(Player);
+        }
+
+        foreach (GameObject winTrigger in winTriggers)
+        {
+            DestroyImmediate(winTrigger);
+        }
+        GameObject[] allObjects = FindObjectsOfType<GameObject>();
+
+        foreach (GameObject obj in allObjects)
+        {
+            if (obj.layer == LayerMask.NameToLayer("Collectible"))
+            {
+                DestroyImmediate(obj);
+            }
         }
     }
 
@@ -145,11 +194,12 @@ public class ProceduralLevelGenerator : MonoBehaviour
 
         ModifyTerrain(terrainHeights);
 
+        // Ensure no cliff is higher than 1 block
         for (int x = 1; x < width; x++)
         {
-            if (terrainHeights[x] - terrainHeights[x - 1] > 2)
+            if (terrainHeights[x] - terrainHeights[x - 1] > 1)
             {
-                terrainHeights[x] = terrainHeights[x - 1] + 2;
+                terrainHeights[x] = terrainHeights[x - 1] + 1;
             }
         }
 
@@ -197,7 +247,6 @@ public class ProceduralLevelGenerator : MonoBehaviour
 
         PlaceCanyons(terrainHeights);
         PlaceWinTrigger(terrainHeights); // Place the win trigger after generating the terrain
-        PlaceCollectibles();
     }
 
     void ModifyTerrain(int[] terrainHeights)
@@ -226,6 +275,15 @@ public class ProceduralLevelGenerator : MonoBehaviour
             else if (plateauNoise > 0.6f)
             {
                 terrainHeights[x] = Mathf.FloorToInt(plateauNoise * 10) + undergroundDepth;
+            }
+        }
+
+        // Ensure hills are no higher than 1 block without a slope
+        for (int x = 1; x < terrainHeights.Length; x++)
+        {
+            if (terrainHeights[x] - terrainHeights[x - 1] > 1)
+            {
+                terrainHeights[x] = terrainHeights[x - 1] + 1;
             }
         }
     }
@@ -298,7 +356,25 @@ public class ProceduralLevelGenerator : MonoBehaviour
                 }
             }
         }
+
+        // Replace grass tiles under slopes with dirt (underground) tiles
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                Vector3Int currentTilePosition = new Vector3Int(x, y, 0);
+                if (tilemap.GetTile(currentTilePosition) == grass45LeftTile || tilemap.GetTile(currentTilePosition) == grass45RightTile)
+                {
+                    Vector3Int belowTilePosition = new Vector3Int(x, y - 1, 0);
+                    if (tilemap.GetTile(belowTilePosition) == grassTile)
+                    {
+                        tilemap.SetTile(belowTilePosition, undergroundTile);
+                    }
+                }
+            }
+        }
     }
+
 
     void PlaceCanyons(int[] terrainHeights)
     {
@@ -366,7 +442,7 @@ public class ProceduralLevelGenerator : MonoBehaviour
     public void ClearTiles()
     {
         tilemap.ClearAllTiles();
-        clearEnemy();
+        ClearEnemiesAndCollectibles();
     }
 
     void PlaceEnemies()
@@ -380,8 +456,8 @@ public class ProceduralLevelGenerator : MonoBehaviour
             Vector3Int localPlace = new Vector3Int(position.x, position.y, position.z);
             if (tilemap.HasTile(localPlace) && tilemap.GetTile(localPlace) == grassTile)
             {
-                // Check the tile 2 blocks above the grass tile is empty and not on a slope tile
-                Vector3Int abovePlace = new Vector3Int(localPlace.x, localPlace.y + 2, localPlace.z);
+                // Check the tile 1 block above the grass tile is empty and not on a slope tile
+                Vector3Int abovePlace = new Vector3Int(localPlace.x, localPlace.y + 1, localPlace.z);
                 if (!tilemap.HasTile(abovePlace) &&
                     tilemap.GetTile(new Vector3Int(localPlace.x, localPlace.y + 1, localPlace.z)) != grass45LeftTile &&
                     tilemap.GetTile(new Vector3Int(localPlace.x, localPlace.y + 1, localPlace.z)) != grass45RightTile)
@@ -395,8 +471,20 @@ public class ProceduralLevelGenerator : MonoBehaviour
         int enemiesToPlace = Mathf.Min(totalEnemies, emptyPositions.Count);
 
         // Define the safe zone around the player's starting position
-        Vector3Int playerStart = new Vector3Int(7, 0, 0);
+        Vector3Int playerStart = playerSpawnPosition;
         int safeZoneRadius = 3; // Adjust this value as needed
+
+        // Determine the win trigger position
+        int winTriggerX = width - width / 6;
+        Vector3Int winTriggerPosition = new Vector3Int(winTriggerX, tilemap.cellBounds.yMin, 0);
+        for (int y = tilemap.cellBounds.yMax; y >= tilemap.cellBounds.yMin; y--)
+        {
+            if (tilemap.HasTile(new Vector3Int(winTriggerX, y, 0)))
+            {
+                winTriggerPosition.y = y;
+                break;
+            }
+        }
 
         // Place enemies randomly in empty positions using the seeded prng
         for (int i = 0; i < enemiesToPlace; i++)
@@ -407,21 +495,49 @@ public class ProceduralLevelGenerator : MonoBehaviour
             int randomIndex = prng.Next(emptyPositions.Count);
             Vector3Int enemyPosition = emptyPositions[randomIndex];
 
-            // Ensure enemies are not placed near the win trigger position or the player's starting position
-            int winTriggerX = width - width / 6;
-            if (enemyPosition.x >= winTriggerX - 2 ||
-                Vector3Int.Distance(enemyPosition, playerStart) <= safeZoneRadius)
+            // Ensure enemies are not placed too close to or behind the player
+            if (Vector3Int.Distance(enemyPosition, playerStart) <= safeZoneRadius || enemyPosition.x <= playerStart.x)
             {
                 emptyPositions.RemoveAt(randomIndex);
                 i--;
                 continue;
             }
 
+            // Ensure enemies are not placed beyond the win trigger position
+            if (enemyPosition.x >= winTriggerPosition.x)
+            {
+                emptyPositions.RemoveAt(randomIndex);
+                i--;
+                continue;
+            }
+
+            // Ensure enemies are not placed above water tiles (canyons)
+            bool isAboveWater = false;
+            for (int y = enemyPosition.y - 1; y >= enemyPosition.y - canyonDepth; y--)
+            {
+                Vector3Int tileBelow = new Vector3Int(enemyPosition.x, y, enemyPosition.z);
+                if (tilemap.GetTile(tileBelow) == waterTile)
+                {
+                    isAboveWater = true;
+                    break;
+                }
+            }
+
+            if (isAboveWater)
+            {
+                emptyPositions.RemoveAt(randomIndex);
+                i--;
+                continue;
+            }
+
+            // Randomly select an enemy prefab from the array using the seeded prng
+            GameObject enemyPrefab = enemyPrefabs[prng.Next(enemyPrefabs.Length)];
+
             // Instantiate enemy prefab at the selected position
-            Instantiate(enemyPrefab, tilemap.CellToWorld(enemyPosition) + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
+            Instantiate(enemyPrefab, tilemap.CellToWorld(enemyPosition) + playerOffset, Quaternion.identity);
             Debug.Log("Enemy placed at: " + enemyPosition);
 
-            // Skip the next 2 positions to maintain 2-unit gap
+            // Skip the next 2 positions to maintain a 2-unit gap
             emptyPositions.RemoveAt(randomIndex);
             if (randomIndex < emptyPositions.Count)
             {
@@ -445,23 +561,69 @@ public class ProceduralLevelGenerator : MonoBehaviour
         }
 
         int winTriggerX = width - width / 6;
+
+        // Ensure winTriggerY is within the terrain height
         int winTriggerY = terrainHeights[winTriggerX];
 
-        // Ensure the win trigger is placed above the highest terrain point
-        Vector3Int winTriggerPosition = new Vector3Int(winTriggerX, winTriggerY + 1, 0);
-
-        // Check if there's a slope and adjust the position accordingly
-        if (tilemap.GetTile(new Vector3Int(winTriggerX, winTriggerY + 1, 0)) == grass45LeftTile ||
-            tilemap.GetTile(new Vector3Int(winTriggerX, winTriggerY + 1, 0)) == grass45RightTile)
+        // Find a grass tile at or to the right of winTriggerX
+        for (int x = winTriggerX; x < width; x++)
         {
-            winTriggerY += 2; // Move the trigger further up if there's a slope
-            winTriggerPosition = new Vector3Int(winTriggerX, winTriggerY + 1, 0);
+            // Update winTriggerY to be the height at the current x position
+            winTriggerY = terrainHeights[x];
+
+            if (tilemap.GetTile(new Vector3Int(x, winTriggerY, 0)) == grassTile)
+            {
+                Vector3Int winTriggerPosition = new Vector3Int(x, winTriggerY + 1, 0);
+                Vector3 worldPosition = tilemap.CellToWorld(winTriggerPosition) + new Vector3(0.5f, 0.5f, 0);
+                Instantiate(winTriggerPrefab, worldPosition, Quaternion.identity);
+                Debug.Log("Win trigger placed at: " + winTriggerPosition);
+                return;
+            }
         }
 
-        Vector3 worldPosition = tilemap.CellToWorld(winTriggerPosition) + new Vector3(0.5f, 0.5f, 0);
-        Instantiate(winTriggerPrefab, worldPosition, Quaternion.identity);
+        Debug.LogWarning("No suitable grass area found for win trigger placement.");
     }
 
+
+
+    void PlacePlayer()
+    {
+        if (playerPrefab == null || tilemap == null)
+        {
+            Debug.LogError("Player prefab or tilemap is not assigned.");
+            return;
+        }
+
+        // Find the highest position in the tilemap to spawn the player
+        playerSpawnPosition = FindHighestTilePosition();
+
+        // Convert the tile position to world position and instantiate the player
+        Vector3 worldPosition = tilemap.CellToWorld(playerSpawnPosition) + playerOffset; // Adjust position to center the player
+        Instantiate(playerPrefab, worldPosition, Quaternion.identity);
+
+        Debug.Log("Player spawned at: " + playerSpawnPosition);
+    }
+
+    private Vector3Int FindHighestTilePosition()
+    {
+        BoundsInt bounds = tilemap.cellBounds;
+        Vector3Int highestPosition = new Vector3Int(bounds.xMin, bounds.yMin, 0);
+
+        for (int x = bounds.xMin; x < bounds.xMax; x++)
+        {
+            for (int y = bounds.yMax; y >= bounds.yMin; y--)
+            {
+                Vector3Int position = new Vector3Int(x, y, 0);
+                if (tilemap.HasTile(position))
+                {
+                    highestPosition = position;
+                    return highestPosition; // Exit the loop as soon as we find the highest tile
+                }
+            }
+        }
+
+        return highestPosition;
+    }
 
     // Methods to check placement of corner and edge tiles
     bool IsLeftTopCorner(int x, int y, int[] terrainHeights)
