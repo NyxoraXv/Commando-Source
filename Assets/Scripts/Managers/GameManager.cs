@@ -160,7 +160,6 @@ public class GameManager : MonoBehaviour
         incrementedStatistic.lunc = LUNC;
         incrementedStatistic.score = amountScore;
         incrementedStatistic.exp = xp;
-        incrementedStatistic.last_level = 1;
         SaveManager.Instance.SetStatistic(incrementedStatistic);
         SaveManager.Instance.GetStatistic();
         UIManager.refreshCurrency();
@@ -277,6 +276,9 @@ public class GameManager : MonoBehaviour
         UIManager.DisplayWinUI();
         AudioManager.PlayLevelCompleteAudio();
         AudioManager.PlayGameOverAudio();
+        Statistic incrementedStatistic = new Statistic();
+        incrementedStatistic.last_level = 1;
+        SaveManager.Instance.SetStatistic(incrementedStatistic);
         current.isGameOver = true;
     }
 
