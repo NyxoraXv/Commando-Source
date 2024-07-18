@@ -659,12 +659,12 @@ MonoBehaviour:
   attackDistance: 0.6
   meleeDistance: 0.6
   facingRight: 0
-  collidingDown: 0
+  collidingDown: 1
   fireDelta: 1
   rangedDelta: 2
   Head: {fileID: 117150394045550822}
   HeadSprites:
-  - {fileID: -7252215782646672311, guid: 8a1c4d69137ae914180463f6c152b1b4, type: 3}
+  - {fileID: -1828946549344447192, guid: e789ee031002f2f4cb49aea16b386fd5, type: 3}
   - {fileID: -7252215782646672311, guid: 8a1c4d69137ae914180463f6c152b1b4, type: 3}
   - {fileID: -1381065623766834176, guid: e789ee031002f2f4cb49aea16b386fd5, type: 3}
   animator: {fileID: 117150395161187365}

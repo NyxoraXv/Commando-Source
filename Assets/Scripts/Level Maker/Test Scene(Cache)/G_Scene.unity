@@ -311,7 +311,7 @@ MonoBehaviour:
   grass45RightTile: {fileID: 11400000, guid: 9085626eb332d7b46a5d28b292661a8d, type: 2}
   waterTile: {fileID: 11400000, guid: e84e4e9442c97a34f9c0e437d560e5fb, type: 2}
   enemyPrefabs:
-  - {fileID: 117150395161187363, guid: 9be81215ad29f7f438264e4851dac964, type: 3}
+  - {fileID: 117150395161187363, guid: 13c8d084bda939e44ad19967dbedeeea, type: 3}
   winTriggerPrefab: {fileID: 6576388602644354194, guid: ca880dba41ddb4040800e1423b2c2ff1,
     type: 3}
   totalSupplies: 0
@@ -345,6 +345,9 @@ MonoBehaviour:
   playerPrefab: {fileID: 7075540455007373143, guid: ea7e9298cecd4d648b055f4171c7c793,
     type: 3}
   playerOffset: {x: 6, y: 1, z: 0}
+  groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!4 &827053784
 Transform:
   m_ObjectHideFlags: 0
