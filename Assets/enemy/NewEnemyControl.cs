@@ -365,9 +365,9 @@ namespace Assets.FantasyMonsters.Scripts
             blinkingSprite.Play();
         }
 
-        public ParticleSystem deathParticlesPrefab; // Reference to the particle system prefab
+        private ParticleSystem deathParticlesPrefab; // Reference to the particle system prefab
 
-        public GameObject deathEffectPrefab; // Reference to the prefab containing a particle system
+        private GameObject deathEffectPrefab; // Reference to the prefab containing a particle system
 
         private IEnumerator Die()
         {
@@ -391,20 +391,11 @@ namespace Assets.FantasyMonsters.Scripts
             // Instantiate the prefab containing the particle system
             if (deathEffectPrefab)
             {
-                GameObject deathEffect = Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
-                ParticleSystem particleSystem = deathEffect.GetComponentInChildren<ParticleSystem>();
-
-                if (particleSystem)
-                {
-                    // Wait for the particle system to finish playing
-                    yield return new WaitForSeconds(particleSystem.main.duration);
-                }
-
-                // Destroy the instantiated prefab
-                Destroy(deathEffect);
+                Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
             }
 
-            // Destroy the game object
+            yield return new WaitForSeconds(2f);
+
             Destroy(gameObject);
         }
 
