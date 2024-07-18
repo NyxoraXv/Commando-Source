@@ -534,7 +534,7 @@ GameObject:
   - component: {fileID: 7770788767379354759}
   - component: {fileID: 662761176369173025}
   - component: {fileID: 1799617722345574556}
-  - component: {fileID: 145977790679016189}
+  - component: {fileID: 6060505302756924808}
   - component: {fileID: 2494982251463156444}
   - component: {fileID: 4866912188280143261}
   m_Layer: 9
@@ -655,9 +655,9 @@ MonoBehaviour:
   projSpawner: {fileID: 0}
   throwableObj: {fileID: 0}
   canThrow: 0
-  activationDistance: 1.8
-  attackDistance: 0.6
-  meleeDistance: 0.6
+  activationDistance: 4
+  attackDistance: 5
+  meleeDistance: 1.3
   facingRight: 0
   collidingDown: 1
   fireDelta: 1
@@ -684,7 +684,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5d5e4b37adf4bb41b2ef0f5a5b6aa07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 400
+  maxHealth: 300
   health: 0
   immortal: 0
   bloodDripImage: {fileID: 0}
@@ -702,8 +702,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delayTime: 0.15
---- !u!61 &145977790679016189
-BoxCollider2D:
+--- !u!70 &6060505302756924808
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -717,7 +717,7 @@ BoxCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 16384
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -734,19 +734,9 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.18545973, y: 2.0871341}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 2.8049848, y: 4.6093297}
-  m_EdgeRadius: 0
+  m_Offset: {x: -0.078811646, y: 2.0929766}
+  m_Size: {x: 3.3976603, y: 4.406421}
+  m_Direction: 0
 --- !u!50 &2494982251463156444
 Rigidbody2D:
   serializedVersion: 4
@@ -759,7 +749,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 1000000
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -773,7 +763,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!212 &4866912188280143261
 SpriteRenderer:
   m_ObjectHideFlags: 0
