@@ -61,10 +61,6 @@ namespace Assets.FantasyMonsters.Scripts
             {
                 Debug.LogError("Follow player is not assigned.");
             }
-            else
-            {
-                Debug.Log("Follow player assigned: " + followPlayer.name);
-            }
 
             rb = GetComponent<Rigidbody2D>();
             blinkingSprite = GetComponent<BlinkingSprite>();
@@ -179,16 +175,10 @@ namespace Assets.FantasyMonsters.Scripts
                     return;
                 }
 
-                Debug.Log("Player distance: " + playerDistance);
-
                 if (playerDistance < activationDistance)
                 {
-                    Debug.Log("Within activation distance.");
-
                     if (playerDistance <= meleeDistance && canMelee)
                     {
-                        // Attack player - Primary attack (near)
-                        Debug.Log("Preparing for melee attack.");
                         animator.SetTrigger("Attack");
 
                         rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
@@ -203,7 +193,6 @@ namespace Assets.FantasyMonsters.Scripts
                             if (Mathf.Abs(weaponRenderer.bounds.SqrDistance(followPlayer.transform.position)) <= meleeDistance)
                             {
                                 followPlayer.GetComponent<Health>().Hit(attackDamage);
-                                Debug.Log("Hit player with melee attack.");
                                 if (meleeAttackClip)
                                     AudioManager.PlayEnemyAttackAudio(meleeAttackClip);
                             }
@@ -214,8 +203,6 @@ namespace Assets.FantasyMonsters.Scripts
                     }
                     else if (playerDistance <= attackDistance && canThrow)
                     {
-                        // Attack player - Secondary attack (far)
-                        Debug.Log("Preparing for ranged attack.");
                         if (!canMelee)
                             rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
                         else
@@ -236,7 +223,7 @@ namespace Assets.FantasyMonsters.Scripts
                     else
                     {
                         // Move to the player
-                        Debug.Log($"isMovable: {isMovable}, collidingDown: {collidingDown}, canMelee: {canMelee}");
+                        // Debug.Log($"isMovable: {isMovable}, collidingDown: {collidingDown}, canMelee: {canMelee}");
                         if (isMovable && collidingDown)
                         {
                             SetState(MonsterState.Walk);
@@ -248,11 +235,6 @@ namespace Assets.FantasyMonsters.Scripts
                             if (IsGrounded(targetPosition)) // Check if the target position is grounded
                             {
                                 rb.MovePosition(targetPosition);
-                                Debug.Log("Moving towards player.");
-                            }
-                            else
-                            {
-                                Debug.Log("Target position is not grounded, not moving.");
                             }
                         }
                         else
@@ -260,6 +242,11 @@ namespace Assets.FantasyMonsters.Scripts
                             SetState(MonsterState.Idle);
                         }
                     }
+                }
+                else    
+                {
+                    Patrol();
+                    return;
                 }
 
                 // Flip enemy
@@ -274,11 +261,37 @@ namespace Assets.FantasyMonsters.Scripts
             }
         }
 
+        void Patrol()
+        {
+            if (isMovable && collidingDown)
+            {
+                SetState(MonsterState.Walk);
+                rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Ensure we only freeze rotation
+
+                // Determine patrol direction based on facing direction
+                Vector2 direction = facingRight ? Vector2.right : Vector2.left;
+
+                // Calculate the target position for patrol
+                Vector2 targetPosition = rb.position + direction * speed * Time.deltaTime;
+
+                // Check if the initial target position is grounded
+                if (IsGrounded(targetPosition))
+                {
+                    rb.MovePosition(targetPosition);
+                }
+                else
+                {
+                    facingRight = !facingRight; // Example: Reverse direction
+                }
+            }
+            else
+            {
+                SetState(MonsterState.Idle); // Set to idle state if not movable or not grounded
+            }
+        }
+
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            // Print the name of the gameobject that the enemy collides with
-            Debug.Log("Collided with: " + collision.collider.gameObject.name);
-
             // Check if the enemy collides with walkable surfaces or specific objects
             if (collision.collider.CompareTag("Walkable") || collision.collider.CompareTag("Marco Boat") || collision.collider.CompareTag("Water Dead"))
             {

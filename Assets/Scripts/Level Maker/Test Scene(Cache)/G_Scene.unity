@@ -324,7 +324,7 @@ MonoBehaviour:
   seed: 242
   width: 250
   height: 30
-  totalEnemies: 30
+  totalEnemies: 1
   noiseScale: 0.1
   heightMultiplier: 5
   undergroundDepth: 15

@@ -45,6 +45,8 @@ public class ProceduralLevelGenerator : MonoBehaviour
     private System.Random prng;
     private Vector3Int playerSpawnPosition;
 
+    public LayerMask groundLayerMask;
+
     private void Start()
     {
         Mission_Data missionData = GenerativeMissionManager.instance.missionData;
@@ -55,8 +57,19 @@ public class ProceduralLevelGenerator : MonoBehaviour
         width = missionData.width;
         height = missionData.height;
 
+        Vector3 enemyPosition = transform.position; // Assuming enemy's position
+        Vector3 groundPosition = FindGroundPosition(enemyPosition);
+        LayerMask groundLayerMask = LayerMask.GetMask("Walkable");
+
         Generate();
     }
+
+    void Update()
+    {
+        Vector3 enemyPosition = transform.position; // Assuming enemy's position
+        Vector3 groundPosition = FindGroundPosition(enemyPosition);
+    }
+
 
     public void Generate()
     {
@@ -679,5 +692,23 @@ public class ProceduralLevelGenerator : MonoBehaviour
     bool IsGrassAboveSlope(int x, int y, int[] terrainHeights)
     {
         return !IsSlopeTopLeft(x, y, terrainHeights) && !IsSlopeTopRight(x, y, terrainHeights);
+    }
+
+    void MoveEnemyToGround()
+    {
+        Vector3 enemyPosition = transform.position; // Assuming enemy's position
+        Vector3 groundPosition = FindGroundPosition(enemyPosition);
+        // Move the enemy to groundPosition
+        transform.position = groundPosition;
+    }
+
+    Vector3 FindGroundPosition(Vector3 position)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(position, Vector3.down, out hit, Mathf.Infinity, groundLayerMask))
+        {
+            return hit.point;
+        }
+        return position; // Fallback to original position if no ground found
     }
 }
