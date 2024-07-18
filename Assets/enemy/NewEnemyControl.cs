@@ -243,11 +243,11 @@ namespace Assets.FantasyMonsters.Scripts
                         }
                     }
                 }
-                else    
+                /*else    
                 {
                     Patrol();
                     return;
-                }
+                }*/
 
                 // Flip enemy
                 if (followPlayer.transform.position.x < transform.position.x && facingRight)
