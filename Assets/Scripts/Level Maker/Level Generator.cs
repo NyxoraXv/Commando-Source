@@ -11,6 +11,8 @@ public class ProceduralLevelGenerator : MonoBehaviour
     public TileBase grass45LeftTile;
     public TileBase grass45RightTile;
     public TileBase waterTile; // New water tile
+    public TileBase caveFloorTile; // New cave floor tile
+    public TileBase caveWallTile; // New cave wall tile
     public GameObject[] enemyPrefabs; // Array of enemy prefabs
     public GameObject winTriggerPrefab; // Win trigger prefab
     public int totalSupplies;
@@ -18,9 +20,9 @@ public class ProceduralLevelGenerator : MonoBehaviour
     public GameObject fireBoostPrefab;
     public GameObject ammoSupplyPrefab;
     public int seed = 0;
-    public int width = 20;
+    public int width = 50;
     public int height = 30; // Increased height to accommodate underground
-    public int totalEnemies = 5;
+    public int totalEnemies = 10;
     public float noiseScale = 0.1f;
     public float heightMultiplier = 5.0f;
     public int undergroundDepth = 20; // Fixed depth for underground layer
@@ -29,6 +31,8 @@ public class ProceduralLevelGenerator : MonoBehaviour
     public float hillFrequency = 0.05f; // Frequency of hills
     public float valleyFrequency = 0.05f; // Frequency of valleys
     public float plateauFrequency = 0.05f; // Frequency of plateaus
+    public float caveFrequency = 0.1f; // Frequency of caves
+    public float caveThreshold = 0.5f; // Threshold for cave generation
 
     // New tile variables
     public TileBase leftTopCornerTile;
@@ -69,7 +73,6 @@ public class ProceduralLevelGenerator : MonoBehaviour
         Vector3 enemyPosition = transform.position; // Assuming enemy's position
         Vector3 groundPosition = FindGroundPosition(enemyPosition);
     }
-
 
     public void Generate()
     {
@@ -257,8 +260,8 @@ public class ProceduralLevelGenerator : MonoBehaviour
         }
 
         PlaceSpecialTiles(terrainHeights);
-
         PlaceCanyons(terrainHeights);
+        PlaceCaves(terrainHeights); // Place caves after generating the terrain
         PlaceWinTrigger(terrainHeights); // Place the win trigger after generating the terrain
     }
 
@@ -388,7 +391,6 @@ public class ProceduralLevelGenerator : MonoBehaviour
         }
     }
 
-
     void PlaceCanyons(int[] terrainHeights)
     {
         for (int i = 0; i < maxCanyonCount; i++)
@@ -426,6 +428,80 @@ public class ProceduralLevelGenerator : MonoBehaviour
                         tilemap.SetTile(new Vector3Int(x, removeY, 0), null);
                     }
                 }
+            }
+        }
+    }
+
+    void PlaceCaves(int[] terrainHeights)
+    {
+        float[,] caveNoiseMap = GenerateNoiseMap(width, undergroundDepth, seed + 1, caveFrequency, 1.0f);
+        List<Vector3Int> caveEntrances = new List<Vector3Int>();
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < undergroundDepth; y++)
+            {
+                if (caveNoiseMap[x, y] > caveThreshold)
+                {
+                    Vector3Int tilePosition = new Vector3Int(x, y, 0);
+                    tilemap.SetTile(tilePosition, null); // Clear tile to create cave
+                }
+            }
+        }
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < undergroundDepth; y++)
+            {
+                Vector3Int tilePosition = new Vector3Int(x, y, 0);
+                if (tilemap.GetTile(tilePosition) == null)
+                {
+                    // Place cave floor and wall tiles
+                    if (y == 0 || tilemap.GetTile(new Vector3Int(x, y - 1, 0)) != null)
+                    {
+                        tilemap.SetTile(tilePosition, caveFloorTile);
+                    }
+                    else if (y == undergroundDepth - 1 || tilemap.GetTile(new Vector3Int(x, y + 1, 0)) != null)
+                    {
+                        tilemap.SetTile(tilePosition, caveWallTile);
+                    }
+                    else if (x == 0 || tilemap.GetTile(new Vector3Int(x - 1, y, 0)) != null)
+                    {
+                        tilemap.SetTile(tilePosition, caveWallTile);
+                    }
+                    else if (x == width - 1 || tilemap.GetTile(new Vector3Int(x + 1, y, 0)) != null)
+                    {
+                        tilemap.SetTile(tilePosition, caveWallTile);
+                    }
+                }
+            }
+        }
+
+        // Ensure caves have entrances and create a one-way path
+        for (int x = 1; x < width - 1; x++)
+        {
+            for (int y = 0; y < undergroundDepth; y++)
+            {
+                Vector3Int tilePosition = new Vector3Int(x, y, 0);
+                if (tilemap.GetTile(tilePosition) == caveFloorTile)
+                {
+                    Vector3Int aboveTilePosition = new Vector3Int(x, y + 1, 0);
+                    if (tilemap.GetTile(aboveTilePosition) == null)
+                    {
+                        tilemap.SetTile(aboveTilePosition, caveFloorTile);
+                        caveEntrances.Add(tilePosition);
+                    }
+                }
+            }
+        }
+
+        // Create a one-way path by placing walls above cave entrances
+        foreach (var entrance in caveEntrances)
+        {
+            Vector3Int aboveEntrance = new Vector3Int(entrance.x, entrance.y + 1, 0);
+            if (tilemap.GetTile(aboveEntrance) == caveFloorTile)
+            {
+                tilemap.SetTile(aboveEntrance, caveWallTile);
             }
         }
     }
@@ -563,7 +639,6 @@ public class ProceduralLevelGenerator : MonoBehaviour
         }
     }
 
-
     void PlaceWinTrigger(int[] terrainHeights)
     {
         // Check if the win trigger has already been placed
@@ -596,8 +671,6 @@ public class ProceduralLevelGenerator : MonoBehaviour
 
         Debug.LogWarning("No suitable grass area found for win trigger placement.");
     }
-
-
 
     void PlacePlayer()
     {
