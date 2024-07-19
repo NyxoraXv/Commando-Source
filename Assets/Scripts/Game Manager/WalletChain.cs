@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Unity.Services.Analytics.Platform;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -32,7 +34,7 @@ public class WalletChain : MonoBehaviour
 
     public IEnumerator LoopGetWallet()
     {
-        Invoke("TimeOut", 300);
+        //Invoke("TimeOut", 300);
         while (true)
         {
             string url = SaveManager.Instance.serverUrl + "/wallets/";
@@ -50,13 +52,12 @@ public class WalletChain : MonoBehaviour
 
 
                 // Format the URL with the token and open it
-                // string formattedUrl = "https://api.garudaverse.io?token=" + getToken;
                 SaveManager.Instance.playerData.WalletData = myDatawallet;
                 Debug.Log("Address = " + SaveManager.Instance.playerData.WalletData.data.address);
                 // Debug.Log(formattedUrl);
 
 
-                if (myDatawallet.data.address != "" || myDatawallet.data.address != null)
+                if ((SaveManager.Instance.playerData.WalletData.data.address != "" || SaveManager.Instance.playerData.WalletData.data.address != null) && (SaveManager.Instance.playerData.WalletData.data.is_connected && !SaveManager.Instance.playerData.WalletData.data.request_disconnected))
                 {
                     isConnectedWallet = true;
                     SaveManager.Instance.isWalletConnected = true;
@@ -72,12 +73,9 @@ public class WalletChain : MonoBehaviour
                 }
                 else
                 {
-                    isConnectedWallet = true;
-                    disconnectButton.gameObject.SetActive(true);
-                    refreshButton.gameObject.SetActive(true);
-                    walletIcon.color = Color.white;
-                    StartCoroutine(getNFT());
-                    setWalletInformation();
+                    isConnectedWallet = false;
+                    disconnectButton.gameObject.SetActive(false);
+                    refreshButton.gameObject.SetActive(false);
                 }
 
             }
@@ -152,18 +150,18 @@ public class WalletChain : MonoBehaviour
                 LoadingAnimation.Instance.stopLoading();
                 walletIcon.color = Color.white;
                 PopUpInformationhandler.Instance.pop("Wallet Connected");
-                StartCoroutine(getNFT());
                 SaveManager.Instance.isWalletConnected = true;
                 disconnectButton.gameObject.SetActive(true);
                 refreshButton.gameObject.SetActive(true);
+                StartCoroutine(getNFT());
                 //=====================================jika connect wallet berhasil na=======================
                 //================================================================================================
             }
             else
             {
-                isConnectedWallet = true;
-                disconnectButton.gameObject.SetActive(true);
-                refreshButton.gameObject.SetActive(true);
+                isConnectedWallet = false;
+                disconnectButton.gameObject.SetActive(false);
+                refreshButton.gameObject.SetActive(false);
                 //Manggil dev-api
                 if (openbrowser)
                 {
@@ -235,7 +233,7 @@ public class WalletChain : MonoBehaviour
 
     IEnumerator getNFT()
     {
-        if(myDatawallet.data.address !=null || myDatawallet.data.address != "") {
+        if(true) {
             string addressWallet = SaveManager.Instance.playerData.WalletData.data.address;
             LoadingAnimation.Instance.toggleLoading();
             Debug.Log(addressWallet);

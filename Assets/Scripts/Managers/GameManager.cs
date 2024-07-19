@@ -7,6 +7,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEditor.Experimental;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -158,9 +159,8 @@ public class GameManager : MonoBehaviour
         Statistic incrementedStatistic = new Statistic();
         incrementedStatistic.frg = FRG;
         incrementedStatistic.lunc = LUNC;
-        incrementedStatistic.score = amountScore;
         incrementedStatistic.exp = xp;
-        incrementedStatistic.last_level = 1;
+        current.score += amountScore;
         SaveManager.Instance.SetStatistic(incrementedStatistic);
         SaveManager.Instance.GetStatistic();
         UIManager.refreshCurrency();
@@ -267,18 +267,67 @@ public class GameManager : MonoBehaviour
 }
 
 
+    // Method to calculate score based on current score, time elapsed, and current HP
+    private static int CalculateScore(int currentScore, float timeElapsed, float currentHP)
+    {
+        // Example calculation, adjust as needed
+        int baseScore = currentScore;
+        int timeBonus = Mathf.Max(0, 1000 - (int)timeElapsed); // Assuming a 1000 point bonus reduced over time
+        int hpBonus = Mathf.RoundToInt(currentHP * 10); // Assuming 10 points per HP
+
+        return baseScore + timeBonus + hpBonus;
+    }
+
     public static void PlayerWin()
     {
-        Debug.Log("Player Win");
-        //If there is no current Game Manager, exit
         if (current == null)
             return;
 
+        Debug.Log("Player Win");
+
+        // Calculate time elapsed
+        float timeElapsed = current.totalGameTime;
+
+        // Get current player HP
+        float currentHP = GetPlayerHealth();
+
+        // Calculate amountScore based on current score, time elapsed, and current HP
+        int amountScore = CalculateScore(current.score, timeElapsed, currentHP);
+
+        // Display win UI
         UIManager.DisplayWinUI();
+
+        // Save statistics
+        Statistic incrementedStatistic = new Statistic();
+        incrementedStatistic.score = amountScore;
+        incrementedStatistic.last_level = (SaveManager.Instance.playerData.statistic.data.last_level <= 3) ? -3 : 1;
+        SaveManager.Instance.SetStatistic(incrementedStatistic);
+        SaveManager.Instance.GetStatistic();
+
+        // Play audio
         AudioManager.PlayLevelCompleteAudio();
         AudioManager.PlayGameOverAudio();
+
+        // End the game
         current.isGameOver = true;
     }
+
+
+    // Method to get player's current HP
+    private static float GetPlayerHealth()
+    {
+        GameObject player = GetPlayer();
+        if (player != null)
+        {
+            Health healthComponent = player.GetComponent<Health>();
+            if (healthComponent != null)
+            {
+                return healthComponent.health; // Replace with actual property for current HP
+            }
+        }
+        return 0;
+    }
+
 
     public static LayerMask GetBuildingLayer()
     {
