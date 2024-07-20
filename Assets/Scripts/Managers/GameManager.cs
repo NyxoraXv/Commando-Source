@@ -305,7 +305,7 @@ public class GameManager : MonoBehaviour
         {
             Statistic incrementedStatistic = new Statistic();
             incrementedStatistic.score = amountScore;
-            incrementedStatistic.last_level = (SaveManager.Instance.playerData.statistic.data.last_level <= 3) ? -3 : 1;
+            incrementedStatistic.last_level = (SaveManager.Instance.playerData.statistic.data.last_level >= 3) ? -2 : 1;
             SaveManager.Instance.SetStatistic(incrementedStatistic);
             SaveManager.Instance.GetStatistic();
         }
