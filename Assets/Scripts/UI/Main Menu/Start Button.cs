@@ -29,8 +29,9 @@ public class StartButton : MonoBehaviour
         if (mainCanvasGroup != null)
         {
             mainCanvasGroup.DOFade(0f, 0.5f).From(1f);
-            GenerativeMissionManager.instance.fetch(() =>
+            SaveManager.Instance.GetStatistic((data, isSuccess, message) =>
             {
+                // Handle the data retrieval
                 Destroy(MainCanvas);
                 Instantiate(HologramMap);
             });
