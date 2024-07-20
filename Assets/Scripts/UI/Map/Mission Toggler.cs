@@ -5,104 +5,99 @@ using UnityEngine.SceneManagement;
 
 public class MissionInformationInitiator : MonoBehaviour
 {
-    [SerializeField] private TMPro.TextMeshProUGUI[] ObjectivesPrefab;
-    [SerializeField] private TMPro.TextMeshProUGUI MissionTittle;
-    public GameObject pin;
-    public GameObject DifficultyParent;
-    public BoxCollider targetBoxCollider; // The BoxCollider for the top surface
-    public GenerativeMissionManager missionManager;
+    private MissionManager missionManager;
+    private string CurrentLevel = "";
 
-    private Dictionary<Difficulty, Color> difficultyColors = new Dictionary<Difficulty, Color>
-    {
-        { Difficulty.Easy, new Color(188 / 255f, 255 / 255f, 171 / 255f, 1) },
-        { Difficulty.Intermediate, new Color(253 / 255f, 255 / 255f, 171 / 255f, 1) },
-        { Difficulty.Hunter, new Color(255 / 255f, 167 / 255f, 103 / 255f, 1) },
-        { Difficulty.Professional, new Color(255 / 255f, 98 / 255f, 98 / 255f, 1) },
-        { Difficulty.Chainkiller, new Color(255 / 255f, 10 / 255f, 10 / 255f, 1) }
-    };
+    [SerializeField] private TMPro.TextMeshProUGUI[] ObjectivesPrefab; // Prefab for the mission UI element
+    [SerializeField] private TMPro.TextMeshProUGUI MissionTittle;
+    private float verticalSpacing = 55.42f;
+    private Vector3 spawnPosition = new Vector3(0f, 12.42f, 0f);
+    public GameObject DifficultyParent;
 
     private void Start()
     {
-        if (targetBoxCollider == null)
-        {
-            Debug.LogError("targetBoxCollider is not assigned.");
-            return;
-        }
-
-        missionManager = GenerativeMissionManager.instance;
-        pin.transform.position = calculate_hologram_position();
-        SetDifficultyColors();
+        missionManager = MissionManager.Instance;
     }
 
-    private Vector3 calculate_hologram_position()
+    public void OnClick(int Level)
     {
-        Bounds bounds = targetBoxCollider.bounds;
-
-        // Initialize the PRNG with the seed
-        System.Random prng = new System.Random(missionManager.missionData.seed);
-
-        // Generate random positions within the bounds of the top surface
-        float randomX = (float)(prng.NextDouble() * bounds.size.x + bounds.min.x);
-        float randomY = (float)(prng.NextDouble() * bounds.size.y + bounds.min.y);
-
-        // Set the z-coordinate to the top of the box collider
-        float zPosition = bounds.max.z;
-
-        return new Vector3(randomX, randomY, zPosition);
-    }
-
-    public void OnClick()
-    {
-        MissionTittle.text = missionManager.missionData.name;
-        ObjectivesPrefab[0].text = "Defeat " + missionManager.missionData.total_enemy + " Enemy";
-    }
-
-    public void LoadTargetScene()
-    {
-        SceneManager.LoadScene("G_Scene");
-    }
-
-    private void SetDifficultyColors()
-    {
-        int totalEnemies = missionManager.missionData.total_enemy;
-        Difficulty difficulty;
-
-        if (totalEnemies <= 5)
+        missionManager.onLoaded = Level;
+        if (missionManager != null)
         {
-            difficulty = Difficulty.Easy;
-        }
-        else if (totalEnemies <= 10)
-        {
-            difficulty = Difficulty.Intermediate;
-        }
-        else if (totalEnemies <= 15)
-        {
-            difficulty = Difficulty.Hunter;
-        }
-        else if (totalEnemies <= 20)
-        {
-            difficulty = Difficulty.Professional;
+            MissionManager.missionData missionData = missionManager.MissionInformation.Find(m => m.Level == Level);
+
+            if (missionData != null)
+            {
+                // Extract mission objectives
+                List<string> missionObjectives = missionData.Objectives;
+
+                // Check if the number of objectives matches the length of ObjectivesPrefab
+                if (missionObjectives.Count == ObjectivesPrefab.Length)
+                {
+                    MissionTittle.text = missionData.MissionName;
+                    CurrentLevel = missionData.MissionName;
+                    for (int i = 0; i < missionObjectives.Count; i++)
+                    {
+                        ObjectivesPrefab[i].text = missionObjectives[i];
+
+                        Image[] DifficultyArray = DifficultyParent.GetComponentsInChildren<Image>();
+
+                        // Define a dictionary to map difficulty enum values to colors
+                        Dictionary<Difficulty, Color> difficultyColors = new Dictionary<Difficulty, Color>
+                        {
+                            { Difficulty.Easy, new Color(188 / 255f, 255 / 255f, 171 / 255f, 1) },
+                            { Difficulty.Intermediate, new Color(253 / 255f, 255 / 255f, 171 / 255f, 1) },
+                            { Difficulty.Hunter, new Color(255 / 255f, 167 / 255f, 103 / 255f, 1) },
+                            { Difficulty.Professional, new Color(255 / 255f, 98 / 255f, 98 / 255f, 1) },
+                            { Difficulty.Chainkiller, new Color(255 / 255f, 10 / 255f, 10 / 255f, 1) }
+                        };
+
+                        // Loop through the Image components in DifficultyArray
+                        for (int j = 0; j < DifficultyArray.Length; j++)
+                        {
+                            // Assuming the order of Image components corresponds to the order of Difficulty enum values
+                            if (j < (int)missionData.Difficulty) // Explicit cast to int
+                            {
+                                // Get the corresponding Difficulty enum value for this bar
+                                Difficulty difficulty = (Difficulty)j;
+
+                                // Check if the difficulty value exists in the dictionary
+                                if (difficultyColors.ContainsKey(difficulty))
+                                {
+                                    // Set the color of the Image component based on the difficulty
+                                    DifficultyArray[j].color = difficultyColors[difficulty];
+                                }
+                                else
+                                {
+                                    Debug.LogError($"Color not defined for difficulty level {difficulty.ToString()}");
+                                }
+                            }
+                            else
+                            {
+                                // If there are more bars than objectives, you can set a default color or handle it as needed
+                                DifficultyArray[j].color = Color.gray; // Default color
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Number of objectives does not match the length of ObjectivesPrefab.");
+                }
+            }
+            else
+            {
+                Debug.LogError($"Mission with level '{Level}' not found.");
+            }
         }
         else
         {
-            difficulty = Difficulty.Chainkiller;
+            Debug.LogError("MissionManager instance is not found.");
         }
 
-        Color color = difficultyColors[difficulty];
-        Image[] images = DifficultyParent.GetComponentsInChildren<Image>();
-
-        foreach (Image image in images)
-        {
-            image.color = color;
-        }
     }
-
-    private enum Difficulty
+    public void LoadTargetScene()
     {
-        Easy,
-        Intermediate,
-        Hunter,
-        Professional,
-        Chainkiller
+        SceneManager.LoadScene(CurrentLevel);
     }
 }

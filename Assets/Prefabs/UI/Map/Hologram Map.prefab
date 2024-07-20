@@ -1203,10 +1203,7 @@ MonoBehaviour:
   - {fileID: 2309535671782460521}
   - {fileID: 4605896046642600474}
   MissionTittle: {fileID: 3281505221447022880}
-  pin: {fileID: 0}
   DifficultyParent: {fileID: 6616960363248015207}
-  targetBoxCollider: {fileID: 0}
-  missionManager: {fileID: 0}
 --- !u!114 &5617860669133690051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3879,7 +3876,7 @@ PrefabInstance:
     - target: {fileID: 8822933262955300512, guid: b19f122da8fcf674c87aacaf0c61fae1,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8822933262955300512, guid: b19f122da8fcf674c87aacaf0c61fae1,
         type: 3}
