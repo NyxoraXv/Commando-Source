@@ -155,15 +155,18 @@ public class GameManager : MonoBehaviour
         current.score += amountScore;
         //UIManager.DisplayCurrency();
         UIManager.UpdateScoreUI();
+        if(SaveManager.Instance.playerData.statistic.data.last_level <= LevelManager.Instance.currentLevel)
+        {
+            Statistic incrementedStatistic = new Statistic();
+            incrementedStatistic.frg = FRG;
+            incrementedStatistic.lunc = LUNC;
+            incrementedStatistic.exp = xp;
+            current.score += amountScore;
+            SaveManager.Instance.SetStatistic(incrementedStatistic);
+            SaveManager.Instance.GetStatistic();
+            UIManager.refreshCurrency();
+        }
 
-        Statistic incrementedStatistic = new Statistic();
-        incrementedStatistic.frg = FRG;
-        incrementedStatistic.lunc = LUNC;
-        incrementedStatistic.exp = xp;
-        current.score += amountScore;
-        SaveManager.Instance.SetStatistic(incrementedStatistic);
-        SaveManager.Instance.GetStatistic();
-        UIManager.refreshCurrency();
     }
 
     public static int GetScore()
@@ -298,11 +301,15 @@ public class GameManager : MonoBehaviour
         UIManager.DisplayWinUI();
 
         // Save statistics
-        Statistic incrementedStatistic = new Statistic();
-        incrementedStatistic.score = amountScore;
-        incrementedStatistic.last_level = (SaveManager.Instance.playerData.statistic.data.last_level <= 3) ? -3 : 1;
-        SaveManager.Instance.SetStatistic(incrementedStatistic);
-        SaveManager.Instance.GetStatistic();
+        if(SaveManager.Instance.playerData.statistic.data.last_level <= LevelManager.Instance.currentLevel)
+        {
+            Statistic incrementedStatistic = new Statistic();
+            incrementedStatistic.score = amountScore;
+            incrementedStatistic.last_level = (SaveManager.Instance.playerData.statistic.data.last_level <= 3) ? -3 : 1;
+            SaveManager.Instance.SetStatistic(incrementedStatistic);
+            SaveManager.Instance.GetStatistic();
+        }
+
 
         // Play audio
         AudioManager.PlayLevelCompleteAudio();
