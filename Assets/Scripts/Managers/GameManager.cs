@@ -155,7 +155,7 @@ public class GameManager : MonoBehaviour
         current.score += amountScore;
         //UIManager.DisplayCurrency();
         UIManager.UpdateScoreUI();
-        if(SaveManager.Instance.playerData.statistic.data.last_level <= LevelManager.Instance.currentLevel)
+        if (MissionManager.Instance.onLoaded >= SaveManager.Instance.playerData.statistic.data.last_level)
         {
             Statistic incrementedStatistic = new Statistic();
             incrementedStatistic.frg = FRG;
@@ -301,7 +301,7 @@ public class GameManager : MonoBehaviour
         UIManager.DisplayWinUI();
 
         // Save statistics
-        if(SaveManager.Instance.playerData.statistic.data.last_level <= LevelManager.Instance.currentLevel)
+        if (MissionManager.Instance.onLoaded >= SaveManager.Instance.playerData.statistic.data.last_level)
         {
             Statistic incrementedStatistic = new Statistic();
             incrementedStatistic.score = amountScore;
