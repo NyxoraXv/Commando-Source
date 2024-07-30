@@ -303,7 +303,7 @@ public class WalletChain : MonoBehaviour
     public void HandleResponse(string jsonResponse)
     {
         NFTResponse response = JsonUtility.FromJson<NFTResponse>(jsonResponse);
-
+        SaveManager.Instance.haveNFT = false;
         if (response.status)
         {
             foreach (KeyValuePair<Character, GameObject> kvp in CharacterManager.Instance.characterObjects)
@@ -316,10 +316,12 @@ public class WalletChain : MonoBehaviour
                     int tokenId;
                     if (int.TryParse(nftData.token_id, out tokenId)) // Attempt to parse token_id to int
                     {
+                        
                         Debug.Log(tokenId);
                         if (arrayIDList.Contains(tokenId) || arrayIDList.SequenceEqual(new List<int> { 0 }))
                         {
                             Debug.Log(kvp.Key);
+                            SaveManager.Instance.haveNFT = true;
                             CharacterManager.Instance.AddOwnedCharacter(kvp.Key);
                         }
                     }

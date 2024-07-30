@@ -22,26 +22,34 @@ public class UpgradeButton : MonoBehaviour
         CharacterInformation characterInformation = characterManager.GetCharacterPrefab(SaveManager.playerData.characterInfo.SelectedCharacter).GetComponent<CharacterInformation>();
         Debug.Log("characterInformation initialized");
 
-        
-
         FRGToSpend = changeCharacterManager.CalculateUpgradeCost();
         Debug.Log("goldToSpend calculated : " + FRGToSpend);
 
-        if (CurrencyManager.Instance.SpendFRG(FRGToSpend))
+        if (CharacterManager.Instance.UpgradeCharacter(changeCharacterManager.selectedCard.Character))
         {
-            CharacterManager.Instance.UpgradeCharacter(changeCharacterManager.selectedCard.Character);
-            Debug.Log("Character Upgraded");
+            if (CurrencyManager.Instance.SpendFRG(FRGToSpend))
+            {
+                Debug.Log("Character Upgraded");
+            }
+            else
+            {
+                CurrencyManager.Instance.insufficientFund(SaveManager.Instance.playerData.statistic.data.frg - FRGToSpend,
+                                                        GameObject.FindWithTag("Main Menu Parent").transform,
+                                                        PopUpInstantiate.CurrencyType.LUNC);
+            }
+
         }
         else
         {
-            CurrencyManager.Instance.insufficientFund(SaveManager.Instance.playerData.statistic.data.frg - FRGToSpend,
-                                                    GameObject.FindWithTag("Main Menu Parent").transform,
-                                                    PopUpInstantiate.CurrencyType.LUNC);
+            SaveManager.Instance.fetchData();
+            PopUpInformationhandler.Instance.pop("Max Level Reached");
 
             Debug.LogWarning("Character Upgrade Fail");
         }
 
         price.text = ("Boost Cost: " + FRGToSpend);
         changeCharacterManager.RefreshUIWithoutParameters();
+        SaveManager.Instance.fetchData();
+        CurrencyManager.Instance.Refresh();
     }
 }

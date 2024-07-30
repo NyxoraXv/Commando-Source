@@ -8,22 +8,22 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Main Menu.unity
     guid: 5faa887011f9674418c5d606a282c50e
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Missions/Operation Dawn Break.unity
     guid: 866903084cb285f4f9b89ebb696c9a9a
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Missions/Fireflies.unity
     guid: fee058c969922e3488325c8c3e46e1f8
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Missions/!!!.unity
     guid: 53eb7496eea6abf46bae6f550d1014e5
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Missions/Mission3Boss.unity
     guid: 124388dc11ccbf645a4c7e5711c0266b
   - enabled: 0
     path: Assets/Scenes/Missions/LvL 4.unity
     guid: b60a8ed960c4d494d813fac3a04828fb
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scripts/Level Maker/Test Scene(Cache)/G_Scene.unity
     guid: c0e0eed91994a47469929dcf592fc09c
   m_configObjects:

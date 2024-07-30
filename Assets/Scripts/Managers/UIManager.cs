@@ -271,12 +271,19 @@ public class UIManager : MonoBehaviour
         GameManager.GameReset();
     }
 
-    public static void Revive()
+    public void Revive()
     {
-        if (CurrencyManager.Instance.SpendFRG(0)) { GameManager.GetPlayer().GetComponent<MainPlayer>().Revive(); }
-
-        GameManager.Revive();
-        DisplayCurrency();
+        if (SaveManager.Instance.playerData.statistic.data.frg >= 1)
+        {
+            bool result = false;
+            Statistic st = new Statistic();
+            st.frg = -1;
+            StartCoroutine(CurrencyManager.Instance.WaitForStatisticUpdate(st, success => {
+                result = success;
+                GameManager.Revive();
+            }));
+        }
+        SaveManager.Instance.fetchData();
     }
 
     public static void AddBackButton()
@@ -328,30 +335,27 @@ public class UIManager : MonoBehaviour
     {
         if (current == null)
             return;
-        Debug.Log("Line 332");
         current.winUI.gameObject.SetActive(true);
-        Debug.Log("Line 334");
         current.winPointsText.SetText(GameManager.GetScore().ToString());
-        Debug.Log("Line 336");
         current.winPointsText.gameObject.SetActive(true);
-        Debug.Log("Line 338");
         current.homeWin.gameObject.SetActive(true);
-        Debug.Log("Line 340");
         current.restartWin.gameObject.SetActive(true);
-        Debug.Log("Line 342");
     }
 
     public void BuyAmmo()
     {
-        
+
         if (SaveManager.Instance.playerData.statistic.data.frg >= 1)
         {
-            CurrencyManager.Instance.SpendFRG(1);
-            GameManager.addAmmo(150);
-            DisplayCurrency();
+            bool result = false;
+            Statistic st = new Statistic();
+            st.frg = -1;
+            StartCoroutine(CurrencyManager.Instance.WaitForStatisticUpdate(st, success => {
+                result = success;
+                GameManager.addAmmo(100);
+            }));
         }
         SaveManager.Instance.fetchData();
-        CurrencyManager.Instance.Refresh();
-        
+
     }
 }

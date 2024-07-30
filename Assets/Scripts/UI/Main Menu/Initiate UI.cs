@@ -32,8 +32,9 @@ public class InitiateUI : MonoBehaviour
             MainMenu.SetActive(true);
             Login.SetActive(false);
             currency.SetActive(true);
+            volumeControl.SetAllSavedVolumes();
         }
-        volumeControl.SetAllSavedVolumes();
+        
 
         try
         {

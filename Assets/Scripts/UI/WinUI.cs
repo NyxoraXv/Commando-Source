@@ -17,20 +17,20 @@ public class WinUI : MonoBehaviour
 
     private int finalScore; // Example final score
     private int finalLUNC; // Example final LUNC score
-    private int finalFRG; // Example final FRG score
+    private float finalFRG; // Example final FRG score
     public float scoreAnimationDuration = 2f; // Duration for the score counting animation
 
     private void OnEnable()
     {
         finalScore = GameManager.GetScore();
         finalLUNC = Mathf.RoundToInt(GameManager.getLUNC());
-        finalFRG = Mathf.RoundToInt(GameManager.getFRG());
+        finalFRG = GameManager.getFRG();
         victoryScreen.SetActive(true);
         //AnimateVictoryScreen();
 
         CountScore(scoreText, finalScore);
         luncText.text = finalLUNC.ToString();
-        FRGText.text = finalFRG.ToString();
+        CountScore(FRGText, finalFRG);
     }
 
     void AnimateVictoryScreen()
@@ -48,12 +48,24 @@ public class WinUI : MonoBehaviour
 
     void CountScore(TextMeshProUGUI textMeshPro, int finalScore)
     {
-        // Example score counting animation using DOTween
+        // Example score counting animation using DOTween for integers
         int currentScore = 0;
         DOTween.To(() => currentScore, x => currentScore = x, finalScore, scoreAnimationDuration)
             .OnUpdate(() =>
             {
                 textMeshPro.text = currentScore.ToString();
+            })
+            .SetEase(Ease.Linear);
+    }
+
+    void CountScore(TextMeshProUGUI textMeshPro, float finalScore)
+    {
+        // Example score counting animation using DOTween for floats
+        float currentScore = 0;
+        DOTween.To(() => currentScore, x => currentScore = x, finalScore, scoreAnimationDuration)
+            .OnUpdate(() =>
+            {
+                textMeshPro.text = currentScore.ToString("F2"); // Format to 2 decimal places
             })
             .SetEase(Ease.Linear);
     }

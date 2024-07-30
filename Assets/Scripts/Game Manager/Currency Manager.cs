@@ -49,7 +49,7 @@ public class CurrencyManager : MonoBehaviour
         }
     }
 
-    private IEnumerator WaitForStatisticUpdate(Statistic statistic, Action<bool> callback)
+    public IEnumerator WaitForStatisticUpdate(Statistic statistic, Action<bool> callback)
     {
         bool success = false;
         yield return StartCoroutine(SaveManager.Instance.SetStatisticRequest(statistic, result => success = result));
@@ -58,14 +58,24 @@ public class CurrencyManager : MonoBehaviour
 
     public bool SpendFRG(float amount)
     {
-        Statistic statistic = new Statistic
+        if(amount<=SaveManager.Instance.playerData.statistic.data.frg)
         {
-            frg = amount * -1
-        };
+            Statistic statistic = new Statistic
+            {
+                frg = amount * -1
+            };
 
-        bool result = false;
-        StartCoroutine(WaitForStatisticUpdate(statistic, success => result = success));
-        return result;
+            bool result = false;
+            StartCoroutine(WaitForStatisticUpdate(statistic, success => {
+                result = success;
+            }));
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
     }
 
     public bool SpendLUNC(int amount)

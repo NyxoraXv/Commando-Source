@@ -131,6 +131,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -3273356639008598148, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      propertyPath: MaxLevel
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1179162474577892896, guid: 47af4844d7c9fdb498941bf9d6c926f2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -191,7 +196,33 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game Manager
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      propertyPath: MissionInformation.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      propertyPath: MissionInformation.Array.data[0].Level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      propertyPath: MissionInformation.Array.data[1].Level
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      propertyPath: MissionInformation.Array.data[2].Level
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9108472977005183931, guid: 47af4844d7c9fdb498941bf9d6c926f2,
+        type: 3}
+      propertyPath: MissionInformation.Array.data[3].Completed
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1953174846215698913, guid: 47af4844d7c9fdb498941bf9d6c926f2, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

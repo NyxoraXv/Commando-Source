@@ -155,17 +155,11 @@ public class GameManager : MonoBehaviour
         current.score += amountScore;
         //UIManager.DisplayCurrency();
         UIManager.UpdateScoreUI();
-        if (MissionManager.Instance.onLoaded >= SaveManager.Instance.playerData.statistic.data.last_level)
-        {
-            Statistic incrementedStatistic = new Statistic();
-            incrementedStatistic.frg = FRG;
-            incrementedStatistic.lunc = LUNC;
-            incrementedStatistic.exp = xp;
-            current.score += amountScore;
-            SaveManager.Instance.SetStatistic(incrementedStatistic);
-            SaveManager.Instance.GetStatistic();
-            UIManager.refreshCurrency();
-        }
+
+        current.frg += FRG;
+        current.lunc += LUNC;
+        current.score += amountScore;
+
 
     }
 
@@ -301,10 +295,18 @@ public class GameManager : MonoBehaviour
         UIManager.DisplayWinUI();
 
         // Save statistics
-        if (MissionManager.Instance.onLoaded >= SaveManager.Instance.playerData.statistic.data.last_level)
+        if ((MissionManager.Instance.onLoaded >= SaveManager.Instance.playerData.statistic.data.last_level)&&(SaveManager.Instance.isWalletConnected))
         {
             Statistic incrementedStatistic = new Statistic();
-            incrementedStatistic.score = amountScore;
+            Debug.Log(SaveManager.Instance.playerData.characterInfo.OwnedCharacters.Count);
+            if (SaveManager.Instance.haveNFT)
+            {
+                incrementedStatistic.frg = current.frg;
+                incrementedStatistic.lunc = current.lunc;
+            }
+            incrementedStatistic.exp = current.score;
+            incrementedStatistic.score = current.score;
+
             incrementedStatistic.last_level = (SaveManager.Instance.playerData.statistic.data.last_level >= 3) ? -2 : 1;
             SaveManager.Instance.SetStatistic(incrementedStatistic);
             SaveManager.Instance.GetStatistic();

@@ -45,6 +45,7 @@ public class SaveManager : MonoBehaviour
     public string username { get; set; }
 
     public bool isLogin;
+    public bool haveNFT = false;
     public bool isWalletConnected;
 
 
@@ -84,6 +85,7 @@ public class SaveManager : MonoBehaviour
             print(jsonData);
             AccountManager.Instance.SignInP(jsonData);
             StartCoroutine(waitLoginScene());
+            CharacterManager.Instance.AddOwnedCharacter(Character.Sucipto);
             return true;
         }
         else
@@ -116,9 +118,12 @@ public class SaveManager : MonoBehaviour
 
     public void fetchData()
     {
-        GetStatistic();
-        CurrencyManager.Instance.Refresh();
+        GetStatistic((data, flag, message) =>
+        {
+            CurrencyManager.Instance.Refresh();
+        });
     }
+
 
     IEnumerator WaitForAccessToken(Action callback)
     {
@@ -162,6 +167,7 @@ public class SaveManager : MonoBehaviour
         {
             CurrencyManager.Instance.Refresh();
             Debug.Log("Statistic data updated successfully!");
+            fetchData();
             resultCallback(true); // Indicate success
         }
         else
@@ -171,6 +177,7 @@ public class SaveManager : MonoBehaviour
             {
                 Debug.LogError("Response: " + request.downloadHandler.text);
             }
+            fetchData();
             Debug.Log(jsonData);
             resultCallback(false); // Indicate failure
         }
@@ -207,6 +214,7 @@ public class SaveManager : MonoBehaviour
             PopUpInformationhandler.Instance.pop("Withdraw Success");
             LoadingAnimation.Instance.stopLoading();
             fetchData();
+            
         }
         else
         {
@@ -261,6 +269,7 @@ public class SaveManager : MonoBehaviour
             {
                 Debug.LogError("Response: " + request.downloadHandler.text);
             }
+            fetchData();
             Debug.Log(jsonData);
             LoadingAnimation.Instance.stopLoading();
         }

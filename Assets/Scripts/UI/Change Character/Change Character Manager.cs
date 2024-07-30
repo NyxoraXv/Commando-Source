@@ -8,7 +8,7 @@ using DG.Tweening;
 public class ChangeCharacterManager : MonoBehaviour
 {
     [Header("Text")]
-    public TMPro.TextMeshProUGUI txt_name, txt_level, txt_damage, txt_hp, txt_agility, price;
+    public TMPro.TextMeshProUGUI txt_name, txt_damage, txt_hp, txt_agility;
 
     [Header("Image")]
     public Image Avatar;
@@ -109,7 +109,7 @@ public class ChangeCharacterManager : MonoBehaviour
         {
             Highlighter.SetActive(true);
         }
-
+        
         // Set the parent of the Highlighter to the same parent as the selected card
         Transform parentTransform = selectedCard.gameObject.transform;
         Highlighter.transform.SetParent(parentTransform);
@@ -134,13 +134,10 @@ public class ChangeCharacterManager : MonoBehaviour
 
         // Handle Text Refresh
         txt_name.text = CharacterInformation.CharacterName.ToString();
-        txt_level.text = "Level " + ((Character.GetOwnedCharacterLevel(CharacterInformation.CharacterName)).ToString());
 
         txt_damage.text = CharacterInformation.Levels[Character.GetOwnedCharacterLevel(CharacterInformation.CharacterName)].Damage.ToString();
         txt_hp.text = CharacterInformation.Levels[Character.GetOwnedCharacterLevel(CharacterInformation.CharacterName)].HP.ToString();
         txt_agility.text = CharacterInformation.Levels[Character.GetOwnedCharacterLevel(CharacterInformation.CharacterName)].Agility.ToString();
-
-        price.text = ("Upgrade Cost: " + CalculateUpgradeCost().ToString());
     }
 
     private void UpdateSprite(CharacterInformation characterInformation)
