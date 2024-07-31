@@ -25,7 +25,7 @@ namespace AssetClean
 		// type : guid
 		private Dictionary<System.Type, List<string>> code2FileDic = new Dictionary<System.Type, List<string>> ();
 		private List<TypeDate> fileTypeList = null;
-		public static readonly string xmlPath = "referenceType2File.xml";
+		private string xmlPath = "referenceType2File.xml";
 
 		private List<TypeDate> fileTypeXML {
 			get {
@@ -336,6 +336,7 @@ namespace AssetClean
 				if (code2FileDic.ContainsKey (type) == false) {
 					continue;
 				}
+				var filePaths = code2FileDic [type];
 
 				var attributes = type.GetCustomAttributes (typeof(CustomEditor), true);
 				foreach (var attribute in attributes) {
