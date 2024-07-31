@@ -26,16 +26,12 @@ public class MobileManager : MonoBehaviour
         sprintButton.onClick.AddListener(OnSprintButtonClick);
         jumpButton.onClick.AddListener(OnJumpButtonClick);
         grenadeButton.onClick.AddListener(OnGrenadeButtonClick);
-
     }
 
     private void Start()
     {
-#if UNITY_STANDALONE || UNITY_EDITOR
-        // If running on PC or in the editor, disable the MobileManager GameObject
-        Debug.Log("Running on PC. Disabling MobileManager GameObject.");
-        gameObject.SetActive(false);
-#endif
+        // Always keep MobileManager active
+        Debug.Log("MobileManager GameObject is active.");
     }
 
     private void LateUpdate()
@@ -85,10 +81,8 @@ public class MobileManager : MonoBehaviour
 
     private float GetAxisValue(float joystickValue, string axisName)
     {
-
         return joystickValue;
     }
-
 
     public static float GetAxisHorizontal()
     {
@@ -133,5 +127,4 @@ public class MobileManager : MonoBehaviour
 
         return current.GetAxisValue(current.ArmJoystick.Horizontal, "Horizontal");
     }
-
 }

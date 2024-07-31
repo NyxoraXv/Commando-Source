@@ -60,24 +60,40 @@ public class UIManager : MonoBehaviour
         current.buyButton.gameObject.SetActive(false);
         current.shopUI.gameObject.SetActive(false);
 
-
         UpdateScoreUI();
         UpdateBombsUI();
+
         if (isMobile())
-        { MobileCanvas.SetActive(true); }
+        {
+            Debug.Log("Running on a mobile platform");
+            MobileCanvas.SetActive(true);
+        }
         else
-        { MobileCanvas.SetActive(false); }
+        {
+            Debug.Log("Not running on a mobile platform");
+            MobileCanvas.SetActive(false);
+        }
     }
+
 
 
     [DllImport("__Internal")]
     private static extern bool IsMobile();
     public static bool isMobile()
-    { 
-#if !UNITY_EDITOR && UNITY_WEBGL
+    {
+    #if UNITY_ANDROID
+            Debug.Log("Detected platform: Android");
+            return true;
+    #elif UNITY_IOS
+        Debug.Log("Detected platform: iOS");
+        return true;
+    #elif UNITY_WEBGL && !UNITY_EDITOR
+        Debug.Log("Detected platform: WebGL (non-editor)");
         return IsMobile();
-#endif
+    #else
+        Debug.Log("Detected platform: Not mobile (PC or editor)");
         return false;
+    #endif
     }
 
     private void SetInitialAlpha(Image image, float alpha)
