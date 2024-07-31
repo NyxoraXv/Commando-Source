@@ -70,6 +70,11 @@ public class NavigationButtonManager : MonoBehaviour
     public float marketRotateDuration = 1.0f;
     public Ease marketParallaxEase = Ease.InOutCubic;
 
+    [Header("Exit")]    
+    public PopUpExit popUpExit;
+    public GameObject object1;  
+    public GameObject object2;
+
     void Start()
     {
         // Create a new sequence
@@ -168,5 +173,18 @@ public class NavigationButtonManager : MonoBehaviour
                             marketRotateEnd,
                             marketRotateDuration,
                             marketParallaxEase);
+    }
+    public void ShowExitPopup()
+    {
+        popUpExit.ShowPopup();
+        object1.SetActive(false);
+        object2.SetActive(false);
+    }
+
+    public void HideExitPopup()
+    {
+        popUpExit.HidePopup();
+        object1.SetActive(true);
+        object2.SetActive(true);
     }
 }
